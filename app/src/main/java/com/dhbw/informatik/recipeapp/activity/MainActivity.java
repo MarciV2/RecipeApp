@@ -45,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<MealCategoriesList> call, Response<MealCategoriesList> response) {
                         //TODO etwas mit den daten anfangen, hier nur beispielsweise in die konsole gehauen...
+                        //Abfangen/Ausgeben Fehlercode Bsp. 404
+                        if(!response.isSuccessful()){
+                            Log.d("ERROR", "Code: "+  response.code());
+                            return;
+                        }
                         Log.d("TAG", new Gson().toJson(response.body().categories));
                     }
 
