@@ -80,7 +80,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Categories"
-        android:onClick="ToCategories"
+        android:onClick="toCategories"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/apiCall"
@@ -90,7 +90,7 @@
         android:id="@+id/MainNavAreaBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:onClick="ToAreas"
+        android:onClick="toAreas"
         android:text="Areas"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/MainNavIngredientsBtn"
@@ -101,7 +101,7 @@
         android:id="@+id/MainNavIngredientsBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="ToIngredients"
+        android:onClick="toIngredients"
         android:text="Ingredients"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -110,10 +110,11 @@
         android:id="@+id/apiCall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="StartApiCall"
+        android:onClick="startApiCall"
         android:text="API Call"
         app:layout_constraintBottom_toTopOf="@+id/MainNavAreaBtn"
-        app:layout_constraintTop_toBottomOf="@+id/ingredients"
-        tools:layout_editor_absoluteX="127dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ingredients" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

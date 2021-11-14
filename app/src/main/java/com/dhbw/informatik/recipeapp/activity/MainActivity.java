@@ -46,11 +46,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Created by Marcel Vidmar
+     * Erstellt von Marcel Vidmar
      * zu testzwecken: fügt dem test-button einen sinn zu, derzeit:
      * API-Aufruf zum abfragen der kategorien, die dann wieder als json in die konsole geschrieben werden
      */
-    public void StartApiCall(View v){
+    public void startApiCall(View v){
         Call<MealCategoriesList> call = apiService.getAllCategoriesDetailed();
         call.enqueue(new Callback<MealCategoriesList>() {
             @Override
@@ -95,6 +95,44 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+
+
+    private void showText(String msg){
+        AlertDialog.Builder a = new AlertDialog.Builder(this);
+        a.setTitle("Delete entry")
+                .setMessage(msg);
+    }
+
+    public void toCategories(View v){
+        Intent i = new Intent(this, SelectCategory.class);
+        startActivity(i);
+    }
+
+    public void toAreas(View v){
+        Intent i = new Intent(this, SelectArea.class);
+        startActivity(i);
+    }
+
+    public void toIngredients(View v){
+        Intent i = new Intent(this, SelectMainIngredient.class);
+        startActivity(i);
+    }
+
+
+    private void showToast(){
+        showToast("Fallback text");
+    }
+
+    private void showToast(String msg){
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Erstellt von Johannes Fahr
+     * @param jsonString Jsonstring aus Abfrage welcher gespeichert werden soll
+     * @param fileName Dateiname der benutzt werden soll zum Speichern
+     */
     public void save(String jsonString, String fileName) {
         FileOutputStream fos = null;
         try {
@@ -117,37 +155,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    private void ShowText(String msg){
-        AlertDialog.Builder a = new AlertDialog.Builder(this);
-        a.setTitle("Delete entry")
-                .setMessage(msg);
-    }
-
-    public void ToCategories(View v){
-        Intent i = new Intent(this, SelectCategory.class);
-        startActivity(i);
-    }
-
-    public void ToAreas(View v){
-        Intent i = new Intent(this, SelectArea.class);
-        startActivity(i);
-    }
-
-    public void ToIngredients(View v){
-        Intent i = new Intent(this, SelectMainIngredient.class);
-        startActivity(i);
-    }
-
-
-    private void showToast(){
-        showToast("Fallback text");
-    }
-
-    private void showToast(String msg){
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-    }
-
+    /**
+     * Erstellt von Johannes Fahr
+     * @param fileName Dateiname der Datei zum richtigen Aufrufen
+     * @return Gibt den Inhalt der Datei als String zurück
+     */
     public String load(String fileName)
     {
         FileInputStream fis = null;
