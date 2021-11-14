@@ -8,5 +8,13 @@ import java.util.List;
 public class MealCategoriesList {
 
     @SerializedName("categories")
-    public List<MealCategory> categories;
+    private List<MealCategory> categoryList;
+
+    public List<MealCategory> getCategories() {
+        return categoryList;
+    }
+
+    public void setCategories(List<MealCategory> categories) {
+        this.categoryList = categories;
+    }
 }
