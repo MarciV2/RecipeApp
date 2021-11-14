@@ -1,5 +1,7 @@
 package com.dhbw.informatik.recipeapp.model;
 
+import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
 
 
@@ -155,7 +157,8 @@ public class Meal {
     private String[] ingredients;
     private String[] measures;
 
-    public Meal(int idMeal, String strMeal, String strCategory, String strArea, String strInstructions, String strMealThumb, String strTags, String strYoutube, String strIngredient1, String strIngredient2, String strIngredient3, String strIngredient4, String strIngredient5, String strIngredient6, String strIngredient7, String strIngredient8, String strIngredient9, String strIngredient10, String strIngredient11, String strIngredient12, String strIngredient13, String strIngredient14, String strIngredient15, String strIngredient16, String strIngredient17, String strIngredient18, String strIngredient19, String strIngredient20, String strMeasure1, String strMeasure2, String strMeasure3, String strMeasure4, String strMeasure5, String strMeasure6, String strMeasure7, String strMeasure8, String strMeasure9, String strMeasure10, String strMeasure11, String strMeasure12, String strMeasure13, String strMeasure14, String strMeasure15, String strMeasure16, String strMeasure17, String strMeasure18, String strMeasure19, String strMeasure20) {
+  /*  public Meal(int idMeal, String strMeal, String strCategory, String strArea, String strInstructions, String strMealThumb, String strTags, String strYoutube, String strIngredient1, String strIngredient2, String strIngredient3, String strIngredient4, String strIngredient5, String strIngredient6, String strIngredient7, String strIngredient8, String strIngredient9, String strIngredient10, String strIngredient11, String strIngredient12, String strIngredient13, String strIngredient14, String strIngredient15, String strIngredient16, String strIngredient17, String strIngredient18, String strIngredient19, String strIngredient20, String strMeasure1, String strMeasure2, String strMeasure3, String strMeasure4, String strMeasure5, String strMeasure6, String strMeasure7, String strMeasure8, String strMeasure9, String strMeasure10, String strMeasure11, String strMeasure12, String strMeasure13, String strMeasure14, String strMeasure15, String strMeasure16, String strMeasure17, String strMeasure18, String strMeasure19, String strMeasure20) {
+        Log.d("test","constructor started");
         this.idMeal = idMeal;
         this.strMeal = strMeal;
         this.strCategory = strCategory;
@@ -206,8 +209,15 @@ public class Meal {
         this.strMeasure20 = strMeasure20;
 
 
+
+
+
+        Log.d("test","constructor done");
+    }*/
+
+    public void fillArrays(){
         //Ingredients als Liste formatieren, um besseren Zugriff darauf zu erhalten
-        this.ingredients = new String[20];
+        ingredients = new String[20];
         ingredients[0]=strIngredient1;
         ingredients[1]=strIngredient2;
         ingredients[2]=strIngredient3;
@@ -231,7 +241,7 @@ public class Meal {
 
 
         //Measures als Liste formatieren, um besseren Zugriff darauf zu erhalten
-        this.measures = new String[20];
+        measures = new String[20];
         measures[0]=strMeasure1;
         measures[1]=strMeasure2;
         measures[2]=strMeasure3;
@@ -253,6 +263,8 @@ public class Meal {
         measures[18]=strMeasure19;
         measures[19]=strMeasure20;
     }
+
+
 
     public int getIdMeal() {
         return idMeal;
