@@ -1,5 +1,6 @@
 package com.dhbw.informatik.recipeapp.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.View;
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.RecipeAPIService;
 import com.dhbw.informatik.recipeapp.model.lists.MealCategoriesList;
+import com.dhbw.informatik.recipeapp.model.lists.MealList;
 import com.google.gson.Gson;
 
 import retrofit2.Call;
@@ -19,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    static public  RecipeAPIService apiService=null;
+    static public RecipeAPIService apiService = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,29 +38,51 @@ public class MainActivity extends AppCompatActivity {
      * zu testzwecken: fügt dem test-button einen sinn zu, derzeit:
      * API-Aufruf zum abfragen der kategorien, die dann wieder als json in die konsole geschrieben werden
      */
-    private void addClickHandlerToTestBtn(){
+    private void addClickHandlerToTestBtn() {
         findViewById(R.id.btn_test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Call<MealCategoriesList> call=apiService.getAllCategoriesDetailed();
+
+
+                Call<MealCategoriesList> call = apiService.getAllCategoriesDetailed();
                 call.enqueue(new Callback<MealCategoriesList>() {
                     @Override
                     public void onResponse(Call<MealCategoriesList> call, Response<MealCategoriesList> response) {
                         //TODO etwas mit den daten anfangen, hier nur beispielsweise in die konsole gehauen...
                         //Abfangen/Ausgeben Fehlercode Bsp. 404
-                        if(!response.isSuccessful()){
-                            Log.d("ERROR", "Code: "+  response.code());
+                        if (!response.isSuccessful()) {
+                            Log.d("ERROR", "Code: " + response.code());
                             return;
                         }
-                        Log.d("TAG", new Gson().toJson(response.body().categories));
+                        Log.d("TAG", new Gson().toJson(response.body().getCategories()));
                     }
 
                     @Override
                     public void onFailure(Call<MealCategoriesList> call, Throwable t) {
-                        Log.d("TAG", "error: "+t.toString());
+                        Log.d("TAG", "error: " + t.toString());
                     }
                 });
 
+
+                Call<MealList> call2 = apiService.getRandomRecipe();
+                call2.enqueue(new Callback<MealList>() {
+                    @Override
+                    public void onResponse(@NonNull Call<MealList> call, @NonNull Response<MealList> response) {
+                        //TODO etwas mit den daten anfangen, hier nur beispielsweise in die konsole gehauen...
+                        //Abfangen/Ausgeben Fehlercode Bsp. 404
+                        if (!response.isSuccessful()) {
+                            Log.d("ERROR", "Code: " + response.code());
+                            return;
+                        }
+                        Log.d("TAG", new Gson().toJson(response.body().getMeals()));
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<MealList> call, Throwable t) {
+
+                    }
+                });
 
 
             }
@@ -66,18 +90,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     /**
      * Created by Marcel Vidmar
      * initialisiert den globalen API-Service, soll nur durch onCreate aufgerufen werden!
      */
-    private void initRetrofit(){
+    private void initRetrofit() {
         //API-Retrofit initialisieren
-        Retrofit retrofit=new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://www.themealdb.com/api/json/v1/1/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        apiService=retrofit.create(RecipeAPIService.class);
+        apiService = retrofit.create(RecipeAPIService.class);
     }
 
 }
