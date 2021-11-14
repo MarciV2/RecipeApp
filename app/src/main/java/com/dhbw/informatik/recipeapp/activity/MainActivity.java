@@ -13,6 +13,13 @@ import com.dhbw.informatik.recipeapp.model.lists.MealCategoriesList;
 import com.dhbw.informatik.recipeapp.model.lists.MealList;
 import com.google.gson.Gson;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -76,6 +83,9 @@ public class MainActivity extends AppCompatActivity {
                         }
                         Log.d("TAG", new Gson().toJson(response.body().getMeals()));
 
+                        //Speichern und öffnen von response zu Testzwecken
+                        save(new Gson().toJson(response.body().getMeals()),"test.txt");
+                        load("test.txt");
                     }
 
                     @Override
@@ -89,6 +99,51 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void save(String jsonString, String fileName) {
+        FileOutputStream fos = null;
+        try {
+            fos = this.openFileOutput(fileName, MODE_PRIVATE);
+            fos.write(jsonString.getBytes());
+            Log.d("TAG", "Saved: "+ jsonString + "to " + getFilesDir() + "/" + fileName);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public String load(String fileName)
+    {
+        FileInputStream fis = null;
+        try {
+            fis = openFileInput(fileName);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br= new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String text;
+
+            while((text = br.readLine())!=null){
+                sb.append(text);
+            }
+            Log.d("TAG", "Read:"+sb.toString() +" from " + getFilesDir() + "/" + fileName);
+
+            return sb.toString();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * Created by Marcel Vidmar
