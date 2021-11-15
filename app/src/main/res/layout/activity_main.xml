@@ -76,6 +76,18 @@
         tools:itemCount="5"
         tools:listitem="@layout/recycler_view_item_1" />-->
 
+
+    <Button
+        android:id="@+id/youtube"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/apiCall"
+        android:onClick="randomVid"
+        android:text="youtubetest"
+        />
+
     <Button
         android:id="@+id/MainNavCatBtn"
         android:layout_width="wrap_content"
@@ -96,7 +108,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/MainNavIngredientsBtn"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/MainNavCatBtn" />
+        app:layout_constraintStart_toEndOf="@+id/MainNavCatBtn"
+        />
 
     <Button
         android:id="@+id/MainNavIngredientsBtn"

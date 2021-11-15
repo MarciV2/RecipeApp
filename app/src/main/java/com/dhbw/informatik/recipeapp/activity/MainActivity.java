@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.dhbw.informatik.recipeapp.SelectMainIngredient;
 import com.dhbw.informatik.recipeapp.model.Meal;
 import com.dhbw.informatik.recipeapp.model.lists.MealCategoriesList;
 import com.dhbw.informatik.recipeapp.model.lists.MealList;
+
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     static public RecipeAPIService apiService = null;
     static public MealList favourites;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         List<Meal> list=response.body().getMeals();
                         list.get(0).fillArrays();
+
                         Log.d("TAG", new Gson().toJson(list));
 
                 //Speichern und öffnen von response zu Testzwecken
@@ -131,6 +135,48 @@ public class MainActivity extends AppCompatActivity {
                 .setMessage(msg);
     }
 
+    /**
+     * Erstellt von Johannes Fahr
+     * Wählt ein zufälliges Gericht aus und öffnet das Zubereitungsvideo
+     * @param v
+     */
+    public void randomVid(View v)
+    {
+        Call<MealList> call = apiService.getRandomRecipe();
+        call.enqueue(new Callback<MealList>() {
+            @Override
+            public void onResponse(@NonNull Call<MealList> call, @NonNull Response<MealList> response) {
+
+                //Abfangen/Ausgeben Fehlercode Bsp. 404
+                if (!response.isSuccessful()) {
+                    Log.d("ERROR", "Code: " + response.code());
+                    return;
+                }
+                List<Meal> list=response.body().getMeals();
+                list.get(0).fillArrays();
+
+                playVid(list.get(0).getStrYoutube());
+                Log.d("TAG", new Gson().toJson(list));
+
+            }
+
+            @Override
+            public void onFailure(Call<MealList> call, Throwable t) {
+
+            }
+        });
+    }
+
+    /**
+     * Erstellt von Johannes Fahr
+     * Ermöglicht den Aufruf von Links die innerhalb des JSON ausgelesen werden und als Parameter weitergegeben werden.
+     * @param videourl Die Url die aufgerufen werden soll
+     */
+    public void playVid(String videourl)
+    {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(videourl)));
+        Log.i("Video", "Video Playing....");
+    }
     public void toCategories(View v){
         Intent i = new Intent(this, SelectCategory.class);
         startActivity(i);
@@ -157,10 +203,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    /**
-     * Created by Marcel Vidmar
-     * initialisiert den globalen API-Service, soll nur durch onCreate aufgerufen werden!
-     */
+
     //TODO umsetzen
     public void addToFavourites(View v){
 
