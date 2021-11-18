@@ -51,6 +51,19 @@ public class MainActivity extends AppCompatActivity {
 
         String strFavorites=load("favourites.json");
         if(strFavorites!=null) favourites=new Gson().fromJson(strFavorites,MealList.class);
+
+
+        MainActivity self=this;
+        findViewById(R.id.btnCreateOwn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i= new Intent(self,CreateOwnRecipeActivity.class);
+                startActivity(i);
+            }
+        });
+
+
+
     }
     @Override
     protected void onDestroy() {

@@ -7,4 +7,9 @@
     <string name="previous">Previous</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="create_own_recipe">Create own Recipe</string>
+    <string name="create_recipe">Create Recipe</string>
+    <string name="ingredient">Ingredient</string>
+    <string name="measurement">Measurement</string>
+    <string name="add_ingredient">Add Ingredient</string>
 </resources>
