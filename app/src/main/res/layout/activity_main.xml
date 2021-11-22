@@ -74,7 +74,8 @@
         android:text="*"
         app:layout_constraintBottom_toTopOf="@+id/ingredients"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView2" />
+        app:layout_constraintTop_toTopOf="@+id/textView2"
+        android:onClick="addToFavourites"/>
 
     <TextView
         android:id="@+id/ingredients"
@@ -87,34 +88,66 @@
         app:layout_constraintStart_toEndOf="@+id/imageButton"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/MainNavGridBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:itemCount="5"
+        tools:listitem="@layout/recycler_view_item_1" />-->
+
+
+    <Button
+        android:id="@+id/youtube"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/apiCall"
+        android:onClick="randomVid"
+        android:text="youtubetest"
+        />
+
+    <Button
+        android:id="@+id/btnCreateOwn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/youtube"
+        android:text="create own recipe"
+        />
 
     <Button
         android:id="@+id/MainNavCatBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Categories"
-        android:onClick="ToCategories"
+        android:onClick="toCategories"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/apiCall"
+        app:layout_constraintTop_toBottomOf="@+id/btnCreateOwn"
         app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/MainNavAreaBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:onClick="ToAreas"
+        android:onClick="toAreas"
         android:text="Areas"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/MainNavIngredientsBtn"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/MainNavCatBtn" />
+        app:layout_constraintStart_toEndOf="@+id/MainNavCatBtn"
+        />
 
     <Button
         android:id="@+id/MainNavIngredientsBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="ToIngredients"
+        android:onClick="toIngredients"
         android:text="Ingredients"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -123,10 +156,11 @@
         android:id="@+id/apiCall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="StartApiCall"
+        android:onClick="startApiCall"
         android:text="API Call"
         app:layout_constraintBottom_toTopOf="@+id/MainNavAreaBtn"
-        app:layout_constraintTop_toBottomOf="@+id/ingredients"
-        tools:layout_editor_absoluteX="127dp" />
--->
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+         />
+
 </RelativeLayout>
