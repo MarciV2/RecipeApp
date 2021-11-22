@@ -2,14 +2,20 @@ package com.dhbw.informatik.recipeapp.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.dhbw.informatik.recipeapp.CategoriesFragment;
+import com.dhbw.informatik.recipeapp.FavoritesFragment;
+import com.dhbw.informatik.recipeapp.HomeFragment;
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.RecipeAPIService;
 import com.dhbw.informatik.recipeapp.SelectArea;
@@ -17,6 +23,7 @@ import com.dhbw.informatik.recipeapp.SelectCategory;
 import com.dhbw.informatik.recipeapp.SelectMainIngredient;
 import com.dhbw.informatik.recipeapp.model.lists.MealCategoriesList;
 import com.dhbw.informatik.recipeapp.model.lists.MealList;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -35,15 +42,47 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
     static public RecipeAPIService apiService = null;
+    BottomNavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        navigationView = findViewById(R.id.bottom_navigation);
+        navigationView.setSelectedItemId(R.id.bottom_nav_home);
+
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+
+        bottomNav.setOnNavigationItemSelectedListener(navListener);
+
         initRetrofit();
 
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    Fragment selectedFragment = null;
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+                    switch(item.getItemId()){
+                        case R.id.bottom_nav_home:
+                            ft.replace(R.id.fragment_container, new HomeFragment()).commit();
+                            break;
+                        case R.id.bottom_nav_categories:
+                            ft.replace(R.id.fragment_container, new CategoriesFragment()).commit();
+                            break;
+                        case R.id.bottom_nav_favorites:
+                            ft.replace(R.id.fragment_container, new FavoritesFragment()).commit();
+                            break;
+                    }
+
+
+                    return true;
+                }
+            };
 
     /**
      * Created by Marcel Vidmar
@@ -115,13 +154,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-    }
-
-
-    private void ShowText(String msg){
-        AlertDialog.Builder a = new AlertDialog.Builder(this);
-        a.setTitle("Delete entry")
-                .setMessage(msg);
     }
 
     public void ToCategories(View v){

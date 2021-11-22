@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RecipeApp">
         <activity
+            android:name=".MainNav"
+            android:exported="false"
+            android:label="@string/title_activity_main_nav" />
+        <activity
             android:name=".ApiTest"
             android:exported="false" />
         <activity
