@@ -1,5 +1,6 @@
 package com.dhbw.informatik.recipeapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.dhbw.informatik.recipeapp.activity.CreateOwnRecipeActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,7 +61,35 @@ public class CategoriesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_categories, container, false);
+        View root = inflater.inflate(R.layout.fragment_categories, container, false);
+
+        root.findViewById(R.id.toMainIngredients).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i= new Intent(getActivity(), SelectMainIngredient.class);
+                startActivity(i);
+            }
+        });
+
+        root.findViewById(R.id.toCategories).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i= new Intent(getActivity(), SelectCategory.class);
+                startActivity(i);
+            }
+        });
+
+        root.findViewById(R.id.toCountries).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i= new Intent(getActivity(), SelectArea.class);
+                startActivity(i);
+            }
+        });
+
+        return root;
     }
 }

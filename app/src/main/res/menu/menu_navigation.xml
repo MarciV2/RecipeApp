@@ -16,4 +16,9 @@
         android:title="Favorites"
         android:icon="@drawable/ic_favorites"/>
 
+    <item
+        android:id="@+id/bottom_nav_api_test"
+        android:title="Api Test"
+        android:icon="@drawable/ic_debug"/>
+
 </menu>

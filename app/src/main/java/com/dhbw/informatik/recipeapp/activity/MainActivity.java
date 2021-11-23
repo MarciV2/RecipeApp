@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.dhbw.informatik.recipeapp.ApiTestFragment;
 import com.dhbw.informatik.recipeapp.CategoriesFragment;
 import com.dhbw.informatik.recipeapp.FavoritesFragment;
 import com.dhbw.informatik.recipeapp.HomeFragment;
@@ -68,17 +69,17 @@ public class MainActivity extends AppCompatActivity {
         String strFavorites=load("favourites.json");
         if(strFavorites!=null) favourites=new Gson().fromJson(strFavorites,MealList.class);
 
+        getSupportActionBar().hide();
 
-        MainActivity self=this;
+
+        /*MainActivity self=this;
         findViewById(R.id.btnCreateOwn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i= new Intent(self,CreateOwnRecipeActivity.class);
                 startActivity(i);
             }
-        });
-
-
+        });*/
 
     }
     @Override
@@ -106,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.bottom_nav_favorites:
                             ft.replace(R.id.fragment_container, new FavoritesFragment()).commit();
                             break;
+                        case R.id.bottom_nav_api_test:
+                            ft.replace(R.id.fragment_container, new ApiTestFragment()).commit();
                     }
 
 
@@ -228,20 +231,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(videourl)));
         Log.i("Video", "Video Playing....");
     }
-    public void toCategories(View v){
-        Intent i = new Intent(this, SelectCategory.class);
-        startActivity(i);
-    }
-
-    public void toAreas(View v){
-        Intent i = new Intent(this, SelectArea.class);
-        startActivity(i);
-    }
-
-    public void toIngredients(View v){
-        Intent i = new Intent(this, SelectMainIngredient.class);
-        startActivity(i);
-    }
 
 
     private void showToast(){
@@ -266,22 +255,6 @@ public class MainActivity extends AppCompatActivity {
         a.setTitle("Delete entry")
                 .setMessage(msg);
     }
-
-    public void ToCategories(View v){
-        Intent i = new Intent(this, SelectCategory.class);
-        startActivity(i);
-    }
-
-    public void ToAreas(View v){
-        Intent i = new Intent(this, SelectArea.class);
-        startActivity(i);
-    }
-
-    public void ToIngredients(View v){
-        Intent i = new Intent(this, SelectMainIngredient.class);
-        startActivity(i);
-    }
-
 
 
     /**

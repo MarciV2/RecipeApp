@@ -5,13 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:id="@+id/body_container"
+
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fragment_container"/>
+        android:layout_margin="20dp"
+        android:id="@+id/fragment_container">
+
+    </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -19,7 +23,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:elevation="2dp"
-        android:layout_margin="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/round_corners"
         app:itemTextColor="@drawable/selector"
         app:menu="@menu/menu_navigation"
@@ -97,8 +103,7 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:itemCount="5"
         tools:listitem="@layout/recycler_view_item_1" />-->
-
-
+<!--
     <Button
         android:id="@+id/youtube"
         android:layout_width="wrap_content"
@@ -121,38 +126,6 @@
         />
 
     <Button
-        android:id="@+id/MainNavCatBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Categories"
-        android:onClick="toCategories"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnCreateOwn"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <Button
-        android:id="@+id/MainNavAreaBtn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:onClick="toAreas"
-        android:text="Areas"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/MainNavIngredientsBtn"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/MainNavCatBtn"
-        />
-
-    <Button
-        android:id="@+id/MainNavIngredientsBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="toIngredients"
-        android:text="Ingredients"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
         android:id="@+id/apiCall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -161,6 +134,6 @@
         app:layout_constraintBottom_toTopOf="@+id/MainNavAreaBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-         />
+         />-->
 
 </RelativeLayout>
