@@ -24,7 +24,7 @@
     <string name="create_own_recipe">Create own Recipe</string>
     <string name="create_recipe">Create Recipe</string>
     <string name="ingredient">Ingredient</string>
-    <string name="measurement">Measurement</string>
+    <string name="measurement">Amount</string>
     <string name="add_ingredient">Add Ingredient</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"

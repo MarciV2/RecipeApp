@@ -77,6 +77,8 @@ public class ORIEadapter extends RecyclerView.Adapter<ORIEadapter.ORIEViewHolder
                         @Override
                         public void onClick(View view) {
                             createOwnRecipeActivity.addIngredient();
+                            RecyclerView rv= createOwnRecipeActivity.findViewById(R.id.rvIngredients);
+                            rv.scrollToPosition(rv.getAdapter().getItemCount()-1);
                         }
                     }
             );
