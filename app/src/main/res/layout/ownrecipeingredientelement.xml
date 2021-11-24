@@ -19,6 +19,8 @@ Element je Zutat mit name der Zutat als AutoComplete und menge (für neue rezept
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/etMeasurement"
+        android:maxLines="1"
+        android:inputType="text"
         />
 
 
@@ -30,7 +32,9 @@ Element je Zutat mit name der Zutat als AutoComplete und menge (für neue rezept
         app:layout_constraintWidth_percent=".45"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/actvIngredient"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:maxLines="1"
+        android:inputType="text"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

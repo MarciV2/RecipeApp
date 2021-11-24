@@ -26,12 +26,26 @@ Umsetzung der Zutaten mittels dynamischem RecyclerView
       app:layout_constraintTop_toTopOf="parent" />
 
 
+  <EditText
+      android:id="@+id/etTitle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/tvTitle"
+      android:layout_marginHorizontal="32dp"
+      android:hint="Title"
+      android:gravity="center"
+      android:maxLines="1"
+      android:inputType="text"/>
+
+
   <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/rvIngredients"
       android:layout_width="0dp"
       android:layout_height="0dp"
     android:layout_margin="16dp"
-      app:layout_constraintTop_toBottomOf="@id/tvTitle"
+      app:layout_constraintTop_toBottomOf="@id/etTitle"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintEnd_toStartOf="@id/ivThumbnail"
       app:layout_constraintBottom_toTopOf="@id/actvCategory">
@@ -58,7 +72,9 @@ Umsetzung der Zutaten mittels dynamischem RecyclerView
       app:layout_constraintStart_toStartOf="@id/rvIngredients"
       app:layout_constraintBottom_toTopOf="@id/etInstructions"
       app:layout_constraintEnd_toStartOf="@id/actvArea"
-    android:hint="Category"/>
+    android:hint="Category"
+      android:maxLines="1"
+      android:inputType="text"/>
 
   <AutoCompleteTextView
       android:id="@+id/actvArea"
@@ -69,7 +85,9 @@ Umsetzung der Zutaten mittels dynamischem RecyclerView
       app:layout_constraintBottom_toBottomOf="@id/actvCategory"
       app:layout_constraintEnd_toEndOf="parent"
       android:hint="Area"
-      android:layout_marginHorizontal="16dp"/>
+      android:layout_marginHorizontal="16dp"
+      android:maxLines="1"
+      android:inputType="text"/>
 
 
   <EditText
