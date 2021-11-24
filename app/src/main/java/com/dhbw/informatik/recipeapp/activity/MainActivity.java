@@ -18,6 +18,7 @@ import com.dhbw.informatik.recipeapp.ApiTestFragment;
 import com.dhbw.informatik.recipeapp.CategoriesFragment;
 import com.dhbw.informatik.recipeapp.FavoritesFragment;
 import com.dhbw.informatik.recipeapp.HomeFragment;
+import com.dhbw.informatik.recipeapp.MealFragment;
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.RecipeAPIService;
 import com.dhbw.informatik.recipeapp.SelectArea;
@@ -80,6 +81,24 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });*/
+
+        findViewById(R.id.toMeal).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MealFragment frag = new MealFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, frag, "findThisFragment")
+                        .addToBackStack(null)
+                        .commit();
+
+                /*
+                android.app.Fragment selectedFragment = null;
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+
+                ft.replace(R.id.fragment_container, new MealFragment()).commit();*/
+
+            }
+        });
 
     }
     @Override
