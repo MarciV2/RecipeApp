@@ -69,11 +69,7 @@ public class HomeFragment extends Fragment {
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("test","AAAAAAAAAAAAAAAAAAAAA");
-    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,18 +82,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        SearchView searchView = (SearchView) getActivity().findViewById(R.id.search_box);
-
-        //Turn iconified to false:
-        //searchView.setIconified(false);
-        //The above line will expand it to fit the area as well as throw up the keyboard
-
-        //To remove the keyboard, but make sure you keep the expanded version:
-
-
-        //searchView.requestFocus(); Wäre die richtige Funktion
-
 
 
     }
