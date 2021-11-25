@@ -35,44 +35,21 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * A simple {@link Fragment} subclass.
- *
- */
 public class ApiTestFragment extends Fragment {
 
+    private MainActivity mainActivity;
 
-    static public RecipeAPIService apiService = null;
     BottomNavigationView navigationView;
-    static public MealList favourites;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public ApiTestFragment() {
-        // Required empty public constructor
+    public ApiTestFragment(MainActivity mainActivity) {
+        this.mainActivity=mainActivity;
     }
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-
-        initRetrofit();
-
-        String strFavorites = load("favourites.json");
-        if(strFavorites!=null) favourites=new Gson().fromJson(strFavorites,MealList.class);
 
     }
 
@@ -85,12 +62,33 @@ public class ApiTestFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i= new Intent(getActivity(), CreateOwnRecipeActivity.class);
-                startActivity(i);
+                startActivityForResult(i,1);
             }
         });
-
         return root;
     }
+
+    /**
+     * CREATED BY Marcel Vidmar
+     * Callback, für wenn die CreateOwnRecipeActivity fertig ist und ein rezept liefert
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==1)
+        {
+            Meal m= (Meal) data.getSerializableExtra("meal");
+            if(m!=null) {
+                mainActivity.ownRecipes.getMeals().add(m);
+            mainActivity.saveFiles();
+            }
+        }
+    }
+
 
 
     /**
@@ -100,7 +98,7 @@ public class ApiTestFragment extends Fragment {
      */
     public void randomVid(View v)
     {
-        Call<MealList> call = apiService.getRandomRecipe();
+        Call<MealList> call = mainActivity.apiService.getRandomRecipe();
         call.enqueue(new Callback<MealList>() {
             @Override
             public void onResponse(@NonNull Call<MealList> call, @NonNull Response<MealList> response) {
@@ -123,53 +121,6 @@ public class ApiTestFragment extends Fragment {
 
             }
         });
-    }
-
-
-    /**
-     * Created by Marcel Vidmar
-     * initialisiert den globalen API-Service, soll nur durch onCreate aufgerufen werden!
-     */
-    private void initRetrofit() {
-        //API-Retrofit initialisieren
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://www.themealdb.com/api/json/v1/1/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        apiService = retrofit.create(RecipeAPIService.class);
-    }
-
-    /**
-     * Erstellt von Johannes Fahr
-     * @param fileName Dateiname der Datei zum richtigen Aufrufen
-     * @return Gibt den Inhalt der Datei als String zurück
-     */
-    public String load(String fileName)
-    {
-        /* Achtung: bei manchen Importen musste die importierte Methode von der Activity
-        ausgeführt werden, siehe https://stackoverflow.com/a/28306933
-         */
-
-        FileInputStream fis = null;
-        try {
-            fis = getActivity().openFileInput(fileName);
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader br= new BufferedReader(isr);
-            StringBuilder sb = new StringBuilder();
-            String text;
-
-            while((text = br.readLine())!=null){
-                sb.append(text);
-            }
-            Log.d("TAG", "Read:"+sb.toString() +" from " + getActivity().getFilesDir() + "/" + fileName);
-
-            return sb.toString();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
 
