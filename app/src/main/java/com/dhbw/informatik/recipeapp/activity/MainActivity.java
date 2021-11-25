@@ -44,10 +44,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
+     public final String FILENAME_OWN_RECIPES="ownRecipes.json";
+     public final String FILENAME_FAVOURITES="favourites.json";
+
+
     static public RecipeAPIService apiService = null;
     BottomNavigationView navigationView;
-    static public MealList favourites;
+    public MealList favourites;
+    public MealList ownRecipes;
 
+
+    private MainActivity self=this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +70,13 @@ public class MainActivity extends AppCompatActivity {
 
         initRetrofit();
 
-        String strFavorites=load("favourites.json");
-        if(strFavorites!=null) favourites=new Gson().fromJson(strFavorites,MealList.class);
+        //Favouriten und eigene Rezepte laden
+        favourites=new Gson().fromJson(load(FILENAME_FAVOURITES),MealList.class);
+        ownRecipes=new Gson().fromJson(load(FILENAME_OWN_RECIPES),MealList.class);
+
+        if(favourites==null) favourites=new MealList();
+        if(ownRecipes==null) ownRecipes=new MealList();
+
 
         getSupportActionBar().hide();
 
@@ -81,32 +93,40 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
-//        findViewById(R.id.toMeal).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                MealFragment frag = new MealFragment();
-//                getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.fragment_container, frag, "findThisFragment")
-//                        .addToBackStack(null)
-//                        .commit();
-//
-//                /*
-//                android.app.Fragment selectedFragment = null;
-//                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-//
-//                ft.replace(R.id.fragment_container, new MealFragment()).commit();*/
-//
-//            }
-//        });
+       /* findViewById(R.id.toMeal).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MealFragment frag = new MealFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, frag, "findThisFragment")
+                        .addToBackStack(null)
+                        .commit();
+
+                *//*
+                android.app.Fragment selectedFragment = null;
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+
+                ft.replace(R.id.fragment_container, new MealFragment()).commit();*//*
+
+            }
+        });*/
 
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
-        save(new Gson().toJson(favourites),"favourites.json");
-        Log.d("test","Favourites saved");
+       saveFiles();
+
     }
+
+    public void saveFiles(){
+        save(new Gson().toJson(favourites),FILENAME_FAVOURITES);
+        Log.d("test","Favourites saved");
+        save(new Gson().toJson(ownRecipes),FILENAME_OWN_RECIPES);
+        Log.d("test","Own Recipes saved");
+    }
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -126,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                             ft.replace(R.id.fragment_container, new FavoritesFragment()).commit();
                             break;
                         case R.id.bottom_nav_api_test:
-                            ft.replace(R.id.fragment_container, new ApiTestFragment()).commit();
+                            ft.replace(R.id.fragment_container, new ApiTestFragment(self)).commit();
                     }
 
 
@@ -274,7 +294,6 @@ public class MainActivity extends AppCompatActivity {
                 .setMessage(msg);
     }
 
-
     /**
      * Erstellt von Johannes Fahr
      * @param jsonString Jsonstring aus Abfrage welcher gespeichert werden soll
@@ -330,6 +349,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return null;
     }
+
 
 
 }

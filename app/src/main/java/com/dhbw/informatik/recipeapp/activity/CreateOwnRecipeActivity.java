@@ -4,20 +4,25 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.dhbw.informatik.recipeapp.ORIEadapter;
 import com.dhbw.informatik.recipeapp.R;
+import com.dhbw.informatik.recipeapp.model.Meal;
 import com.dhbw.informatik.recipeapp.model.MealArea;
 import com.dhbw.informatik.recipeapp.model.MealCategory;
 import com.dhbw.informatik.recipeapp.model.MealIngredient;
@@ -42,7 +47,7 @@ import retrofit2.Response;
  */
 public class CreateOwnRecipeActivity extends AppCompatActivity {
 
-    public static final int PICK_IMAGE = 1;
+    private Meal meal;
 
     private RecyclerView recyclerView;
     private List<OwnRecipeIngredientElement> ingredients;
@@ -55,10 +60,12 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_own_recipe);
+
 
         initThumbGetter();
 
@@ -83,7 +90,63 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
                 getThumb.launch("image/*");
             }
         });
+
+
+        //ClickListener für erstellen button
+        findViewById(R.id.btnCreate).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText etTitle=findViewById(R.id.etTitle);
+                AutoCompleteTextView actvCategory=findViewById(R.id.actvCategory);
+                AutoCompleteTextView actvArea=findViewById(R.id.actvArea);
+                EditText etInstructions=findViewById(R.id.etInstructions);
+                ImageView ivThumb=findViewById(R.id.ivThumbnail);
+
+                String title=etTitle.getText().toString();
+                String category= actvCategory.getText().toString();
+                String area=actvArea.getText().toString();
+                String instructions=etInstructions.getText().toString();
+                String thumbnail = null;
+                if(ivThumb.getTag()!=null) thumbnail=ivThumb.getTag().toString();
+
+
+
+                //prüfen, dass notwendige felder befüllt wurden
+                //notwendig: titel, kategorie, instructions und mind. 1 zutat
+                //optional: area, thumbnail
+                if(!title.isEmpty()
+                    && ingredients.size()>0
+                    && !instructions.isEmpty()
+                    && !category.isEmpty()
+                ){
+                    meal=new Meal();
+                    meal.setStrMeal(title);
+                    meal.setStrCategory(category);
+                    meal.setStrInstructions(instructions);
+                    if(!area.isEmpty()) meal.setStrArea(area);
+                    meal.setStrMealThumb(thumbnail);
+                    ArrayList<String> ingredientsList=new ArrayList<>();
+                    ArrayList<String> measuresList=new ArrayList<>();
+
+                    for(OwnRecipeIngredientElement orie : ingredients){
+                        ingredientsList.add(orie.getIngredient());
+                        measuresList.add(orie.getMeasurement());
+                    }
+                    meal.setIngredients(ingredientsList.toArray(new String[0]));
+                    meal.setMeasures(measuresList.toArray(new String[0]));
+
+                    Intent intent=new Intent();
+                    intent.putExtra("meal",meal);
+                    setResult(1,intent);
+                    finish();//finishing activity
+                }
+
+
+            }
+        });
+
     }
+
 
     /**
      * Initialisiert den Handler, der die Auswahlprozedur des thumbnails übernimmt
@@ -103,6 +166,7 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
                         Log.d("tag", "Bild wurde gefunden: " + uri);
                         ImageView ivThumb = findViewById(R.id.ivThumbnail);
                         ivThumb.setImageURI(uri);
+                        ivThumb.setTag(uri);
 
 
                     }
