@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MealListView">
+        <attr name="mealName" format="string" />
+        <attr name="ingredients" format="string" />
+        <attr name="thumbSrc" format="string"/>
+        <attr name="area" format="string"/>
+        <attr name="category" format="string"/>
+        <attr name="entireText" format="string" />
+    </declare-styleable>
+</resources>
