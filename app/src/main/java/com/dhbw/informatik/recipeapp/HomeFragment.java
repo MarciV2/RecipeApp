@@ -1,13 +1,23 @@
 package com.dhbw.informatik.recipeapp;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.SearchView;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +37,7 @@ public class HomeFragment extends Fragment {
 
     public HomeFragment() {
         // Required empty public constructor
+
     }
 
     /**
@@ -55,6 +66,13 @@ public class HomeFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("test","AAAAAAAAAAAAAAAAAAAAA");
     }
 
     @Override
@@ -62,5 +80,26 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
+
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        SearchView searchView = (SearchView) getActivity().findViewById(R.id.search_box);
+
+        //Turn iconified to false:
+        //searchView.setIconified(false);
+        //The above line will expand it to fit the area as well as throw up the keyboard
+
+        //To remove the keyboard, but make sure you keep the expanded version:
+
+
+        //searchView.requestFocus(); Wäre die richtige Funktion
+
+
+
+    }
+
 }
