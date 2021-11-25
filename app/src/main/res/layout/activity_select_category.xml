@@ -4,31 +4,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SelectCategory">
+    tools:context=".SelectMainIngredient">
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
+        android:id="@+id/title_image"
+        android:layout_width="0dp"
         android:layout_height="300px"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+        app:srcCompat="@mipmap/ic_sample_categories_foreground" />
+
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/separator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Categories"
+        android:layout_marginLeft="10dp"
+        android:text="___________________________"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_image" />
+
+    <TextView
+        android:id="@+id/title_label_main_ingredient"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Select a category"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        tools:layout_editor_absoluteX="1dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/separator" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="409dp"
-        android:layout_height="570dp"
-        tools:itemCount="7"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="160dp"
-        tools:listitem="@layout/recycler_view_item" />
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_label_main_ingredient" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

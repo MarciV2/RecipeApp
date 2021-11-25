@@ -11,10 +11,11 @@
         android:id="@+id/search_box"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:backgroundTint="@color/light_grey"
         android:background="@drawable/rounded_corners2"
-        app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="@color/light_grey"
+        android:queryHint="Search for a Meal, Ingredients, Categories..."
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CategoriesFragment">
+    tools:context=".SelectFilterFragment">
 
 
         <TextView
@@ -19,7 +19,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-        <!--<TableLayout
+        <TableLayout
         android:id="@+id/tiles"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -36,16 +36,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     >
+
                         <Button
                             android:id="@+id/toMainIngredients"
-                            android:background="@drawable/small_rounded_borders"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:background="@drawable/categories_corners"
+                            android:backgroundTint="@color/dark_grey"
                             android:drawableTop="@drawable/ic_store_big"
                             android:padding="20dp"
-                            android:text="Ingredients"
 
-                            />
+                            android:text="Ingredients" />
                 </TableRow>
 
                 <TableRow
@@ -54,13 +56,14 @@
 
                         <Button
                             android:id="@+id/toCategories"
-                            android:background="@drawable/small_rounded_borders"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:background="@drawable/categories_corners"
+                            android:backgroundTint="@color/light_grey"
                             android:drawableTop="@drawable/ic_categories_big"
                             android:padding="20dp"
                             android:text="Category"
-
                             />
                 </TableRow>
 
@@ -70,7 +73,9 @@
 
                         <Button
                             android:id="@+id/toCountries"
-                            android:background="@drawable/small_rounded_borders"
+                            android:background="@drawable/categories_corners"
+                            android:backgroundTint="@color/light_grey"
+                            android:layout_marginTop="30dp"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:drawableTop="@drawable/ic_map_pin_big"
@@ -79,10 +84,10 @@
                             />
                 </TableRow>
 
-        </TableLayout>-->
+        </TableLayout>
 
 
-        <androidx.recyclerview.widget.RecyclerView
+        <!--<androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewCategories"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -93,7 +98,7 @@
             app:layout_constraintTop_toBottomOf="@id/title_label"
             tools:itemCount="3"
             tools:listitem="@layout/recycler_view_item_4"
-            />
+            />-->
         <!-- diese View ist eigentlich nur dazu da, die drei Filtermöglichkeiten Kategorie,
         Gebiet/Region und Hauptzutat anzuzeigen -->
 

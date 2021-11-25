@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.dhbw.informatik.recipeapp.ApiTestFragment;
-import com.dhbw.informatik.recipeapp.CategoriesFragment;
+import com.dhbw.informatik.recipeapp.SelectFilterFragment;
 import com.dhbw.informatik.recipeapp.FavoritesFragment;
 import com.dhbw.informatik.recipeapp.HomeFragment;
 import com.dhbw.informatik.recipeapp.R;
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
                             ft.replace(R.id.fragment_container, new HomeFragment()).commit();
                             break;
                         case R.id.bottom_nav_categories:
-                            ft.replace(R.id.fragment_container, new CategoriesFragment()).commit();
+                            ft.replace(R.id.fragment_container, new SelectFilterFragment()).commit();
                             break;
                         case R.id.bottom_nav_favorites:
                             ft.replace(R.id.fragment_container, new FavoritesFragment()).commit();
