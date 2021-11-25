@@ -18,12 +18,8 @@ import com.dhbw.informatik.recipeapp.ApiTestFragment;
 import com.dhbw.informatik.recipeapp.CategoriesFragment;
 import com.dhbw.informatik.recipeapp.FavoritesFragment;
 import com.dhbw.informatik.recipeapp.HomeFragment;
-import com.dhbw.informatik.recipeapp.MealFragment;
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.RecipeAPIService;
-import com.dhbw.informatik.recipeapp.SelectArea;
-import com.dhbw.informatik.recipeapp.SelectCategory;
-import com.dhbw.informatik.recipeapp.SelectMainIngredient;
 import com.dhbw.informatik.recipeapp.model.Meal;
 import com.dhbw.informatik.recipeapp.model.lists.MealCategoriesList;
 import com.dhbw.informatik.recipeapp.model.lists.MealList;
@@ -72,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+         ft.replace(R.id.fragment_container, new HomeFragment()).commit();
+         // inititate a search view
 
         /*MainActivity self=this;
         findViewById(R.id.btnCreateOwn).setOnClickListener(new View.OnClickListener() {
@@ -82,23 +81,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
-        findViewById(R.id.toMeal).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MealFragment frag = new MealFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, frag, "findThisFragment")
-                        .addToBackStack(null)
-                        .commit();
-
-                /*
-                android.app.Fragment selectedFragment = null;
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-
-                ft.replace(R.id.fragment_container, new MealFragment()).commit();*/
-
-            }
-        });
+//        findViewById(R.id.toMeal).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                MealFragment frag = new MealFragment();
+//                getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.fragment_container, frag, "findThisFragment")
+//                        .addToBackStack(null)
+//                        .commit();
+//
+//                /*
+//                android.app.Fragment selectedFragment = null;
+//                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+//
+//                ft.replace(R.id.fragment_container, new MealFragment()).commit();*/
+//
+//            }
+//        });
 
     }
     @Override
