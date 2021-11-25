@@ -156,8 +156,8 @@ public class Meal implements Serializable {
 
 
 
-    private String[] ingredients;
-    private String[] measures;
+    private transient String[] ingredients;
+    private transient String[] measures;
 
 
 
