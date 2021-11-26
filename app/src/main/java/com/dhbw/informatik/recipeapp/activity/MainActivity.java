@@ -4,14 +4,21 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.Notification;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.dhbw.informatik.recipeapp.ApiTestFragment;
@@ -26,6 +33,8 @@ import com.dhbw.informatik.recipeapp.model.lists.MealList;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -41,12 +50,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Path;
 
 public class MainActivity extends AppCompatActivity {
 
      public final String FILENAME_OWN_RECIPES="ownRecipes.json";
      public final String FILENAME_FAVOURITES="favourites.json";
-
+    public int fragment=0;
+    public String query=null;
 
     static public RecipeAPIService apiService = null;
     BottomNavigationView navigationView;
@@ -55,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private MainActivity self=this;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,18 +83,19 @@ public class MainActivity extends AppCompatActivity {
         initRetrofit();
 
         //Favouriten und eigene Rezepte laden
-        favourites=new Gson().fromJson(load(FILENAME_FAVOURITES),MealList.class);
-        ownRecipes=new Gson().fromJson(load(FILENAME_OWN_RECIPES),MealList.class);
+        favourites = new Gson().fromJson(load(FILENAME_FAVOURITES), MealList.class);
+        ownRecipes = new Gson().fromJson(load(FILENAME_OWN_RECIPES), MealList.class);
 
-        if(favourites==null) favourites=new MealList();
-        if(ownRecipes==null) ownRecipes=new MealList();
+        if (favourites == null) favourites = new MealList();
+        if (ownRecipes == null) ownRecipes = new MealList();
 
 
         getSupportActionBar().hide();
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-         ft.replace(R.id.fragment_container, new HomeFragment()).commit();
-         // inititate a search view
+        ft.replace(R.id.fragment_container, new HomeFragment()).commit();
+
+        // inititate a search view
 
         /*MainActivity self=this;
         findViewById(R.id.btnCreateOwn).setOnClickListener(new View.OnClickListener() {
@@ -111,7 +124,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
+//
     }
+
+
+
+
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        Log.d("TAG", "Touch");
+
+        if(fragment==0) {
+            SearchView sV = findViewById(R.id.search_box);
+            sV.clearFocus(); }
+            return super.onTouchEvent(event);
+
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -138,15 +168,20 @@ public class MainActivity extends AppCompatActivity {
                     switch(item.getItemId()){
                         case R.id.bottom_nav_home:
                             ft.replace(R.id.fragment_container, new HomeFragment()).commit();
+                            fragment=0;
                             break;
                         case R.id.bottom_nav_categories:
                             ft.replace(R.id.fragment_container, new CategoriesFragment()).commit();
+                            fragment=1;
                             break;
                         case R.id.bottom_nav_favorites:
                             ft.replace(R.id.fragment_container, new FavoritesFragment()).commit();
+                            fragment=2;
                             break;
                         case R.id.bottom_nav_api_test:
                             ft.replace(R.id.fragment_container, new ApiTestFragment(self)).commit();
+                            fragment=3;
+                            break;
                     }
 
 
@@ -259,6 +294,65 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    public void clickSearch(View v)
+    {
+        Log.d("TAG", "Searchview clicked");
+        SearchView sV = findViewById(R.id.search_box);
+        query=sV.getQuery().toString();
+        Log.d("TAG","Eingegeben:"+ query);
+
+        Call<MealList> call = apiService.searchRecipeByName(query);
+        call.enqueue(new Callback<MealList>() {
+            @Override
+            public void onResponse(Call<MealList> call, Response<MealList> response) {
+                //TODO etwas mit den daten anfangen, hier nur beispielsweise in die konsole gehauen...
+                //Abfangen/Ausgeben Fehlercode Bsp. 404
+                if (!response.isSuccessful()) {
+                    Log.d("ERROR", "Code: " + response.code());
+
+                    return;
+                }
+
+                try{
+                    List<Meal> list=response.body().getMeals();
+                    Log.d("Arraygröße", String.valueOf(list.size()));
+                    for(int i=0;i<list.size();i++)
+                    {
+                        list.get(i).fillArrays();
+
+                    }
+
+                    Log.d("TAG", new Gson().toJson(list));
+
+                }
+                catch(NullPointerException n1)
+                {
+                    Snackbar snackbar = Snackbar
+                            .make(findViewById(R.id.body_container), "No entrys found", Snackbar.LENGTH_LONG).setAction("X", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+
+                                }
+                            });
+
+                    snackbar.show();
+                    Log.d("TAG", "No entrys found");
+
+                }
+
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<MealList> call, Throwable t) {
+                Log.d("TAG", "error: " + t.toString());
+            }
+        });
+    }
+
     /**
      * Erstellt von Johannes Fahr
      * Ermöglicht den Aufruf von Links die innerhalb des JSON ausgelesen werden und als Parameter weitergegeben werden.
@@ -271,13 +365,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void showToast(){
-        showToast("Fallback text");
-    }
-
-    private void showToast(String msg){
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-    }
+//    private void showToast(){
+//        showToast("Fallback text");
+//    }
+//
+//    private void showToast(String msg){
+//        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+//
+//    }
 
 
 

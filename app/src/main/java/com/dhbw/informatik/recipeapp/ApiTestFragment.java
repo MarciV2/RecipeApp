@@ -89,49 +89,4 @@ public class ApiTestFragment extends Fragment {
         }
     }
 
-
-
-    /**
-     * Erstellt von Johannes Fahr
-     * Wählt ein zufälliges Gericht aus und öffnet das Zubereitungsvideo
-     * @param v
-     */
-    public void randomVid(View v)
-    {
-        Call<MealList> call = mainActivity.apiService.getRandomRecipe();
-        call.enqueue(new Callback<MealList>() {
-            @Override
-            public void onResponse(@NonNull Call<MealList> call, @NonNull Response<MealList> response) {
-
-                //Abfangen/Ausgeben Fehlercode Bsp. 404
-                if (!response.isSuccessful()) {
-                    Log.d("ERROR", "Code: " + response.code());
-                    return;
-                }
-                List<Meal> list=response.body().getMeals();
-                list.get(0).fillArrays();
-
-                playVid(list.get(0).getStrYoutube());
-                Log.d("TAG", new Gson().toJson(list));
-
-            }
-
-            @Override
-            public void onFailure(Call<MealList> call, Throwable t) {
-
-            }
-        });
-    }
-
-
-    /**
-     * Erstellt von Johannes Fahr
-     * Ermöglicht den Aufruf von Links die innerhalb des JSON ausgelesen werden und als Parameter weitergegeben werden.
-     * @param videourl Die Url die aufgerufen werden soll
-     */
-    public void playVid(String videourl)
-    {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(videourl)));
-        Log.i("Video", "Video Playing....");
-    }
 }

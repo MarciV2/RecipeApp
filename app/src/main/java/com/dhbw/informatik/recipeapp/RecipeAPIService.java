@@ -8,11 +8,12 @@ import com.dhbw.informatik.recipeapp.model.lists.MealList;
 import retrofit2.*;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface RecipeAPIService {
 
-    @GET("search.php?s={name}")
-    Call<MealList> searchRecipeByName(@Path("name") String name);
+    @GET("search.php")
+    Call<MealList> searchRecipeByName(@Query("s") String recipeName);
 
     @GET("random.php")
     Call<MealList> getRandomRecipe();
@@ -29,12 +30,12 @@ public interface RecipeAPIService {
     @GET("list.php?i=list")
     Call<MealIngredientList> getAllIngredients();
 
-    @GET("filter.php?i={ingredient}")
-    Call<MealList> filterByMainIngredient(@Path("ingredient") String ingredient);
+    @GET("filter.php")
+    Call<MealList> filterByMainIngredient(@Query("i") String ingredient);
 
-    @GET("filter.php?c={category}")
-    Call<MealList> filterByCategory(@Path("category") String category);
+    @GET("filter.php")
+    Call<MealList> filterByCategory(@Query("c") String category);
 
-    @GET("filter.php?c={area}")
-    Call<MealList> filterByArea(@Path("area") String area);
+    @GET("filter.php")
+    Call<MealList> filterByArea(@Query("a") String area);
 }
