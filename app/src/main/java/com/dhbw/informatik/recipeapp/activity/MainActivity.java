@@ -22,7 +22,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.dhbw.informatik.recipeapp.ApiTestFragment;
-import com.dhbw.informatik.recipeapp.CategoriesFragment;
+import com.dhbw.informatik.recipeapp.SelectFilterFragment;
 import com.dhbw.informatik.recipeapp.FavoritesFragment;
 import com.dhbw.informatik.recipeapp.HomeFragment;
 import com.dhbw.informatik.recipeapp.R;
@@ -124,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
-//
     }
 
 
@@ -171,8 +170,9 @@ public class MainActivity extends AppCompatActivity {
                             fragment=0;
                             break;
                         case R.id.bottom_nav_categories:
-                            ft.replace(R.id.fragment_container, new CategoriesFragment()).commit();
+
                             fragment=1;
+                            ft.replace(R.id.fragment_container, new SelectFilterFragment()).commit();
                             break;
                         case R.id.bottom_nav_favorites:
                             ft.replace(R.id.fragment_container, new FavoritesFragment()).commit();
@@ -365,14 +365,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-//    private void showToast(){
-//        showToast("Fallback text");
-//    }
-//
-//    private void showToast(String msg){
-//        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-//
-//    }
+    private void showToast(){
+        showToast("Fallback text");
+    }
+
+    private void showToast(String msg){
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
 
 
 

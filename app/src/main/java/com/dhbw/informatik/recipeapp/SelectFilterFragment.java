@@ -9,14 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.dhbw.informatik.recipeapp.activity.CreateOwnRecipeActivity;
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CategoriesFragment#newInstance} factory method to
+ * Use the {@link SelectFilterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CategoriesFragment extends Fragment {
+public class SelectFilterFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,7 +25,7 @@ public class CategoriesFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public CategoriesFragment() {
+    public SelectFilterFragment() {
         // Required empty public constructor
     }
 
@@ -40,8 +38,8 @@ public class CategoriesFragment extends Fragment {
      * @return A new instance of fragment CategoriesFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CategoriesFragment newInstance(String param1, String param2) {
-        CategoriesFragment fragment = new CategoriesFragment();
+    public static SelectFilterFragment newInstance(String param1, String param2) {
+        SelectFilterFragment fragment = new SelectFilterFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -64,7 +62,7 @@ public class CategoriesFragment extends Fragment {
 
 
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_categories, container, false);
+        View root = inflater.inflate(R.layout.fragment_filters, container, false);
 
         root.findViewById(R.id.toMainIngredients).setOnClickListener(new View.OnClickListener() {
             @Override
