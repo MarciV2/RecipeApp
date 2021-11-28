@@ -11,10 +11,10 @@
 
     <color name="white">#FFFFFFFF</color>
 
-    <color name="primary">#0000FF</color>
-    <color name="primaryDark">#0000FF</color>
-    <color name="secondary">#FF00FF</color>
-    <color name="secondaryDark">#FF00FF</color>
+    <color name="primary">#056c29</color>
+    <color name="primaryDark">#045520</color>
+    <color name="secondary">#8DBA59</color>
+    <color name="secondaryDark">#62813D</color>
 
     <color name="bottom_nav_unchecked">#DDDDDD</color>
 </resources>

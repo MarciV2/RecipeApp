@@ -9,6 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dhbw.informatik.recipeapp.activity.SelectAreaActivity;
+import com.dhbw.informatik.recipeapp.activity.SelectCategoryActivity;
+import com.dhbw.informatik.recipeapp.activity.SelectMainIngredientActivity;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link SelectFilterFragment#newInstance} factory method to
@@ -67,7 +71,7 @@ public class SelectFilterFragment extends Fragment {
         root.findViewById(R.id.toMainIngredients).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i= new Intent(getActivity(), SelectMainIngredient.class);
+                Intent i= new Intent(getActivity(), SelectMainIngredientActivity.class);
                 startActivity(i);
             }
         });
@@ -75,7 +79,7 @@ public class SelectFilterFragment extends Fragment {
         root.findViewById(R.id.toCategories).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i= new Intent(getActivity(), SelectCategory.class);
+                Intent i= new Intent(getActivity(), SelectCategoryActivity.class);
                 startActivity(i);
             }
         });
@@ -83,7 +87,7 @@ public class SelectFilterFragment extends Fragment {
         root.findViewById(R.id.toCountries).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i= new Intent(getActivity(), SelectArea.class);
+                Intent i= new Intent(getActivity(), SelectAreaActivity.class);
                 startActivity(i);
             }
         });

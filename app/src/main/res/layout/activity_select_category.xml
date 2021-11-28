@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SelectMainIngredient">
+    tools:context=".activity.SelectMainIngredientActivity">
+
 
     <ImageView
         android:id="@+id/title_image"
         android:layout_width="0dp"
-        android:layout_height="300px"
+        android:layout_height="500px"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
