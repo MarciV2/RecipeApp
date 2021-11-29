@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.dhbw.informatik.recipeapp.R;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.MenuItem;
@@ -24,22 +25,10 @@ public class SelectAreaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_area);
 
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle("Select an area or country");
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                // todo: goto back activity from here
-
-                finish();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        ActionBar ab = getSupportActionBar();
+        if(ab != null){
+            ab.setTitle("Select an area or country");
         }
     }
+
 }

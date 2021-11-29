@@ -14,6 +14,7 @@
         <activity
             android:name=".activity.CreateOwnRecipeActivity"
             android:exported="false"
+            android:parentActivityName=".activity.MainActivity"
             android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".MainNav"
@@ -21,15 +22,19 @@
             android:label="@string/title_activity_main_nav" />
         <activity
             android:name=".ApiTest"
+            android:parentActivityName=".activity.MainActivity"
             android:exported="false" />
         <activity
             android:name=".activity.SelectMainIngredientActivity"
+            android:parentActivityName=".activity.MainActivity"
             android:exported="false" />
         <activity
             android:name=".activity.SelectCategoryActivity"
+            android:parentActivityName=".activity.MainActivity"
             android:exported="false" />
         <activity
             android:name=".activity.SelectAreaActivity"
+            android:parentActivityName=".activity.MainActivity"
             android:exported="false" />
         <activity
             android:name=".activity.MainActivity"

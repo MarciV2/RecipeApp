@@ -1,5 +1,6 @@
 package com.dhbw.informatik.recipeapp.activity;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -15,23 +16,11 @@ public class SelectCategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_category);
 
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle("Select a category");
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                // todo: goto back activity from here
-
-                finish();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        ActionBar ab = getSupportActionBar();
+        if(ab != null){
+            ab.setTitle("Select a category");
         }
+
     }
 
 }
