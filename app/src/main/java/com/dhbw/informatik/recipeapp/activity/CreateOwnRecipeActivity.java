@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.widget.TextView;
 
 import com.dhbw.informatik.recipeapp.ORIEadapter;
@@ -112,7 +113,8 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
                 String thumbnail = null;
                 if(ivThumb.getTag()!=null) thumbnail=ivThumb.getTag().toString();
 
-
+                boolean ingredientsOK=trimIngredients();
+                adapter.notifyDataSetChanged();
 
                 //prüfen, dass notwendige felder befüllt wurden
                 //notwendig: titel, kategorie, instructions und mind. 1 zutat
@@ -121,6 +123,7 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
                     && ingredients.size()>0
                     && !instructions.isEmpty()
                     && !category.isEmpty()
+                    && ingredientsOK
                 ){
                     meal=new Meal();
                     meal.setStrMeal(title);
@@ -138,16 +141,49 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
                     meal.setIngredients(ingredientsList.toArray(new String[0]));
                     meal.setMeasures(measuresList.toArray(new String[0]));
 
+                    Snackbar.make(findViewById(R.id.btnCreate),"Recipe '"+title+"' was sucessfully created!",BaseTransientBottomBar.LENGTH_LONG).show();
+                    Log.d("dev","Recipe '"+title+"' was sucessfully created!");
+
                     Intent intent=new Intent();
                     intent.putExtra("meal",meal);
                     setResult(1,intent);
                     finish();//finishing activity
+                }else {
+                    //Meldung(en) anzeigen, wenn notwendige felder nicht ausgefüllt sind
+
+                    if (title.isEmpty()) etTitle.setError("Please enter a title!");
+                    if (ingredients.size() == 0)
+                        Snackbar.make(findViewById(R.id.btnCreate), "Please enter some ingredients!", BaseTransientBottomBar.LENGTH_LONG).show();
+                    if (category.isEmpty()) actvCategory.setError("Please enter a category!");
+                    //Area ist optional
+                    if (instructions.isEmpty())
+                        etInstructions.setError("Please enter some instructions!");
+                    if(!ingredientsOK) Snackbar.make(findViewById(R.id.btnCreate), "Please verify your ingredients and measures!", BaseTransientBottomBar.LENGTH_LONG).show();
                 }
-
-
             }
         });
 
+    }
+
+
+    /**
+     *Bereinigt die Liste der Zutaten und zugehörigen Mengen von leeren Zeilen und prüft auf volle zeilen
+     * @return true, wenn alle entweder leer oder voll, false, wenn in mind. einer zeile nur 1 wert steht
+     */
+    private boolean trimIngredients(){
+        ArrayList<OwnRecipeIngredientElement> emptyOries=new ArrayList<>();
+        for(OwnRecipeIngredientElement orie:ingredients){
+            //beide leer
+            if(orie.getIngredient().isEmpty()&&orie.getMeasurement().isEmpty()) {
+                emptyOries.add(orie);
+            }
+            //genau eines leer  -  Wenn eingabe unvollständig, false zurückgeben ^=XOR
+            if(orie.getMeasurement().isEmpty()^orie.getIngredient().isEmpty())
+                return false;
+
+        }
+        ingredients.removeAll(emptyOries);
+        return true;
     }
 
 
@@ -228,13 +264,15 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<MealIngredientList> call, Throwable t) {
-                Snackbar.make(recyclerView, "Network Error, AutoComplete is not available.", BaseTransientBottomBar.LENGTH_LONG).show();
+                Snackbar.make(recyclerView, R.string.error_network_no_autoComplete, BaseTransientBottomBar.LENGTH_LONG).show();
             }
         });
 
     }
 
-
+    /**
+     * Holt sich alle vorhandenen Kategories von der API und setzt diese als values für Auto-Complete im Kategorie-eingabe-feld
+     */
     private void updateCategories(){
         List<String> categoriesList=new ArrayList<>();
 
@@ -266,11 +304,14 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<MealCategoriesList> call, Throwable t) {
-                Snackbar.make(recyclerView, "Network Error, AutoComplete is not available.", BaseTransientBottomBar.LENGTH_LONG).show();
+                Snackbar.make(recyclerView, R.string.error_network_no_autoComplete, BaseTransientBottomBar.LENGTH_LONG).show();
             }
         });
     }
 
+    /**
+     * Holt sich alle vorhandenen Areas von der API und setzt diese als values für Auto-Complete im Area-eingabe-feld
+     */
     private void updateAreas(){
         List<String> areasList=new ArrayList<>();
 
@@ -302,7 +343,7 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<MealAreaList> call, Throwable t) {
-                Snackbar.make(recyclerView, "Network Error, AutoComplete is not available.", BaseTransientBottomBar.LENGTH_LONG).show();
+                Snackbar.make(recyclerView, R.string.error_network_no_autoComplete, BaseTransientBottomBar.LENGTH_LONG).show();
             }
         });
     }
