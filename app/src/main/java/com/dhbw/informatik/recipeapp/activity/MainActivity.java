@@ -1,27 +1,29 @@
 package com.dhbw.informatik.recipeapp.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GestureDetectorCompat;
+import androidx.core.view.MotionEventCompat;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.Notification;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
+import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.SearchEvent;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.dhbw.informatik.recipeapp.ApiTestFragment;
+import com.dhbw.informatik.recipeapp.OnSwipeTouchListener;
 import com.dhbw.informatik.recipeapp.SelectFilterFragment;
 import com.dhbw.informatik.recipeapp.FavoritesFragment;
 import com.dhbw.informatik.recipeapp.HomeFragment;
@@ -33,7 +35,6 @@ import com.dhbw.informatik.recipeapp.model.lists.MealList;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
-import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
@@ -50,7 +51,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Path;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         initRetrofit();
 
+
         //Favouriten und eigene Rezepte laden
         favourites = new Gson().fromJson(load(FILENAME_FAVOURITES), MealList.class);
         ownRecipes = new Gson().fromJson(load(FILENAME_OWN_RECIPES), MealList.class);
@@ -93,9 +94,11 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_container, new HomeFragment()).commit();
+        ft.replace(R.id.fragment_container, new HomeFragment(self)).commit();
 
-        // inititate a search view
+
+
+
 
         /*MainActivity self=this;
         findViewById(R.id.btnCreateOwn).setOnClickListener(new View.OnClickListener() {
@@ -124,22 +127,100 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
+
+
+
+    }
+
+    @Override
+    protected void onPostResume() {
+        Log.d("test","Resume");
+        super.onPostResume();
     }
 
 
 
+    @SuppressLint("ResourceType")
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+
+        queryFunctionality();
+        findViewById(R.id.body_container).setOnTouchListener(new OnSwipeTouchListener(self) {
+            public void onSwipeTop() {
+                Log.d("TAG", "Top");
+            }
+            public void onSwipeRight() {
+            Log.d("TAG", "Right");
+                navigationView = findViewById(R.id.bottom_navigation);
+
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            switch(fragment){
+                case 0:
+                    fragment=1;
+                    ft.replace(R.id.fragment_container, new SelectFilterFragment()).commit();
+                    navigationView.setSelectedItemId(R.id.bottom_nav_categories);
+                    break;
+                case 1:
+                    fragment=2;
+                    ft.replace(R.id.fragment_container, new FavoritesFragment()).commit();
+                    navigationView.setSelectedItemId(R.id.bottom_nav_favorites);
+                    break;
+                case 2:
+                    fragment=3;
+                    ft.replace(R.id.fragment_container, new ApiTestFragment(self)).commit();
+                    navigationView.setSelectedItemId(R.id.bottom_nav_api_test);
+                    break;
+                case 3:
+                    break;
+            }
+            }
+            public void onSwipeLeft() {
+            Log.d("TAG", "Left");
+                navigationView = findViewById(R.id.bottom_navigation);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            switch(fragment){
+                case 0:
+                    break;
+                case 1:
+                    fragment=0;
+                    ft.replace(R.id.fragment_container, new HomeFragment(self)).commit();
+                    navigationView.setSelectedItemId(R.id.bottom_nav_home);
+                    break;
+                case 2:
+                    fragment=1;
+                    ft.replace(R.id.fragment_container, new SelectFilterFragment()).commit();
+                    navigationView.setSelectedItemId(R.id.bottom_nav_categories);
+                    break;
+                case 3:
+                    fragment=2;
+                    ft.replace(R.id.fragment_container, new FavoritesFragment()).commit();
+                    navigationView.setSelectedItemId(R.id.bottom_nav_favorites);
+                    break;
+            }
+        }
+
+            public void onSwipeBottom() {
+                Log.d("TAG", "Bottom");
+            }
+
+        });
+
+        super.onPostCreate(savedInstanceState);
+    }
 
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Log.d("TAG", "Touch");
 
-        if(fragment==0) {
-            SearchView sV = findViewById(R.id.search_box);
-            sV.clearFocus(); }
-            return super.onTouchEvent(event);
+                if(fragment==0) {
+                    SearchView sV = findViewById(R.id.search_box);
+                    sV.clearFocus(); }
 
+
+        return super.onTouchEvent(event);
     }
+
+
 
     @Override
     protected void onDestroy() {
@@ -166,21 +247,21 @@ public class MainActivity extends AppCompatActivity {
 
                     switch(item.getItemId()){
                         case R.id.bottom_nav_home:
-                            ft.replace(R.id.fragment_container, new HomeFragment()).commit();
                             fragment=0;
+                            ft.replace(R.id.fragment_container, new HomeFragment(self)).commit();
                             break;
                         case R.id.bottom_nav_categories:
-
                             fragment=1;
                             ft.replace(R.id.fragment_container, new SelectFilterFragment()).commit();
                             break;
                         case R.id.bottom_nav_favorites:
-                            ft.replace(R.id.fragment_container, new FavoritesFragment()).commit();
                             fragment=2;
+                            ft.replace(R.id.fragment_container, new FavoritesFragment()).commit();
                             break;
                         case R.id.bottom_nav_api_test:
-                            ft.replace(R.id.fragment_container, new ApiTestFragment(self)).commit();
                             fragment=3;
+                            ft.replace(R.id.fragment_container, new ApiTestFragment(self)).commit();
+
                             break;
                     }
 
@@ -189,6 +270,28 @@ public class MainActivity extends AppCompatActivity {
                 }
             };
 
+    public void queryFunctionality()
+    {
+
+        SearchView searchView =  findViewById(R.id.search_box);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                search();
+
+
+                return false;
+            }
+
+        });
+    }
     /**
      * Created by Marcel Vidmar
      * initialisiert den globalen API-Service, soll nur durch onCreate aufgerufen werden!
@@ -294,63 +397,73 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
-    public void clickSearch(View v)
+    public void search()
     {
-        Log.d("TAG", "Searchview clicked");
         SearchView sV = findViewById(R.id.search_box);
         query=sV.getQuery().toString();
         Log.d("TAG","Eingegeben:"+ query);
+        if(query.isEmpty()){}
+        else{
+            Call<MealList> call = apiService.searchRecipeByName(query);
+            call.enqueue(new Callback<MealList>() {
+                @Override
+                public void onResponse(Call<MealList> call, Response<MealList> response) {
+                    //TODO etwas mit den daten anfangen, hier nur beispielsweise in die konsole gehauen...
+                    //Abfangen/Ausgeben Fehlercode Bsp. 404
+                    if (!response.isSuccessful()) {
+                        Log.d("ERROR", "Code: " + response.code());
 
-        Call<MealList> call = apiService.searchRecipeByName(query);
-        call.enqueue(new Callback<MealList>() {
-            @Override
-            public void onResponse(Call<MealList> call, Response<MealList> response) {
-                //TODO etwas mit den daten anfangen, hier nur beispielsweise in die konsole gehauen...
-                //Abfangen/Ausgeben Fehlercode Bsp. 404
-                if (!response.isSuccessful()) {
-                    Log.d("ERROR", "Code: " + response.code());
+                        return;
+                    }
 
-                    return;
-                }
+                    try{
+                        List<Meal> list=response.body().getMeals();
+                        Log.d("Arraygröße", String.valueOf(list.size()));
+                        for(int i=0;i<list.size();i++)
+                        {
+                            list.get(i).fillArrays();
 
-                try{
-                    List<Meal> list=response.body().getMeals();
-                    Log.d("Arraygröße", String.valueOf(list.size()));
-                    for(int i=0;i<list.size();i++)
+                        }
+                        Snackbar snackbar = Snackbar
+                                .make(findViewById(R.id.body_container), String.valueOf(list.size())+" entrys found!", Snackbar.LENGTH_SHORT).setAction("X", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                    }
+                                });
+                        snackbar.show();
+                        sV.clearFocus();
+                        Log.d("TAG", new Gson().toJson(list));
+
+                    }
+                    catch(NullPointerException n1)
                     {
-                        list.get(i).fillArrays();
+                        Snackbar snackbar = Snackbar
+                                .make(findViewById(R.id.body_container), "No entrys found", Snackbar.LENGTH_LONG).setAction("X", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                    }
+                                });
+
+                        snackbar.show();
+                        Log.d("TAG", "No entrys found");
 
                     }
 
-                    Log.d("TAG", new Gson().toJson(list));
 
-                }
-                catch(NullPointerException n1)
-                {
-                    Snackbar snackbar = Snackbar
-                            .make(findViewById(R.id.body_container), "No entrys found", Snackbar.LENGTH_LONG).setAction("X", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
 
-                                }
-                            });
-
-                    snackbar.show();
-                    Log.d("TAG", "No entrys found");
 
                 }
 
-
-
-
-            }
-
-            @Override
-            public void onFailure(Call<MealList> call, Throwable t) {
-                Log.d("TAG", "error: " + t.toString());
-            }
-        });
+                @Override
+                public void onFailure(Call<MealList> call, Throwable t) {
+                    Log.d("TAG", "error: " + t.toString());
+                }
+            });}
+    }
+    public void clickSearch(View v)
+    {
+        Log.d("TAG", "Searchview clicked");
+        search();
     }
 
     /**

@@ -14,11 +14,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.dhbw.informatik.recipeapp.ORIEadapter;
 import com.dhbw.informatik.recipeapp.R;
@@ -174,6 +177,16 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
                 });
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        Log.d("tag", "touch");
+        View view = self.getCurrentFocus();
+        InputMethodManager manager = (InputMethodManager) self.getSystemService(this.INPUT_METHOD_SERVICE);
+        assert manager != null && view != null;
+        manager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+        return super.onTouchEvent(event);
+    }
 
     /**
      * Fügt neues Eingabefeld für zutat (mit menge) hinzu, bis maximal 20 vorhanden sind (limitierung durch datenmodell in api)

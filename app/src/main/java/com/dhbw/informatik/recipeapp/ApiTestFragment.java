@@ -1,5 +1,7 @@
 package com.dhbw.informatik.recipeapp;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -79,7 +81,7 @@ public class ApiTestFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==1)
+        if(requestCode==RESULT_OK)
         {
             Meal m= (Meal) data.getSerializableExtra("meal");
             if(m!=null) {
