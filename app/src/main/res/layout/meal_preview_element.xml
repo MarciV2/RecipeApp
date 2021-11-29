@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:layout_marginTop="15dp"
+    android:layout_marginBottom="15dp"
+    android:background="@drawable/meal_list_item_corners"
+    >
+
+    <FrameLayout
+        android:id="@+id/imageContainer"
+        android:layout_width="140dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+
+        <!--Implementierung gefunden auf
+        https://www.techrepublic.com/article/pro-tip-round-corners-on-an-android-imageview-with-this-hack/-->
+
+        <ImageView
+            android:id="@+id/thumbImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+
+            android:scaleType="centerCrop"
+            tools:src="@mipmap/ic_sample_meal_foreground" />
+        
+        <!--Implementierung für URL-Unterstützung:
+        https://www.tutorialspoint.com/how-do-i-load-an-imageview-by-url-on-android-->
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/image_round_corners"/>
+
+    </FrameLayout>
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/contentLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toRightOf="@+id/imageContainer"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/titleLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Arrabiata with some stuff"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/areaLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/badge_corners"
+            android:text="Germany"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleLabel" />
+
+        <TextView
+            android:id="@+id/categoryLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/badge_corners"
+            android:text="Vegetarian"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintLeft_toRightOf="@id/areaLabel"
+            android:layout_marginStart="10dp"
+            app:layout_constraintTop_toBottomOf="@id/titleLabel" />
+
+
+        <TextView
+            android:id="@+id/ingredientsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/dark_grey"
+            android:text="Here, Come, Some, Ingredients, And, Some, More"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/favoritesBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:baselineAlignBottom="false"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_favorites"
+        android:tint="@color/black"
+        android:tooltipText="Add the meal to your favorites"
+        app:fabSize="mini"
+        app:layout_anchor="@id/contentLayout"
+        app:layout_anchorGravity="end|top"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+    <!--wenn aktiviert: kann man mit backgroundTint="@color/primary" machen,
+        sieht zwar nicht besonders aus und ist nicht intuitiv, aber besser als nichts -->
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
