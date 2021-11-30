@@ -60,7 +60,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toMeal"
-        tools:listitem="@layout/recycler_view_item_3" />
+        tools:listitem="@layout/recycler_view_item_3"
+        android:paddingBottom="?attr/actionBarSize"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -146,7 +146,7 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
 
                     Intent intent=new Intent();
                     intent.putExtra("meal",meal);
-                    setResult(1,intent);
+                    setResult(RESULT_OK,intent);
                     finish();//finishing activity
                 }else {
                     //Meldung(en) anzeigen, wenn notwendige felder nicht ausgefüllt sind

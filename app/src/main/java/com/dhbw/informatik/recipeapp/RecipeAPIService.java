@@ -15,6 +15,9 @@ public interface RecipeAPIService {
     @GET("search.php")
     Call<MealList> searchRecipeByName(@Query("s") String recipeName);
 
+    @GET("lookup.php")
+    Call<MealList> getRecipeById(@Query("i") String id);
+
     @GET("random.php")
     Call<MealList> getRandomRecipe();
 
