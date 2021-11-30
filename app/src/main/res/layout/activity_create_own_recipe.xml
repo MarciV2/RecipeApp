@@ -80,6 +80,7 @@ Umsetzung der Zutaten mittels dynamischem RecyclerView
       app:layout_constraintEnd_toStartOf="@id/actvArea"
       android:layout_marginStart="0dp"
       android:maxLines="1"
+      android:hint="Category"
       android:inputType="text"/>
 
 
@@ -95,6 +96,7 @@ Umsetzung der Zutaten mittels dynamischem RecyclerView
       app:layout_constraintBottom_toBottomOf="@id/actvCategory"
       android:layout_marginEnd="16dp"
       android:maxLines="1"
+      android:hint="Area"
       android:inputType="text"/>
 
 

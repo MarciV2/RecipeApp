@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/ctr_bg"
-    tools:context=".MealFragment">
+    tools:context=".fragment.MealFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"

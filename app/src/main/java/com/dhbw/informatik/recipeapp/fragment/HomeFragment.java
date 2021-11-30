@@ -1,6 +1,4 @@
-package com.dhbw.informatik.recipeapp;
-
-import static androidx.core.content.ContextCompat.getSystemService;
+package com.dhbw.informatik.recipeapp.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,16 +13,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.SearchView;
-import android.widget.TextView;
 
+import com.dhbw.informatik.recipeapp.activity.MealDetailActivity;
+import com.dhbw.informatik.recipeapp.adapter.MealPreviewAdapter;
+import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.activity.MainActivity;
 import com.dhbw.informatik.recipeapp.model.Meal;
-import com.dhbw.informatik.recipeapp.model.MealIngredient;
-import com.dhbw.informatik.recipeapp.model.lists.MealIngredientList;
 import com.dhbw.informatik.recipeapp.model.lists.MealList;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -36,7 +29,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import com.dhbw.informatik.recipeapp.activity.SelectCategoryActivity;
 
 public class HomeFragment extends Fragment {
     private MainActivity mainActivity;

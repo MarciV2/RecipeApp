@@ -21,10 +21,8 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
-import android.widget.TextView;
 
-import com.dhbw.informatik.recipeapp.ORIEadapter;
+import com.dhbw.informatik.recipeapp.adapter.ORIEadapter;
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.model.Meal;
 import com.dhbw.informatik.recipeapp.model.MealArea;

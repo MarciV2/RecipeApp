@@ -1,8 +1,7 @@
-package com.dhbw.informatik.recipeapp;
+package com.dhbw.informatik.recipeapp.adapter;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +9,11 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.activity.CreateOwnRecipeActivity;
 import com.dhbw.informatik.recipeapp.model.OwnRecipeIngredientElement;
 

@@ -1,4 +1,4 @@
-package com.dhbw.informatik.recipeapp;
+package com.dhbw.informatik.recipeapp.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.activity.SelectAreaActivity;
 import com.dhbw.informatik.recipeapp.activity.SelectCategoryActivity;
 import com.dhbw.informatik.recipeapp.activity.SelectMainIngredientActivity;

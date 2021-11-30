@@ -1,4 +1,4 @@
-package com.dhbw.informatik.recipeapp;
+package com.dhbw.informatik.recipeapp.adapter;
 
 public class MealViewAdapter {
 

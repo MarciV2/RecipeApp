@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RecipeApp">
         <activity
-            android:name=".MealDetailActivity"
+            android:name=".activity.MealDetailActivity"
             android:exported="false" />
         <activity
             android:name=".activity.CreateOwnRecipeActivity"
@@ -23,10 +23,6 @@
             android:name=".MainNav"
             android:exported="false"
             android:label="@string/title_activity_main_nav" />
-        <activity
-            android:name=".ApiTest"
-            android:exported="false"
-            android:parentActivityName=".activity.MainActivity" />
         <activity
             android:name=".activity.SelectMainIngredientActivity"
             android:exported="false"
