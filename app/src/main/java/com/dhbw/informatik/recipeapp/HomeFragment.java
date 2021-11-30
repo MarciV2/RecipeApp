@@ -2,6 +2,7 @@ package com.dhbw.informatik.recipeapp;
 
 import static androidx.core.content.ContextCompat.getSystemService;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.dhbw.informatik.recipeapp.activity.MainActivity;
+import com.dhbw.informatik.recipeapp.activity.SelectCategoryActivity;
 
 public class HomeFragment extends Fragment {
     private MainActivity mainActivity;
@@ -49,6 +51,14 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        getActivity().findViewById(R.id.toMeal).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(getActivity(), MealDetailActivity.class);
+                startActivity(i);
+            }
+        });
 
     }
 

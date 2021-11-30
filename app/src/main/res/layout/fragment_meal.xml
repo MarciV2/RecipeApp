@@ -70,7 +70,8 @@
                 android:id="@+id/ingredients_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Here, Comes, The, List, Of, Ingredients"
+                android:text="Here, Comes, The, List, Of, \nIngredients, And, Some, More, Just to Lorem,
+Here, Cool, Text, To, Show"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/title_label" />
 

@@ -20,8 +20,6 @@
         android:focusedByDefault="false"
         android:iconifiedByDefault="false"
         android:queryHint="Search by Recipename"
-
-
         />
 
 
@@ -36,13 +34,13 @@
         app:layout_constraintTop_toBottomOf="@+id/search_box" />
 
 
-    <!--<Button
+    <Button
         android:id="@+id/toMeal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_back_label" />-->
+        app:layout_constraintTop_toBottomOf="@+id/welcome_back_label" />
 
     <!--<com.dhbw.informatik.recipeapp.MealListView
         app:layout_constraintTop_toBottomOf="@id/toMeal"
@@ -61,7 +59,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/welcome_back_label"
+        app:layout_constraintTop_toBottomOf="@id/toMeal"
         tools:listitem="@layout/recycler_view_item_3" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
