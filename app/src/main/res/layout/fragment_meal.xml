@@ -24,6 +24,7 @@
             >
 
             <ImageView
+                android:id="@+id/ivThumb"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center|end"
@@ -111,6 +112,7 @@ Here, Cool, Text, To, Show"
                 />
 
             <Button
+                android:id="@+id/btnWatchOnYT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
@@ -126,6 +128,7 @@ Here, Cool, Text, To, Show"
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnAddToFavourites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:baselineAlignBottom="false"

@@ -1,5 +1,6 @@
 package com.dhbw.informatik.recipeapp.adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,18 +11,26 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dhbw.informatik.recipeapp.R;
+import com.dhbw.informatik.recipeapp.activity.MainActivity;
+import com.dhbw.informatik.recipeapp.activity.MealDetailActivity;
 import com.dhbw.informatik.recipeapp.model.Meal;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
-
+/*
+Erstellt von Marcel Vidmar
+Adapter für die Rezept-Previews
+ */
 public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.MealPreviewViewHolder> {
 
     private List<Meal> mealList;
+    private MainActivity mainActivity;
 
-    public MealPreviewAdapter(List<Meal> mealList) {
+    public MealPreviewAdapter(List<Meal> mealList, MainActivity mainActivity) {
         this.mealList = mealList;
+        this.mainActivity=mainActivity;
     }
 
 
@@ -64,6 +73,27 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
         holder.tvIngredients.setText(ingredientsStr);
 
 
+        //Click-Handler für Favourite-button
+        holder.faBtnFavourite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainActivity.addToFavourites(meal);
+            }
+        });
+
+        //Click-Handler für Aufruf der Detailseite des Rezepts
+        View.OnClickListener clOpenMeal=new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(view.getContext(),MealDetailActivity.class);
+                i.putExtra("meal",meal);
+                mainActivity.startActivity(i);
+            }
+        };
+        //Angewanth auf titel und thumbnail
+        holder.ivThumb.setOnClickListener(clOpenMeal);
+        holder.tvTitle.setOnClickListener(clOpenMeal);
+
     }
 
     @Override
@@ -75,6 +105,21 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
         mealList.clear();
         mealList.addAll(data);
         notifyDataSetChanged();
+    }
+
+    public void update(Meal meal){
+        if(mealList==null){
+            mealList=new ArrayList<>();
+            mealList.add(meal);
+            return;
+        }
+
+        for(Meal m:mealList)
+            if(m.getIdMeal()==meal.getIdMeal()) return;
+
+        mealList.add(meal);
+        notifyItemChanged(mealList.size());
+
     }
 
     public class MealPreviewViewHolder extends RecyclerView.ViewHolder {

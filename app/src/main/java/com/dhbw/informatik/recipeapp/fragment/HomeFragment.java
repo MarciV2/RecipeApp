@@ -67,7 +67,7 @@ public class HomeFragment extends Fragment {
         mealPreviewRecyclerView=view.findViewById(R.id.recyclerViewOfMeals);
 
         mealPreviewRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
-        mealPreviewAdapter=new MealPreviewAdapter(mealList);
+        mealPreviewAdapter=new MealPreviewAdapter(mealList,mainActivity);
         mealPreviewRecyclerView.setAdapter(mealPreviewAdapter);
 
 
@@ -94,27 +94,11 @@ public class HomeFragment extends Fragment {
      */
     private void updateMeals() {
 
-        //API-Aufruf starten
-        Call<MealList> call = MainActivity.apiService.filterByCategory("Starter");
-        call.enqueue(new Callback<MealList>() {
-            @Override
-            public void onResponse(@NonNull Call<MealList> call, @NonNull Response<MealList> response) {
+        //API-Aufrufe starten
 
-                //Abfangen/Ausgeben Fehlercode Bsp. 404
-                if (!response.isSuccessful()) {
-                    Log.d("ERROR", "Code: " + response.code());
-                    return;
-                }
-
-
-                List<Meal> tmpMealList = response.body().getMeals();
-
-                //MealList leeren
-                mealList=new ArrayList<>();
-
-                for(Meal m:tmpMealList){
-                    Call<MealList> call2 = MainActivity.apiService.getRecipeById(String.valueOf(m.getIdMeal()));
-                    call2.enqueue(new Callback<MealList>() {
+                for(int i=0; i<10; i++){
+                    Call<MealList> call = MainActivity.apiService.getRandomRecipe();
+                    call.enqueue(new Callback<MealList>() {
                         @Override
                         public void onResponse(@NonNull Call<MealList> call, @NonNull Response<MealList> response) {
 
@@ -126,10 +110,9 @@ public class HomeFragment extends Fragment {
                             List<Meal> tmp2MealList = response.body().getMeals();
                             Meal m=tmp2MealList.get(0);
                             m.fillArrays();
-                            mealList.add(m);
                             Log.d("dev","Rezept geholt: "+tmp2MealList.get(0).getStrMeal()+" insgesamt: "+mealList.size());
 
-                            mealPreviewAdapter.update(mealList);
+                            mealPreviewAdapter.update(m);
 
                         }
 
@@ -142,13 +125,7 @@ public class HomeFragment extends Fragment {
                 }
 
 
-            }
 
-            @Override
-            public void onFailure(Call<MealList> call, Throwable t) {
-                Snackbar.make(mealPreviewRecyclerView, "Network error!", BaseTransientBottomBar.LENGTH_LONG).show();
-            }
-        });
 
     }
 

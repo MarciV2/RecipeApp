@@ -50,8 +50,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-     public final String FILENAME_OWN_RECIPES="ownRecipes.json";
-     public final String FILENAME_FAVOURITES="favourites.json";
+     public static final String FILENAME_OWN_RECIPES="ownRecipes.json";
+     public static final String FILENAME_FAVOURITES="favourites.json";
     public int fragment=0;
     public String query=null;
 
@@ -79,9 +79,7 @@ public class MainActivity extends AppCompatActivity {
         initRetrofit();
 
 
-        //Favouriten und eigene Rezepte laden
-        favourites = new Gson().fromJson(load(FILENAME_FAVOURITES), MealList.class);
-        ownRecipes = new Gson().fromJson(load(FILENAME_OWN_RECIPES), MealList.class);
+        readFiles();
 
         if (favourites == null) favourites = new MealList();
         if (ownRecipes == null) ownRecipes = new MealList();
@@ -132,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPostResume() {
         Log.d("test","Resume");
         super.onPostResume();
+        readFiles();
     }
 
 
@@ -226,11 +225,23 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveFiles();
+    }
+
     public void saveFiles(){
         save(new Gson().toJson(favourites),FILENAME_FAVOURITES);
         Log.d("test","Favourites saved");
         save(new Gson().toJson(ownRecipes),FILENAME_OWN_RECIPES);
         Log.d("test","Own Recipes saved");
+    }
+
+    public void readFiles(){
+        //Favouriten und eigene Rezepte laden
+        favourites = new Gson().fromJson(load(FILENAME_FAVOURITES), MealList.class);
+        ownRecipes = new Gson().fromJson(load(FILENAME_OWN_RECIPES), MealList.class);
     }
 
 
@@ -483,12 +494,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Erstellt von Marcel Vidmar
+     * Prüft, ob Rezept bereits in Favouriten-Liste ist, wenn nicht, wird die ses hinzugefügt
+     * @param meal Rezept, dass zu den Favouriten hinzugefügt werden soll
+     */
+    public void addToFavourites(Meal meal){
+        //prüfen, dass meal noch nicht in favs ist
+        for(Meal m:favourites.getMeals()) if(m.getIdMeal()==meal.getIdMeal())  return;
 
+        favourites.getMeals().add(meal);
 
-    //TODO umsetzen
-    public void addToFavourites(View v){
-
-        Log.d("test",v.toString()+" tried to add a favourite");
+        Log.d("test",meal.getStrMeal()+" zu favouriten hinzugefügt");
     }
 
     private void ShowText(String msg){
