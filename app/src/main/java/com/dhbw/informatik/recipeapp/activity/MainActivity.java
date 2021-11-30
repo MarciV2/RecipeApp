@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSwipeTop() {
                 Log.d("TAG", "Top");
             }
-            public void onSwipeRight() {
+            public void onSwipeLeft() {
             Log.d("TAG", "Right");
                 navigationView = findViewById(R.id.bottom_navigation);
 
@@ -170,8 +170,8 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
             }
-            public void onSwipeLeft() {
-            Log.d("TAG", "Left");
+            public void onSwipeRight() {
+            Log.d("TAG", "Right");
                 navigationView = findViewById(R.id.bottom_navigation);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             switch(fragment){
