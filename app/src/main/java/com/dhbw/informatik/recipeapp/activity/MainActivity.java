@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -18,6 +20,7 @@ import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.dhbw.informatik.recipeapp.adapter.MealPreviewAdapter;
 import com.dhbw.informatik.recipeapp.fragment.ApiTestFragment;
 import com.dhbw.informatik.recipeapp.OnSwipeTouchListener;
 import com.dhbw.informatik.recipeapp.fragment.SelectFilterFragment;
@@ -54,13 +57,13 @@ public class MainActivity extends AppCompatActivity {
      public static final String FILENAME_FAVOURITES="favourites.json";
     public int fragment=0;
     public String query=null;
-
+    HomeFragment homeFragment;
     static public RecipeAPIService apiService = null;
     BottomNavigationView navigationView;
     public MealList favourites;
     public MealList ownRecipes;
-
-
+    private MealPreviewAdapter mealPreviewAdapter;
+    private RecyclerView mealPreviewRecyclerView;
     private MainActivity self=this;
 
 
@@ -139,6 +142,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
 
+
+
         queryFunctionality();
         findViewById(R.id.body_container).setOnTouchListener(new OnSwipeTouchListener(self) {
             public void onSwipeTop() {
@@ -163,7 +168,6 @@ public class MainActivity extends AppCompatActivity {
                 case 3:
                     break;
             }
-            Log.d("Test", String.valueOf(fragment));
             }
             public void onSwipeRight() {
             Log.d("TAG", "Left");
@@ -184,7 +188,6 @@ public class MainActivity extends AppCompatActivity {
                     navigationView.setSelectedItemId(R.id.bottom_nav_favorites);
                     break;
             }
-                Log.d("Test", String.valueOf(fragment));
         }
 
             public void onSwipeBottom() {
@@ -402,9 +405,10 @@ public class MainActivity extends AppCompatActivity {
     {
         SearchView sV = findViewById(R.id.search_box);
         query=sV.getQuery().toString();
-        Log.d("TAG","Eingegeben:"+ query);
+
         if(query.isEmpty()){}
         else{
+            Log.d("TAG","Eingegeben:"+ query);
             Call<MealList> call = apiService.searchRecipeByName(query);
             call.enqueue(new Callback<MealList>() {
                 @Override
@@ -419,12 +423,19 @@ public class MainActivity extends AppCompatActivity {
 
                     try{
                         List<Meal> list=response.body().getMeals();
+
                         Log.d("Arraygröße", String.valueOf(list.size()));
+
                         for(int i=0;i<list.size();i++)
                         {
                             list.get(i).fillArrays();
-
                         }
+                        Log.d("Testa", "hier");
+                        mealPreviewRecyclerView=findViewById(R.id.recyclerViewOfMeals);
+                        mealPreviewRecyclerView.setLayoutManager(new LinearLayoutManager(self,RecyclerView.VERTICAL,false));
+                        mealPreviewAdapter=new MealPreviewAdapter(list,self);
+                        mealPreviewAdapter.update(list);
+                        mealPreviewRecyclerView.setAdapter(mealPreviewAdapter);
                         Snackbar snackbar = Snackbar
                                 .make(findViewById(R.id.body_container), String.valueOf(list.size())+" entrys found!", Snackbar.LENGTH_SHORT).setAction("X", new View.OnClickListener() {
                                     @Override
@@ -433,6 +444,7 @@ public class MainActivity extends AppCompatActivity {
                                 });
                         snackbar.show();
                         sV.clearFocus();
+
                         Log.d("TAG", new Gson().toJson(list));
 
                     }
