@@ -430,7 +430,7 @@ public class MainActivity extends AppCompatActivity {
                         {
                             list.get(i).fillArrays();
                         }
-                        Log.d("Testa", "hier");
+
                         mealPreviewRecyclerView=findViewById(R.id.recyclerViewOfMeals);
                         mealPreviewRecyclerView.setLayoutManager(new LinearLayoutManager(self,RecyclerView.VERTICAL,false));
                         mealPreviewAdapter=new MealPreviewAdapter(list,self);
