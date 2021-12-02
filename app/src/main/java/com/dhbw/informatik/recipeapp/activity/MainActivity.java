@@ -147,51 +147,44 @@ public class MainActivity extends AppCompatActivity {
             public void onSwipeLeft() {
             Log.d("TAG", "Right");
                 navigationView = findViewById(R.id.bottom_navigation);
-
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             switch(fragment){
                 case 0:
                     fragment=1;
-                    ft.replace(R.id.fragment_container, new SelectFilterFragment()).commit();
                     navigationView.setSelectedItemId(R.id.bottom_nav_categories);
                     break;
                 case 1:
                     fragment=2;
-                    ft.replace(R.id.fragment_container, new FavoritesFragment()).commit();
                     navigationView.setSelectedItemId(R.id.bottom_nav_favorites);
                     break;
                 case 2:
                     fragment=3;
-                    ft.replace(R.id.fragment_container, new ApiTestFragment(self)).commit();
                     navigationView.setSelectedItemId(R.id.bottom_nav_api_test);
                     break;
                 case 3:
                     break;
             }
+            Log.d("Test", String.valueOf(fragment));
             }
             public void onSwipeRight() {
-            Log.d("TAG", "Right");
+            Log.d("TAG", "Left");
                 navigationView = findViewById(R.id.bottom_navigation);
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             switch(fragment){
                 case 0:
                     break;
                 case 1:
                     fragment=0;
-                    ft.replace(R.id.fragment_container, new HomeFragment(self)).commit();
                     navigationView.setSelectedItemId(R.id.bottom_nav_home);
                     break;
                 case 2:
                     fragment=1;
-                    ft.replace(R.id.fragment_container, new SelectFilterFragment()).commit();
                     navigationView.setSelectedItemId(R.id.bottom_nav_categories);
                     break;
                 case 3:
                     fragment=2;
-                    ft.replace(R.id.fragment_container, new FavoritesFragment()).commit();
                     navigationView.setSelectedItemId(R.id.bottom_nav_favorites);
                     break;
             }
+                Log.d("Test", String.valueOf(fragment));
         }
 
             public void onSwipeBottom() {
@@ -291,6 +284,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
+                Log.d("TEst","submit");
                 search();
 
 
