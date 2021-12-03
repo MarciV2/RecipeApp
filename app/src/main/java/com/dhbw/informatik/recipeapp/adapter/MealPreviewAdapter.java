@@ -85,6 +85,7 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
         View.OnClickListener clOpenMeal=new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mainActivity.lastClicked(meal);
                 Intent i=new Intent(view.getContext(),MealDetailActivity.class);
                 i.putExtra("meal",meal);
                 mainActivity.startActivity(i);

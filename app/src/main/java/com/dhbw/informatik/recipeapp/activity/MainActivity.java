@@ -53,15 +53,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-     public static final String FILENAME_OWN_RECIPES="ownRecipes.json";
-     public static final String FILENAME_FAVOURITES="favourites.json";
+    public static final String FILENAME_OWN_RECIPES="ownRecipes.json";
+    public static final String FILENAME_FAVOURITES="favourites.json";
+    public static final String FILENAME_LAST_CLICKED ="lastClicked.json";
     public int fragment=0;
     public String query=null;
-    HomeFragment homeFragment;
     static public RecipeAPIService apiService = null;
     BottomNavigationView navigationView;
     public MealList favourites;
     public MealList ownRecipes;
+    public MealList lastClicked;
     private MealPreviewAdapter mealPreviewAdapter;
     private RecyclerView mealPreviewRecyclerView;
     private MainActivity self=this;
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (favourites == null) favourites = new MealList();
         if (ownRecipes == null) ownRecipes = new MealList();
-
+        if (lastClicked == null) lastClicked = new MealList();
 
         getSupportActionBar().hide();
 
@@ -133,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onPostResume() {
         Log.d("test","Resume");
         super.onPostResume();
-        readFiles();
     }
 
 
@@ -232,12 +232,15 @@ public class MainActivity extends AppCompatActivity {
         Log.d("test","Favourites saved");
         save(new Gson().toJson(ownRecipes),FILENAME_OWN_RECIPES);
         Log.d("test","Own Recipes saved");
+        save(new Gson().toJson(lastClicked),FILENAME_LAST_CLICKED);
+        Log.d("test","Last Clicked saved");
     }
 
     public void readFiles(){
         //Favouriten und eigene Rezepte laden
         favourites = new Gson().fromJson(load(FILENAME_FAVOURITES), MealList.class);
         ownRecipes = new Gson().fromJson(load(FILENAME_OWN_RECIPES), MealList.class);
+        lastClicked = new Gson().fromJson(load(FILENAME_LAST_CLICKED), MealList.class);
     }
 
 
@@ -575,7 +578,31 @@ public class MainActivity extends AppCompatActivity {
         }
         return null;
     }
+    public void lastClicked(Meal meal)
+    {
+        MealList temp;
+        temp=new MealList();
+        for(Meal m:lastClicked.getMeals()) if(m.getIdMeal()==meal.getIdMeal()) {
+            lastClicked.getMeals().remove(meal);
 
+            temp.getMeals().add(m);
+            for(int i=0;i<lastClicked.getMeals().size();i++)
+            {
+                temp.getMeals().add(lastClicked.getMeals().get(i));
+            }
+            lastClicked=temp;
+            Log.d("test",meal.getStrMeal()+" zu last clicked hinzugefügt");
+            return;
+        }
+
+        temp.getMeals().add(meal);
+        for(int i=0;i<lastClicked.getMeals().size();i++)
+        {
+            temp.getMeals().add(lastClicked.getMeals().get(i));
+        }
+        lastClicked=temp;
+        Log.d("test",meal.getStrMeal()+" zu last clicked hinzugefügt");
+    }
 
 
 }
