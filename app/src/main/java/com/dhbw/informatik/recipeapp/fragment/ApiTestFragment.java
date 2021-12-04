@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.activity.CreateOwnRecipeActivity;
+import com.dhbw.informatik.recipeapp.activity.LastClickedActivity;
 import com.dhbw.informatik.recipeapp.activity.MainActivity;
 import com.dhbw.informatik.recipeapp.model.Meal;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -44,6 +45,13 @@ public class ApiTestFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i= new Intent(getActivity(), CreateOwnRecipeActivity.class);
+                startActivityForResult(i,1);
+            }
+        });
+        root.findViewById(R.id.lastClickedActivity).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i= new Intent(getActivity(), LastClickedActivity.class);
                 startActivityForResult(i,1);
             }
         });

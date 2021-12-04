@@ -9,10 +9,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.dhbw.informatik.recipeapp.activity.LastClickedActivity;
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.activity.MainActivity;
 import com.dhbw.informatik.recipeapp.activity.MealDetailActivity;
+import com.dhbw.informatik.recipeapp.databinding.ActivityLastClickedBinding;
 import com.dhbw.informatik.recipeapp.model.Meal;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
@@ -27,10 +28,17 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
 
     private List<Meal> mealList;
     private MainActivity mainActivity;
-
+    private LastClickedActivity lastClickedActivity;
+    private boolean lastClicked=false;
     public MealPreviewAdapter(List<Meal> mealList, MainActivity mainActivity) {
         this.mealList = mealList;
         this.mainActivity=mainActivity;
+    }
+    public MealPreviewAdapter(List<Meal> mealList, LastClickedActivity lastClickedActivity,boolean lastClicked) {
+        this.mealList = mealList;
+        this.lastClickedActivity=lastClickedActivity;
+        this.lastClicked=lastClicked;
+
     }
 
 
@@ -77,7 +85,9 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
         holder.faBtnFavourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(lastClicked==false)
                 mainActivity.addToFavourites(meal);
+                else lastClickedActivity.addToFavourites(meal);
             }
         });
 
@@ -85,10 +95,19 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
         View.OnClickListener clOpenMeal=new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(lastClicked==false)
+                {
                 mainActivity.lastClicked(meal);
                 Intent i=new Intent(view.getContext(),MealDetailActivity.class);
                 i.putExtra("meal",meal);
-                mainActivity.startActivity(i);
+                mainActivity.startActivity(i);}
+                else
+                {
+
+                    Intent i=new Intent(view.getContext(),MealDetailActivity.class);
+                    i.putExtra("meal",meal);
+                    lastClickedActivity.startActivity(i);
+                }
             }
         };
         //Angewanth auf titel und thumbnail

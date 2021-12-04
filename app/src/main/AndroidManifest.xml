@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RecipeApp">
         <activity
+            android:name=".activity.LastClickedActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.MealDetailActivity"
             android:exported="false" />
         <activity
