@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,7 +36,7 @@ public class HomeFragment extends Fragment {
     private List<Meal> mealList;
     private MealPreviewAdapter mealPreviewAdapter;
     private RecyclerView mealPreviewRecyclerView;
-
+    private SwipeRefreshLayout swipeContainer;
     public HomeFragment(MainActivity mainActivity) {
 
         this.mainActivity=mainActivity;
@@ -85,6 +86,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         mainActivity.queryFunctionality();
+        mainActivity.pullDownRefresh();
         super.onViewStateRestored(savedInstanceState);
     }
 
@@ -92,7 +94,7 @@ public class HomeFragment extends Fragment {
     /**
      * befüllt das recycler view
      */
-    private void updateMeals() {
+    public void updateMeals() {
 
         //API-Aufrufe starten
 
@@ -123,8 +125,6 @@ public class HomeFragment extends Fragment {
                     });
 
                 }
-
-
 
 
     }

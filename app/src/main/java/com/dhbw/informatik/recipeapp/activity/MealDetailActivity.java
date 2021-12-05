@@ -106,6 +106,7 @@ public class MealDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //TODO besser machen... ->Risiko der asynchronität
                MealList favourites = new Gson().fromJson(load(MainActivity.FILENAME_FAVOURITES), MealList.class);
+
                favourites.getMeals().add(meal);
                save(new Gson().toJson(favourites),MainActivity.FILENAME_FAVOURITES);
             }

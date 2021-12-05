@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private MealPreviewAdapter mealPreviewAdapter;
     private RecyclerView mealPreviewRecyclerView;
     private MainActivity self=this;
-
+    private SwipeRefreshLayout swipeContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,60 +146,66 @@ public class MainActivity extends AppCompatActivity {
 
 
         queryFunctionality();
+        pullDownRefresh();
+        swipeFunctionality();
+
+
+
+        super.onPostCreate(savedInstanceState);
+    }
+    void swipeFunctionality()
+    {
         findViewById(R.id.body_container).setOnTouchListener(new OnSwipeTouchListener(self) {
             public void onSwipeTop() {
                 Log.d("TAG", "Top");
             }
             public void onSwipeLeft() {
-            Log.d("TAG", "Right");
+                Log.d("TAG", "Right");
                 navigationView = findViewById(R.id.bottom_navigation);
-            switch(fragment){
-                case 0:
-                    fragment=1;
-                    navigationView.setSelectedItemId(R.id.bottom_nav_categories);
-                    break;
-                case 1:
-                    fragment=2;
-                    navigationView.setSelectedItemId(R.id.bottom_nav_favorites);
-                    break;
-                case 2:
-                    fragment=3;
-                    navigationView.setSelectedItemId(R.id.bottom_nav_api_test);
-                    break;
-                case 3:
-                    break;
-            }
+                switch(fragment){
+                    case 0:
+                        fragment=1;
+                        navigationView.setSelectedItemId(R.id.bottom_nav_categories);
+                        break;
+                    case 1:
+                        fragment=2;
+                        navigationView.setSelectedItemId(R.id.bottom_nav_favorites);
+                        break;
+                    case 2:
+                        fragment=3;
+                        navigationView.setSelectedItemId(R.id.bottom_nav_api_test);
+                        break;
+                    case 3:
+                        break;
+                }
             }
             public void onSwipeRight() {
-            Log.d("TAG", "Left");
+                Log.d("TAG", "Left");
                 navigationView = findViewById(R.id.bottom_navigation);
-            switch(fragment){
-                case 0:
-                    break;
-                case 1:
-                    fragment=0;
-                    navigationView.setSelectedItemId(R.id.bottom_nav_home);
-                    break;
-                case 2:
-                    fragment=1;
-                    navigationView.setSelectedItemId(R.id.bottom_nav_categories);
-                    break;
-                case 3:
-                    fragment=2;
-                    navigationView.setSelectedItemId(R.id.bottom_nav_favorites);
-                    break;
+                switch(fragment){
+                    case 0:
+                        break;
+                    case 1:
+                        fragment=0;
+                        navigationView.setSelectedItemId(R.id.bottom_nav_home);
+                        break;
+                    case 2:
+                        fragment=1;
+                        navigationView.setSelectedItemId(R.id.bottom_nav_categories);
+                        break;
+                    case 3:
+                        fragment=2;
+                        navigationView.setSelectedItemId(R.id.bottom_nav_favorites);
+                        break;
+                }
             }
-        }
 
             public void onSwipeBottom() {
                 Log.d("TAG", "Bottom");
             }
 
         });
-
-        super.onPostCreate(savedInstanceState);
     }
-
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -298,6 +305,26 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+    }
+    public void pullDownRefresh()
+    {
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Log.d("TEst","SAAAAAAAAAAAA");
+                navigationView = findViewById(R.id.bottom_navigation);
+                navigationView.setSelectedItemId(R.id.bottom_nav_categories);
+                navigationView.setSelectedItemId(R.id.bottom_nav_home);
+                swipeContainer.setRefreshing(false);
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
     }
     /**
      * Created by Marcel Vidmar

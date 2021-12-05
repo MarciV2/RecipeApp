@@ -13,7 +13,7 @@ import com.dhbw.informatik.recipeapp.activity.LastClickedActivity;
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.activity.MainActivity;
 import com.dhbw.informatik.recipeapp.activity.MealDetailActivity;
-import com.dhbw.informatik.recipeapp.databinding.ActivityLastClickedBinding;
+
 import com.dhbw.informatik.recipeapp.model.Meal;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
