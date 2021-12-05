@@ -95,12 +95,15 @@ public class LastClickedActivity extends AppCompatActivity {
             }
             Log.d("TAG", "Read:"+sb.toString() +" from " + getFilesDir() + "/" + fileName);
 
+            fis.close();
+
             return sb.toString();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return null;
     }
     public void addToFavourites(Meal meal){
@@ -109,9 +112,25 @@ public class LastClickedActivity extends AppCompatActivity {
         for(Meal m:favourites.getMeals()) if(m.getIdMeal()==meal.getIdMeal())  return;
 
         favourites.getMeals().add(meal);
-
+        save(new Gson().toJson(favourites),mainActivity.FILENAME_FAVOURITES);
         Log.d("test",meal.getStrMeal()+" zu favouriten hinzugefügt");
     }
+
+    public void removeFromFavourites(Meal meal){
+        favourites = new Gson().fromJson(load(mainActivity.FILENAME_FAVOURITES), MealList.class);
+
+
+        List<Meal> mealsToRemove=new ArrayList<>();
+
+        for(Meal m:favourites.getMeals()) if(m.getIdMeal()==meal.getIdMeal())  mealsToRemove.add(m);
+
+        favourites.getMeals().removeAll(mealsToRemove);
+
+        save(new Gson().toJson(favourites),mainActivity.FILENAME_FAVOURITES);
+        Log.d("test",meal.getStrMeal()+" von favouriten entfernt");
+    }
+
+
     /**
      * Erstellt von Johannes Fahr
      * @param jsonString Jsonstring aus Abfrage welcher gespeichert werden soll
