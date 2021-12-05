@@ -111,7 +111,7 @@
         android:baselineAlignBottom="false"
         android:clickable="true"
         android:focusable="true"
-        android:src="@drawable/ic_favorites"
+        android:src="@drawable/ic_favouriteempty"
         android:tint="@color/black"
         android:tooltipText="Add the meal to your favorites"
         app:fabSize="mini"

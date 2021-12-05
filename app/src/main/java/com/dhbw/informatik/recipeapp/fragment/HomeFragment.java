@@ -30,7 +30,10 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
+/*
+Erstellt von Marcel Vidmar
+home-seite mit 10 zufälligen rezepten
+ */
 public class HomeFragment extends Fragment {
     private MainActivity mainActivity;
     private List<Meal> mealList;
@@ -92,7 +95,7 @@ public class HomeFragment extends Fragment {
 
 
     /**
-     * befüllt das recycler view
+     * befüllt das recycler view mit 10 zufälligen meals
      */
     public void updateMeals() {
 

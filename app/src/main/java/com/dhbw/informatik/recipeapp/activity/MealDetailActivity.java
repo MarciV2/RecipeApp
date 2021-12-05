@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.model.Meal;
 import com.dhbw.informatik.recipeapp.model.lists.MealList;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -23,6 +24,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
 Erstellt von Marcel Vidmar
@@ -98,19 +101,49 @@ public class MealDetailActivity extends AppCompatActivity {
                 });
 
 
+        //Fav-button icon
+        //Icon für Fav setzen
 
+        FloatingActionButton btn_addToFavs= findViewById(R.id.btnAddToFavourites);
+
+        if (isMealFav(meal))
+            btn_addToFavs.setImageResource(R.drawable.ic_favoritesfull);
+        else
+            btn_addToFavs.setImageResource(R.drawable.ic_favouriteempty);
 
         //Fav-Button-click-handler
-        findViewById(R.id.btnAddToFavourites).setOnClickListener(new View.OnClickListener() {
+        btn_addToFavs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //TODO besser machen... ->Risiko der asynchronität
                MealList favourites = new Gson().fromJson(load(MainActivity.FILENAME_FAVOURITES), MealList.class);
 
-               favourites.getMeals().add(meal);
+                if (!isMealFav(meal)) {
+                    btn_addToFavs.setImageResource(R.drawable.ic_favoritesfull);
+                    favourites.getMeals().add(meal);
+                }
+                else {
+                    btn_addToFavs.setImageResource(R.drawable.ic_favouriteempty);
+                    List<Meal> mealsToRemove=new ArrayList<>();
+
+                    for(Meal m:favourites.getMeals()) if(m.getIdMeal()==meal.getIdMeal())  mealsToRemove.add(m);
+
+                    favourites.getMeals().removeAll(mealsToRemove);
+                }
+
+
                save(new Gson().toJson(favourites),MainActivity.FILENAME_FAVOURITES);
             }
         });
+    }
+
+
+    public boolean isMealFav(Meal m) {
+        MealList favourites = new Gson().fromJson(load(MainActivity.FILENAME_FAVOURITES), MealList.class);
+        for(Meal m2:favourites.getMeals()){
+            if(m.getIdMeal()==m2.getIdMeal()) return true;
+        }
+        return false;
     }
 
 

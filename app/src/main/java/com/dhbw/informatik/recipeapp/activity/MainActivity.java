@@ -44,6 +44,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -269,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case R.id.bottom_nav_favorites:
                             fragment=2;
-                            ft.replace(R.id.fragment_container, new FavoritesFragment()).commit();
+                            ft.replace(R.id.fragment_container, new FavoritesFragment(self)).commit();
                             break;
                         case R.id.bottom_nav_api_test:
                             fragment=3;
@@ -540,7 +541,7 @@ public class MainActivity extends AppCompatActivity {
         for(Meal m:favourites.getMeals()) if(m.getIdMeal()==meal.getIdMeal())  return;
 
         favourites.getMeals().add(meal);
-
+        save(new Gson().toJson(favourites),FILENAME_FAVOURITES);
         Log.d("test",meal.getStrMeal()+" zu favouriten hinzugefügt");
     }
 
@@ -631,5 +632,28 @@ public class MainActivity extends AppCompatActivity {
         Log.d("test",meal.getStrMeal()+" zu last clicked hinzugefügt");
     }
 
+    /**
+     * Prüft, ob angegebenes Rezept in der Favouriten-Liste ist
+     * @return ob angegebenes Rezept in der Favouriten-Liste ist
+     */
+    public boolean isMealFav(Meal m) {
+        readFiles();
+        for(Meal m2:favourites.getMeals()){
+            if(m.getIdMeal()==m2.getIdMeal()) return true;
+        }
+        return false;
+    }
 
+    public void removeFromFavourites(Meal meal){
+        favourites = new Gson().fromJson(load(FILENAME_FAVOURITES), MealList.class);
+        //prüfen, dass meal noch nicht in favs ist
+
+        List<Meal> mealsToRemove=new ArrayList<>();
+
+        for(Meal m:favourites.getMeals()) if(m.getIdMeal()==meal.getIdMeal())  mealsToRemove.add(m);
+
+        favourites.getMeals().removeAll(mealsToRemove);
+        save(new Gson().toJson(favourites),FILENAME_FAVOURITES);
+        Log.d("test",meal.getStrMeal()+" von favouriten entfernt");
+    }
 }

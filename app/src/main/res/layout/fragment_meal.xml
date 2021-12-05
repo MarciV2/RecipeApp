@@ -47,8 +47,9 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="20dp"
-        android:padding="20dp"
+        android:layout_marginHorizontal="20dp"
+        android:paddingTop="20dp"
+        android:background="@drawable/layout_bg"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -118,7 +119,8 @@ Here, Cool, Text, To, Show"
                 android:text="Watch Tutorial"
                 app:icon="@drawable/ic_video_slomo"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/instructions" />
+                app:layout_constraintTop_toBottomOf="@id/instructions"
+                android:layout_marginBottom="20dp"/>
 
 
 
@@ -132,7 +134,7 @@ Here, Cool, Text, To, Show"
         android:layout_height="wrap_content"
         android:baselineAlignBottom="false"
         android:clickable="true"
-        android:src="@drawable/ic_favorites"
+        android:src="@drawable/ic_favoritesfull"
         app:layout_anchor="@id/appbar"
         app:layout_anchorGravity="end|bottom"
         android:layout_marginRight="30dp"
