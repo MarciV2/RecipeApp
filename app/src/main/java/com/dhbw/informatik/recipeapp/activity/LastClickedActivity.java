@@ -129,7 +129,13 @@ public class LastClickedActivity extends AppCompatActivity {
         save(new Gson().toJson(favourites),mainActivity.FILENAME_FAVOURITES);
         Log.d("test",meal.getStrMeal()+" von favouriten entfernt");
     }
-
+    public boolean isMealFav(Meal m) {
+        favourites = new Gson().fromJson(load(mainActivity.FILENAME_FAVOURITES), MealList.class);
+        for(Meal m2:favourites.getMeals()){
+            if(m.getIdMeal()==m2.getIdMeal()) return true;
+        }
+        return false;
+    }
 
     /**
      * Erstellt von Johannes Fahr

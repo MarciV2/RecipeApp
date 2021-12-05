@@ -86,11 +86,19 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
         holder.tvIngredients.setText(ingredientsStr);
 
         //Icon für Fav setzen
-        if (mainActivity.isMealFav(meal))
-            holder.faBtnFavourite.setImageResource(R.drawable.ic_favoritesfull);
+        if(lastClicked==false) {
+            if (mainActivity.isMealFav(meal))
+                holder.faBtnFavourite.setImageResource(R.drawable.ic_favoritesfull);
+            else
+                holder.faBtnFavourite.setImageResource(R.drawable.ic_favouriteempty);
+        }
         else
-            holder.faBtnFavourite.setImageResource(R.drawable.ic_favouriteempty);
-
+        {
+            if (lastClickedActivity.isMealFav(meal))
+                holder.faBtnFavourite.setImageResource(R.drawable.ic_favoritesfull);
+            else
+                holder.faBtnFavourite.setImageResource(R.drawable.ic_favouriteempty);
+        }
 
 
 
@@ -99,24 +107,28 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
-
+                if(!lastClicked){
                 if (!mainActivity.isMealFav(meal)) {
                     holder.faBtnFavourite.setImageResource(R.drawable.ic_favoritesfull);
-                    if (!lastClicked)
                         mainActivity.addToFavourites(meal);
-                    else
-                        lastClickedActivity.addToFavourites(meal);
                 }
                 else{
                     holder.faBtnFavourite.setImageResource(R.drawable.ic_favouriteempty);
-
-                    if (!lastClicked)
                         mainActivity.removeFromFavourites(meal);
-                    else
+                }
+
+
+            }
+            else
+                {
+                    if (!lastClickedActivity.isMealFav(meal)) {
+                        holder.faBtnFavourite.setImageResource(R.drawable.ic_favoritesfull);
+                        lastClickedActivity.addToFavourites(meal);
+                    }
+                    else{
+                        holder.faBtnFavourite.setImageResource(R.drawable.ic_favouriteempty);
                         lastClickedActivity.removeFromFavourites(meal);
-
-
-
+                    }
                 }
             }
         });
