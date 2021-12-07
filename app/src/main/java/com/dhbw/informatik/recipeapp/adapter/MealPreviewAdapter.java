@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.dhbw.informatik.recipeapp.FileHandler;
 import com.dhbw.informatik.recipeapp.activity.LastClickedActivity;
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.activity.MainActivity;
@@ -34,10 +35,12 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
     private MainActivity mainActivity;
     private LastClickedActivity lastClickedActivity;
     private boolean lastClicked = false;
+    private FileHandler fileHandler;
 
     public MealPreviewAdapter(List<Meal> mealList, MainActivity mainActivity) {
         this.mealList = mealList;
         this.mainActivity = mainActivity;
+        this.fileHandler=FileHandler.getInstance();
     }
 
     public MealPreviewAdapter(List<Meal> mealList, LastClickedActivity lastClickedActivity, boolean lastClicked) {
@@ -86,19 +89,12 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
         holder.tvIngredients.setText(ingredientsStr);
 
         //Icon für Fav setzen
-        if(lastClicked==false) {
-            if (mainActivity.isMealFav(meal))
+            if (fileHandler.isMealFav(meal))
                 holder.faBtnFavourite.setImageResource(R.drawable.ic_favoritesfull);
             else
                 holder.faBtnFavourite.setImageResource(R.drawable.ic_favouriteempty);
-        }
-        else
-        {
-            if (lastClickedActivity.isMealFav(meal))
-                holder.faBtnFavourite.setImageResource(R.drawable.ic_favoritesfull);
-            else
-                holder.faBtnFavourite.setImageResource(R.drawable.ic_favouriteempty);
-        }
+
+
 
 
 
@@ -107,29 +103,18 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
-                if(!lastClicked){
-                if (!mainActivity.isMealFav(meal)) {
+
+                if (!fileHandler.isMealFav(meal)) {
                     holder.faBtnFavourite.setImageResource(R.drawable.ic_favoritesfull);
-                        mainActivity.addToFavourites(meal);
+                    fileHandler.addToFavourites(meal);
                 }
                 else{
                     holder.faBtnFavourite.setImageResource(R.drawable.ic_favouriteempty);
-                        mainActivity.removeFromFavourites(meal);
+                    fileHandler.removeFromFavourites(meal);
                 }
 
 
-            }
-            else
-                {
-                    if (!lastClickedActivity.isMealFav(meal)) {
-                        holder.faBtnFavourite.setImageResource(R.drawable.ic_favoritesfull);
-                        lastClickedActivity.addToFavourites(meal);
-                    }
-                    else{
-                        holder.faBtnFavourite.setImageResource(R.drawable.ic_favouriteempty);
-                        lastClickedActivity.removeFromFavourites(meal);
-                    }
-                }
+
             }
         });
 
@@ -137,17 +122,11 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
         View.OnClickListener clOpenMeal = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (lastClicked == false) {
-                    mainActivity.lastClicked(meal);
+                fileHandler.lastClicked(meal);
                     Intent i = new Intent(view.getContext(), MealDetailActivity.class);
                     i.putExtra("meal", meal);
                     mainActivity.startActivity(i);
-                } else {
 
-                    Intent i = new Intent(view.getContext(), MealDetailActivity.class);
-                    i.putExtra("meal", meal);
-                    lastClickedActivity.startActivity(i);
-                }
             }
         };
         //Angewanth auf titel und thumbnail

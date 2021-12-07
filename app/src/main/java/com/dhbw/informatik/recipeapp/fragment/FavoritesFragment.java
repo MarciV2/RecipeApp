@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dhbw.informatik.recipeapp.FileHandler;
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.activity.MainActivity;
 import com.dhbw.informatik.recipeapp.activity.MealDetailActivity;
@@ -32,18 +33,19 @@ public class FavoritesFragment extends Fragment {
     private List<Meal> mealList;
     private MealPreviewAdapter mealPreviewAdapter;
     private RecyclerView mealPreviewRecyclerView;
-
+private FileHandler fileHandler;
 
     public FavoritesFragment(MainActivity mainActivity) {
         this.mainActivity=mainActivity;
+        fileHandler=FileHandler.getInstance();
 
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainActivity.readFiles();
-        mealList=mainActivity.favourites.getMeals();
+        fileHandler.readFiles();
+        mealList=fileHandler.favourites.getMeals();
 
     }
 

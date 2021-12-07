@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dhbw.informatik.recipeapp.FileHandler;
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.activity.CreateOwnRecipeActivity;
 import com.dhbw.informatik.recipeapp.activity.LastClickedActivity;
@@ -21,7 +22,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class ApiTestFragment extends Fragment {
 
     private MainActivity mainActivity;
-
+private FileHandler fileHandler;
     BottomNavigationView navigationView;
 
 
@@ -33,6 +34,7 @@ public class ApiTestFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fileHandler=FileHandler.getInstance();
 
     }
 
@@ -73,8 +75,8 @@ public class ApiTestFragment extends Fragment {
         {
             Meal m= (Meal) data.getSerializableExtra("meal");
             if(m!=null) {
-                mainActivity.ownRecipes.getMeals().add(m);
-            mainActivity.saveFiles();
+                fileHandler.ownRecipes.getMeals().add(m);
+                fileHandler.saveFiles();
             }
         }
     }

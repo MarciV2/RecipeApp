@@ -14,6 +14,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.dhbw.informatik.recipeapp.FileHandler;
 import com.dhbw.informatik.recipeapp.adapter.MealPreviewAdapter;
 import com.dhbw.informatik.recipeapp.fragment.ApiTestFragment;
 import com.dhbw.informatik.recipeapp.OnSwipeTouchListener;
@@ -55,20 +57,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String FILENAME_OWN_RECIPES="ownRecipes.json";
-    public static final String FILENAME_FAVOURITES="favourites.json";
-    public static final String FILENAME_LAST_CLICKED ="lastClicked.json";
     public int fragment=0;
     public String query=null;
     static public RecipeAPIService apiService = null;
     BottomNavigationView navigationView;
-    public MealList favourites;
-    public MealList ownRecipes;
-    public MealList lastClicked;
     private MealPreviewAdapter mealPreviewAdapter;
     private RecyclerView mealPreviewRecyclerView;
     private MainActivity self=this;
     private SwipeRefreshLayout swipeContainer;
+    private FileHandler fileHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,51 +81,17 @@ public class MainActivity extends AppCompatActivity {
 
         initRetrofit();
 
+        fileHandler=FileHandler.getInstance();
+        fileHandler.setContext(getApplicationContext());
 
-        readFiles();
+        fileHandler.readFiles();
 
-        if (favourites == null) favourites = new MealList();
-        if (ownRecipes == null) ownRecipes = new MealList();
-        if (lastClicked == null) lastClicked = new MealList();
+
 
         getSupportActionBar().hide();
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container, new HomeFragment(self)).commit();
-
-
-
-
-
-        /*MainActivity self=this;
-        findViewById(R.id.btnCreateOwn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i= new Intent(self,CreateOwnRecipeActivity.class);
-                startActivity(i);
-            }
-        });*/
-
-       /* findViewById(R.id.toMeal).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MealFragment frag = new MealFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, frag, "findThisFragment")
-                        .addToBackStack(null)
-                        .commit();
-
-                *//*
-                android.app.Fragment selectedFragment = null;
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-
-                ft.replace(R.id.fragment_container, new MealFragment()).commit();*//*
-
-            }
-        });*/
-
-
-
 
     }
 
@@ -225,31 +188,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-       saveFiles();
+       fileHandler.saveFiles();
 
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        saveFiles();
+        fileHandler.saveFiles();
     }
 
-    public void saveFiles(){
-        save(new Gson().toJson(favourites),FILENAME_FAVOURITES);
-        Log.d("test","Favourites saved");
-        save(new Gson().toJson(ownRecipes),FILENAME_OWN_RECIPES);
-        Log.d("test","Own Recipes saved");
-        save(new Gson().toJson(lastClicked),FILENAME_LAST_CLICKED);
-        Log.d("test","Last Clicked saved");
-    }
 
-    public void readFiles(){
-        //Favouriten und eigene Rezepte laden
-        favourites = new Gson().fromJson(load(FILENAME_FAVOURITES), MealList.class);
-        ownRecipes = new Gson().fromJson(load(FILENAME_OWN_RECIPES), MealList.class);
-        lastClicked = new Gson().fromJson(load(FILENAME_LAST_CLICKED), MealList.class);
-    }
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -310,6 +259,16 @@ public class MainActivity extends AppCompatActivity {
     public void pullDownRefresh()
     {
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+
+        //Custom weg zum ziehen, um zu refreshe, (standard zu sensibel)
+        final DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int mDistanceToTriggerSync = (int) (120 * metrics.density);
+        Log.d("dev","height:"+((View) swipeContainer.getParent().getParent()).getHeight()*0.6);
+        Log.d("dev","density: "+30*metrics.density);
+
+        swipeContainer.setDistanceToTriggerSync(mDistanceToTriggerSync);
+
+
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -382,8 +341,8 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("TAG", new Gson().toJson(list));
 
                 //Speichern und öffnen von response zu Testzwecken
-                save(new Gson().toJson(response.body().getMeals()),"test.txt");
-                load("test.txt");
+                fileHandler.save(new Gson().toJson(response.body().getMeals()),"test.txt");
+                fileHandler.load("test.txt");
             }
 
             @Override
@@ -531,19 +490,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * Erstellt von Marcel Vidmar
-     * Prüft, ob Rezept bereits in Favouriten-Liste ist, wenn nicht, wird die ses hinzugefügt
-     * @param meal Rezept, dass zu den Favouriten hinzugefügt werden soll
-     */
-    public void addToFavourites(Meal meal){
-        //prüfen, dass meal noch nicht in favs ist
-        for(Meal m:favourites.getMeals()) if(m.getIdMeal()==meal.getIdMeal())  return;
 
-        favourites.getMeals().add(meal);
-        save(new Gson().toJson(favourites),FILENAME_FAVOURITES);
-        Log.d("test",meal.getStrMeal()+" zu favouriten hinzugefügt");
-    }
 
     private void ShowText(String msg){
         AlertDialog.Builder a = new AlertDialog.Builder(this);
@@ -551,109 +498,5 @@ public class MainActivity extends AppCompatActivity {
                 .setMessage(msg);
     }
 
-    /**
-     * Erstellt von Johannes Fahr
-     * @param jsonString Jsonstring aus Abfrage welcher gespeichert werden soll
-     * @param fileName Dateiname der benutzt werden soll zum Speichern
-     */
 
-    public void save(String jsonString, String fileName) {
-        FileOutputStream fos = null;
-        try {
-            fos = this.openFileOutput(fileName, MODE_PRIVATE);
-            fos.write(jsonString.getBytes());
-            Log.d("TAG", "Saved: "+ jsonString + "to " + getFilesDir() + "/" + fileName);
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-    /**
-     * Erstellt von Johannes Fahr
-     * @param fileName Dateiname der Datei zum richtigen Aufrufen
-     * @return Gibt den Inhalt der Datei als String zurück
-     */
-    public String load(String fileName)
-    {
-        FileInputStream fis = null;
-        try {
-            fis = openFileInput(fileName);
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader br= new BufferedReader(isr);
-            StringBuilder sb = new StringBuilder();
-            String text;
-
-            while((text = br.readLine())!=null){
-                sb.append(text);
-            }
-            Log.d("TAG", "Read:"+sb.toString() +" from " + getFilesDir() + "/" + fileName);
-
-            return sb.toString();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    public void lastClicked(Meal meal)
-    {
-        MealList temp;
-        temp=new MealList();
-        for(Meal m:lastClicked.getMeals()) if(m.getIdMeal()==meal.getIdMeal()) {
-            lastClicked.getMeals().remove(meal);
-
-            temp.getMeals().add(m);
-            for(int i=0;i<lastClicked.getMeals().size();i++)
-            {
-                temp.getMeals().add(lastClicked.getMeals().get(i));
-            }
-            lastClicked=temp;
-            Log.d("test",meal.getStrMeal()+" zu last clicked hinzugefügt");
-            return;
-        }
-
-        temp.getMeals().add(meal);
-        for(int i=0;i<lastClicked.getMeals().size();i++)
-        {
-            temp.getMeals().add(lastClicked.getMeals().get(i));
-        }
-        lastClicked=temp;
-        Log.d("test",meal.getStrMeal()+" zu last clicked hinzugefügt");
-    }
-
-    /**
-     * Prüft, ob angegebenes Rezept in der Favouriten-Liste ist
-     * @return ob angegebenes Rezept in der Favouriten-Liste ist
-     */
-    public boolean isMealFav(Meal m) {
-        readFiles();
-        for(Meal m2:favourites.getMeals()){
-            if(m.getIdMeal()==m2.getIdMeal()) return true;
-        }
-        return false;
-    }
-
-    public void removeFromFavourites(Meal meal){
-        favourites = new Gson().fromJson(load(FILENAME_FAVOURITES), MealList.class);
-        //prüfen, dass meal noch nicht in favs ist
-
-        List<Meal> mealsToRemove=new ArrayList<>();
-
-        for(Meal m:favourites.getMeals()) if(m.getIdMeal()==meal.getIdMeal())  mealsToRemove.add(m);
-
-        favourites.getMeals().removeAll(mealsToRemove);
-        save(new Gson().toJson(favourites),FILENAME_FAVOURITES);
-        Log.d("test",meal.getStrMeal()+" von favouriten entfernt");
-    }
 }
