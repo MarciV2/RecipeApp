@@ -47,6 +47,7 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
         this.mealList = mealList;
         this.lastClickedActivity = lastClickedActivity;
         this.lastClicked = lastClicked;
+        this.fileHandler=FileHandler.getInstance();
 
     }
 
@@ -89,6 +90,7 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
         holder.tvIngredients.setText(ingredientsStr);
 
         //Icon für Fav setzen
+
             if (fileHandler.isMealFav(meal))
                 holder.faBtnFavourite.setImageResource(R.drawable.ic_favoritesfull);
             else
@@ -125,7 +127,8 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
                 fileHandler.lastClicked(meal);
                     Intent i = new Intent(view.getContext(), MealDetailActivity.class);
                     i.putExtra("meal", meal);
-                    mainActivity.startActivity(i);
+                    if(!lastClicked)mainActivity.startActivity(i);
+                    else lastClickedActivity.startActivity(i);
 
             }
         };
