@@ -407,7 +407,13 @@ public class MainActivity extends AppCompatActivity {
                     //Abfangen/Ausgeben Fehlercode Bsp. 404
                     if (!response.isSuccessful()) {
                         Log.d("ERROR", "Code: " + response.code());
-
+                        Snackbar snackbar = Snackbar
+                                .make(findViewById(R.id.body_container), "Errorcode: " + response.code(), Snackbar.LENGTH_SHORT).setAction("X", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                    }
+                                });
+                        snackbar.show();
                         return;
                     }
 
@@ -459,6 +465,14 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<MealList> call, Throwable t) {
+                    Snackbar snackbar = Snackbar
+                            .make(findViewById(R.id.body_container), "Network error!", Snackbar.LENGTH_LONG).setAction("X", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                }
+                            });
+
+                    snackbar.show();
                     Log.d("TAG", "error: " + t.toString());
                 }
             });}

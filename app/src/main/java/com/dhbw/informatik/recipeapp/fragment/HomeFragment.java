@@ -88,6 +88,8 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+
+
         mainActivity.queryFunctionality();
         mainActivity.pullDownRefresh();
         super.onViewStateRestored(savedInstanceState);
@@ -110,6 +112,13 @@ public class HomeFragment extends Fragment {
                             //Abfangen/Ausgeben Fehlercode Bsp. 404
                             if (!response.isSuccessful()) {
                                 Log.d("ERROR", "Code: " + response.code());
+                                Snackbar snackbar = Snackbar
+                                        .make(mainActivity.findViewById(R.id.body_container), "Errorcode: " + response.code(), Snackbar.LENGTH_SHORT).setAction("X", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                            }
+                                        });
+                                snackbar.show();
                                 return;
                             }
                             List<Meal> tmp2MealList = response.body().getMeals();
