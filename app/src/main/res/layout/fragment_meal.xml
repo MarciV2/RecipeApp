@@ -49,7 +49,7 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="20dp"
         android:paddingTop="20dp"
-        android:background="@drawable/layout_bg"
+
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -82,6 +82,7 @@ Here, Cool, Text, To, Show"
                 android:layout_height="wrap_content"
                 android:background="@drawable/badge_corners"
                 android:text="Vegetarian"
+                android:textColor="@color/black"
                 android:layout_marginTop="10dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/areaLabel"
@@ -90,6 +91,7 @@ Here, Cool, Text, To, Show"
             <TextView
                 android:id="@+id/areaLabel"
                 android:text="Italian"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

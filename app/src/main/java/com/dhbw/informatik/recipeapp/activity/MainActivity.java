@@ -273,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Log.d("TEst","SAAAAAAAAAAAA");
+
                 navigationView = findViewById(R.id.bottom_navigation);
                 navigationView.setSelectedItemId(R.id.bottom_nav_categories);
                 navigationView.setSelectedItemId(R.id.bottom_nav_home);
