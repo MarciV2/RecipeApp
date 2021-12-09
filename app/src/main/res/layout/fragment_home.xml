@@ -12,14 +12,15 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:backgroundTint="@color/light_grey"
-        android:background="@drawable/rounded_corners2"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:onClick="clickSearch"
         android:focusedByDefault="false"
         android:iconifiedByDefault="false"
-        android:queryHint="Search by Recipename"
+        android:queryHint="Search by recipe name"
+
         />
 
 
