@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
     public String filter=null;
     private List<Meal> mealList;
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
