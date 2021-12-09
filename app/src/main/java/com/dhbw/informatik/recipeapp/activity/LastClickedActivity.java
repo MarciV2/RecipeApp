@@ -65,7 +65,7 @@ public class LastClickedActivity extends AppCompatActivity {
 
         if(fileHandler.lastClicked==null)return;
         mealList=fileHandler.lastClicked.getMeals();
-        for(int i=0;i<mealList.size();i++)mealList.get(i).fillArrays();
+
 
         mealPreviewRecyclerView=findViewById(R.id.recyclerViewLastClicked);
         mealPreviewRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext(),RecyclerView.VERTICAL,false));
