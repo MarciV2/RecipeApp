@@ -2,59 +2,40 @@ package com.dhbw.informatik.recipeapp.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dhbw.informatik.recipeapp.FileHandler;
 import com.dhbw.informatik.recipeapp.R;
+import com.dhbw.informatik.recipeapp.activity.LastClickedActivity;
+import com.dhbw.informatik.recipeapp.activity.MainActivity;
+import com.dhbw.informatik.recipeapp.adapter.MealPreviewAdapter;
+import com.dhbw.informatik.recipeapp.model.Meal;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link PersonalLastRecipesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.List;
+
 public class PersonalLastRecipesFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private List<Meal> mealList;
+    private MealPreviewAdapter mealPreviewAdapter;
+    private RecyclerView mealPreviewRecyclerView;
+    private FileHandler fileHandler;
 
     public PersonalLastRecipesFragment() {
-        // Required empty public constructor
+        fileHandler=FileHandler.getInstance();
+
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PersonalLastRecipesFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static PersonalLastRecipesFragment newInstance(String param1, String param2) {
-        PersonalLastRecipesFragment fragment = new PersonalLastRecipesFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -62,5 +43,27 @@ public class PersonalLastRecipesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_personal_last_recipes, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        updateMeals();
+    }
+
+    /**
+     * befüllt das recycler view
+     */
+    private void updateMeals() {
+
+        if(fileHandler.lastClicked==null)return;
+        mealList=fileHandler.lastClicked.getMeals();
+
+
+        mealPreviewRecyclerView=getView().findViewById(R.id.recyclerViewLastClicked);
+        mealPreviewRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext(),RecyclerView.VERTICAL,false));
+        mealPreviewAdapter=new MealPreviewAdapter(mealList,getActivity());
+        mealPreviewAdapter.update(mealList);
+        mealPreviewRecyclerView.setAdapter(mealPreviewAdapter);
     }
 }

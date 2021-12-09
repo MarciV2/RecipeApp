@@ -1,12 +1,21 @@
 package com.dhbw.informatik.recipeapp.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,6 +29,7 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -36,6 +46,7 @@ public class MealDetailActivity extends AppCompatActivity {
 
     private FileHandler fileHandler;
 
+    @SuppressLint("WrongThread")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,8 +69,18 @@ public class MealDetailActivity extends AppCompatActivity {
         TextView tvInstructions=findViewById(R.id.instructions);
         Button btnWatchOnYT=findViewById(R.id.btnWatchOnYT);
 
+        //Bild laden
+        String mealThumb=meal.getStrMealThumb();
+        if(URLUtil.isValidUrl(mealThumb)){
+            Picasso.get().load(meal.getStrMealThumb()).into(ivThumb);
 
-        Picasso.get().load(meal.getStrMealThumb()).into(ivThumb);
+
+        }else  {
+            if(mealThumb!=null) {
+                Bitmap bmp = fileHandler.loadImg(mealThumb);
+                ivThumb.setImageBitmap(bmp);
+            }
+        }
 
 
         tvTitle.setText(meal.getStrMeal());
@@ -93,7 +114,7 @@ public class MealDetailActivity extends AppCompatActivity {
 
         //YT-Button
         if(meal.getStrYoutube()==null)
-            btnWatchOnYT.setEnabled(false);
+            btnWatchOnYT.setVisibility(View.GONE);
         else
             if(meal.getStrYoutube().isEmpty())
                 btnWatchOnYT.setEnabled(false);
