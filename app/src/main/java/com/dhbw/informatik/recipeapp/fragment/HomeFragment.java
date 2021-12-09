@@ -42,7 +42,7 @@ public class HomeFragment extends Fragment {
     private MealPreviewAdapter mealPreviewAdapter;
     private RecyclerView mealPreviewRecyclerView;
     private SwipeRefreshLayout swipeContainer;
-    private ProgressBar progressBar;
+
     public HomeFragment(MainActivity mainActivity) {
 
         this.mainActivity=mainActivity;
@@ -71,7 +71,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        progressBar=view.findViewById(R.id.progress_loader);
+
 
         mealPreviewRecyclerView=view.findViewById(R.id.recyclerViewOfMeals);
 
@@ -80,22 +80,8 @@ public class HomeFragment extends Fragment {
         mealPreviewRecyclerView.setAdapter(mealPreviewAdapter);
 
 
-        //Delay zum Prüfen, ob Liste voll ist -> progress bar verstecken
-        new CountDownTimer(500, 500) {
 
-            public void onTick(long millisUntilFinished) {
-            }
-
-            public void onFinish() {
-                if(mealList.size()>5){
-                    progressBar.setVisibility(View.GONE);
-                    mealPreviewRecyclerView.setVisibility(View.VISIBLE);
-                    mealPreviewAdapter.notifyDataSetChanged();
-                }
-            }
-
-        }.start();
-
+updateMeals();
 
 
     }
@@ -116,10 +102,7 @@ public class HomeFragment extends Fragment {
     public void updateMeals() {
 
         //API-Aufrufe starten
-        if(progressBar!=null) {
-            mealPreviewRecyclerView.setVisibility(View.GONE);
-            progressBar.setVisibility(View.VISIBLE);
-        }
+
 
                 for(int i=0; i<10; i++){
                     Call<MealList> call = MainActivity.apiService.getRandomRecipe();
@@ -158,12 +141,7 @@ public class HomeFragment extends Fragment {
 
 
                 }
-                //Am ende Progress-Bar unsichtbar machen
-                if(progressBar!=null){
-                    progressBar.setVisibility(View.GONE);
-                    mealPreviewRecyclerView.setVisibility(View.VISIBLE);
-                    mealPreviewAdapter.notifyDataSetChanged();
-                }
+//
 
     }
 
