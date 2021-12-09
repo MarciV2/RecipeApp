@@ -51,8 +51,8 @@ Umsetzung der Zutaten mittels dynamischem RecyclerView
       app:layout_constraintTop_toBottomOf="@id/etTitle"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintEnd_toStartOf="@id/ivThumbnail"
-      app:layout_constraintBottom_toTopOf="@id/actvCategory">
-  </androidx.recyclerview.widget.RecyclerView>
+      app:layout_constraintBottom_toTopOf="@id/actvCategory"
+      tools:listitem="@layout/ownrecipeingredientelement"/>
 
   <ImageView
       android:id="@+id/ivThumbnail"
@@ -62,7 +62,7 @@ Umsetzung der Zutaten mittels dynamischem RecyclerView
       app:layout_constraintTop_toTopOf="@id/rvIngredients"
       app:layout_constraintStart_toEndOf="@id/rvIngredients"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintWidth_percent="0.3"
+      app:layout_constraintWidth_percent="0.25"
       app:layout_constraintDimensionRatio="1:1"
       android:layout_marginEnd="16dp"/>
 
