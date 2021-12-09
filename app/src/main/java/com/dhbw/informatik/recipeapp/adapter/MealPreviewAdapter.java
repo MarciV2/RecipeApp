@@ -34,6 +34,7 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
     private List<Meal> mealList;
     private MainActivity mainActivity;
     private LastClickedActivity lastClickedActivity;
+
     private boolean lastClicked = false;
     private FileHandler fileHandler;
 

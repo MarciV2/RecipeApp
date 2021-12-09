@@ -66,12 +66,14 @@ public class MainActivity extends AppCompatActivity {
     private MainActivity self=this;
     private SwipeRefreshLayout swipeContainer;
     private FileHandler fileHandler;
+    public String filter=null;
+    private List<Meal> mealList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        filter= getIntent().getStringExtra("filter");
         navigationView = findViewById(R.id.bottom_navigation);
         navigationView.setSelectedItemId(R.id.bottom_nav_home);
 
@@ -98,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostResume() {
         Log.d("test","Resume");
+
         super.onPostResume();
     }
 
@@ -106,16 +109,116 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("ResourceType")
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        mealPreviewRecyclerView = findViewById(R.id.recyclerViewOfMeals);
+        mealPreviewRecyclerView.setLayoutManager(new LinearLayoutManager(self, RecyclerView.VERTICAL, false));
+        mealPreviewAdapter = new MealPreviewAdapter(mealList, self);
 
-
-
-        queryFunctionality();
+        if(filter!=null)areaFilter();
         pullDownRefresh();
         swipeFunctionality();
-
-
-
+        queryFunctionality();
         super.onPostCreate(savedInstanceState);
+    }
+    void recipeById(String id)
+    {
+
+        Call<MealList> call = apiService.getRecipeById(id);
+        call.enqueue(new Callback<MealList>() {
+            @Override
+            public void onResponse(@NonNull Call<MealList> call, @NonNull Response<MealList> response) {
+                //TODO etwas mit den daten anfangen, hier nur beispielsweise in die konsole gehauen...
+                //Abfangen/Ausgeben Fehlercode Bsp. 404
+                if (!response.isSuccessful()) {
+                    Log.d("ERROR", "Code: " + response.code());
+                    return;
+                }
+                List<Meal> tmp2MealList = response.body().getMeals();
+                Meal m=tmp2MealList.get(0);
+                m.fillArrays();
+
+                mealPreviewAdapter.update(m);
+                mealPreviewRecyclerView.setAdapter(mealPreviewAdapter);
+
+            }
+
+            @Override
+            public void onFailure(Call<MealList> call, Throwable t) {
+
+            }
+        });
+
+    }
+    void areaFilter()
+    {
+        Log.d("filer: ",filter);
+        Call<MealList> call = apiService.filterByArea(filter);
+        call.enqueue(new Callback<MealList>() {
+            @Override
+            public void onResponse(Call<MealList> call, Response<MealList> response) {
+                //TODO etwas mit den daten anfangen, hier nur beispielsweise in die konsole gehauen...
+                //Abfangen/Ausgeben Fehlercode Bsp. 404
+                if (!response.isSuccessful()) {
+                    Log.d("ERROR", "Code: " + response.code());
+                    Snackbar snackbar = Snackbar
+                            .make(findViewById(R.id.body_container), "Errorcode: " + response.code(), Snackbar.LENGTH_SHORT).setAction("X", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                }
+                            });
+                    snackbar.show();
+                    return;
+                }
+
+                try {
+                    List<Meal> list = response.body().getMeals();
+
+                    Log.d("Arraygröße", String.valueOf(list.size()));
+
+                    for (int i = 0; i < list.size(); i++) {
+                        //Aufruf von recipebyid
+                        recipeById(String.valueOf(list.get(i).getIdMeal()));
+                    }
+
+
+                    Snackbar snackbar = Snackbar
+                            .make(findViewById(R.id.body_container), String.valueOf(list.size()) + " entrys found for the area:"+filter, Snackbar.LENGTH_SHORT).setAction("X", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                }
+                            });
+                    snackbar.show();
+
+
+                    Log.d("TAG", new Gson().toJson(list));
+
+                } catch (NullPointerException n1) {
+                    Snackbar snackbar = Snackbar
+                            .make(findViewById(R.id.body_container), "No Recipes for the area: "+filter, Snackbar.LENGTH_LONG).setAction("X", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                }
+                            });
+
+                    snackbar.show();
+                    Log.d("TAG", "No entrys found");
+
+                }
+
+            }
+            @Override
+            public void onFailure(Call<MealList> call, Throwable t) {
+                Snackbar snackbar = Snackbar
+                        .make(findViewById(R.id.body_container), "Network error!", Snackbar.LENGTH_LONG).setAction("X", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                            }
+                        });
+
+                snackbar.show();
+                Log.d("TAG", "error: " + t.toString());
+            }
+        });
+
     }
     void swipeFunctionality()
     {
@@ -210,8 +313,9 @@ public class MainActivity extends AppCompatActivity {
 
                     switch(item.getItemId()){
                         case R.id.bottom_nav_home:
+                            if(fragment!=0){
                             fragment=0;
-                            ft.replace(R.id.fragment_container, new HomeFragment(self)).commit();
+                            ft.replace(R.id.fragment_container, new HomeFragment(self)).commit();}
                             break;
                         case R.id.bottom_nav_categories:
                             fragment=1;

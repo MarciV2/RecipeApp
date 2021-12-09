@@ -51,7 +51,7 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mealList=new ArrayList<>();
-        updateMeals();
+        if(mainActivity.filter==null)updateMeals();
     }
 
 

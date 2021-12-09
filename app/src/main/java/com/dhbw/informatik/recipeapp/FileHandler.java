@@ -163,10 +163,17 @@ public class FileHandler {
         save(new Gson().toJson(favourites),FILENAME_FAVOURITES);
         Log.d("test",meal.getStrMeal()+" von favouriten entfernt");
     }
+    public void removeFromLastClicked(Meal meal){
+        lastClicked = new Gson().fromJson(load(FILENAME_LAST_CLICKED), MealList.class);
 
+        List<Meal> mealsToRemove=new ArrayList<>();
 
+        for(Meal m:lastClicked.getMeals()) if(m.getIdMeal()==meal.getIdMeal())  mealsToRemove.add(m);
 
-
+        lastClicked.getMeals().removeAll(mealsToRemove);
+        save(new Gson().toJson(lastClicked),FILENAME_LAST_CLICKED);
+        Log.d("test",meal.getStrMeal()+" von favouriten entfernt");
+    }
 
     public void saveFavourites(){
         save(new Gson().toJson(favourites),FILENAME_FAVOURITES);
@@ -178,7 +185,7 @@ public class FileHandler {
         MealList temp;
         temp=new MealList();
         for(Meal m:lastClicked.getMeals()) if(m.getIdMeal()==meal.getIdMeal()) {
-            lastClicked.getMeals().remove(meal);
+            removeFromLastClicked(m);
 
             temp.getMeals().add(m);
             for(int i=0;i<lastClicked.getMeals().size();i++)
