@@ -11,9 +11,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dhbw.informatik.recipeapp.FileHandler;
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.model.Meal;
 import com.dhbw.informatik.recipeapp.model.lists.MealList;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -23,6 +25,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
 Erstellt von Marcel Vidmar
@@ -30,10 +34,13 @@ Dynamische Anzeige und sonstige Aktionen in der Detailansicht eines Rezepts
  */
 public class MealDetailActivity extends AppCompatActivity {
 
+    private FileHandler fileHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_meal);
+        fileHandler=FileHandler.getInstance();
 
         Meal meal= (Meal) getIntent().getSerializableExtra("meal");
 
@@ -99,76 +106,37 @@ public class MealDetailActivity extends AppCompatActivity {
                 });
 
 
+        //Fav-button icon
+        //Icon für Fav setzen
+        FloatingActionButton btn_addToFavs= findViewById(R.id.btnAddToFavourites);
+        if (fileHandler.isMealFav(meal))
+            btn_addToFavs.setImageResource(R.drawable.ic_favoritesfull);
+        else
+            btn_addToFavs.setImageResource(R.drawable.ic_favouriteempty);
+
 
 
         //Fav-Button-click-handler
-        findViewById(R.id.btnAddToFavourites).setOnClickListener(new View.OnClickListener() {
+        btn_addToFavs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO besser machen... ->Risiko der asynchronität
-               MealList favourites = new Gson().fromJson(load(MainActivity.FILENAME_FAVOURITES), MealList.class);
-               favourites.getMeals().add(meal);
-               save(new Gson().toJson(favourites),MainActivity.FILENAME_FAVOURITES);
+
+                if (!fileHandler.isMealFav(meal)) {
+                    btn_addToFavs.setImageResource(R.drawable.ic_favoritesfull);
+                    fileHandler.addToFavourites(meal);
+                }
+                else {
+                    btn_addToFavs.setImageResource(R.drawable.ic_favouriteempty);
+                    List<Meal> mealsToRemove=new ArrayList<>();
+
+                    fileHandler.removeFromFavourites(meal);
+                }
+
             }
         });
     }
 
 
-    /**
-     * Erstellt von Johannes Fahr
-     * @param jsonString Jsonstring aus Abfrage welcher gespeichert werden soll
-     * @param fileName Dateiname der benutzt werden soll zum Speichern
-     */
-
-    public void save(String jsonString, String fileName) {
-        FileOutputStream fos = null;
-        try {
-            fos = this.openFileOutput(fileName, MODE_PRIVATE);
-            fos.write(jsonString.getBytes());
-            Log.d("TAG", "Saved: "+ jsonString + "to " + getFilesDir() + "/" + fileName);
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-    /**
-     * Erstellt von Johannes Fahr
-     * @param fileName Dateiname der Datei zum richtigen Aufrufen
-     * @return Gibt den Inhalt der Datei als String zurück
-     */
-    public String load(String fileName)
-    {
-        FileInputStream fis = null;
-        try {
-            fis = openFileInput(fileName);
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader br= new BufferedReader(isr);
-            StringBuilder sb = new StringBuilder();
-            String text;
-
-            while((text = br.readLine())!=null){
-                sb.append(text);
-            }
-            Log.d("TAG", "Read:"+sb.toString() +" from " + getFilesDir() + "/" + fileName);
-
-            return sb.toString();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
 
 

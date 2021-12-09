@@ -8,11 +8,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.dhbw.informatik.recipeapp.activity.MealDetailActivity;
 import com.dhbw.informatik.recipeapp.adapter.MealPreviewAdapter;
@@ -29,12 +32,16 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
+/*
+Erstellt von Marcel Vidmar
+home-seite mit 10 zufälligen rezepten
+ */
 public class HomeFragment extends Fragment {
     private MainActivity mainActivity;
     private List<Meal> mealList;
     private MealPreviewAdapter mealPreviewAdapter;
     private RecyclerView mealPreviewRecyclerView;
+    private SwipeRefreshLayout swipeContainer;
 
     public HomeFragment(MainActivity mainActivity) {
 
@@ -47,7 +54,7 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mealList=new ArrayList<>();
-        updateMeals();
+        if(mainActivity.filter==null)updateMeals();
     }
 
 
@@ -64,6 +71,8 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+
         mealPreviewRecyclerView=view.findViewById(R.id.recyclerViewOfMeals);
 
         mealPreviewRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
@@ -71,30 +80,29 @@ public class HomeFragment extends Fragment {
         mealPreviewRecyclerView.setAdapter(mealPreviewAdapter);
 
 
-        getActivity().findViewById(R.id.toMeal).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Intent i = new Intent(getActivity(), MealDetailActivity.class);
-                startActivity(i);
-            }
-        });
+updateMeals();
+
 
     }
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+
+
         mainActivity.queryFunctionality();
+        mainActivity.pullDownRefresh();
         super.onViewStateRestored(savedInstanceState);
     }
 
 
     /**
-     * befüllt das recycler view
+     * befüllt das recycler view mit 10 zufälligen meals
      */
-    private void updateMeals() {
+    public void updateMeals() {
 
         //API-Aufrufe starten
+
 
                 for(int i=0; i<10; i++){
                     Call<MealList> call = MainActivity.apiService.getRandomRecipe();
@@ -105,6 +113,13 @@ public class HomeFragment extends Fragment {
                             //Abfangen/Ausgeben Fehlercode Bsp. 404
                             if (!response.isSuccessful()) {
                                 Log.d("ERROR", "Code: " + response.code());
+                                Snackbar snackbar = Snackbar
+                                        .make(mainActivity.findViewById(R.id.body_container), "Errorcode: " + response.code(), Snackbar.LENGTH_SHORT).setAction("X", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                            }
+                                        });
+                                snackbar.show();
                                 return;
                             }
                             List<Meal> tmp2MealList = response.body().getMeals();
@@ -114,6 +129,7 @@ public class HomeFragment extends Fragment {
 
                             mealPreviewAdapter.update(m);
 
+
                         }
 
                         @Override
@@ -122,10 +138,10 @@ public class HomeFragment extends Fragment {
                         }
                     });
 
+
+
                 }
-
-
-
+//
 
     }
 

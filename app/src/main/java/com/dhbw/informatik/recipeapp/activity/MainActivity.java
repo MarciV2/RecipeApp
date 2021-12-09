@@ -2,17 +2,21 @@ package com.dhbw.informatik.recipeapp.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -20,6 +24,7 @@ import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.dhbw.informatik.recipeapp.FileHandler;
 import com.dhbw.informatik.recipeapp.adapter.MealPreviewAdapter;
 import com.dhbw.informatik.recipeapp.fragment.PersonalFragment;
 import com.dhbw.informatik.recipeapp.OnSwipeTouchListener;
@@ -43,6 +48,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -53,26 +59,23 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String FILENAME_OWN_RECIPES="ownRecipes.json";
-    public static final String FILENAME_FAVOURITES="favourites.json";
-    public static final String FILENAME_LAST_CLICKED ="lastClicked.json";
     public int fragment=0;
     public String query=null;
     static public RecipeAPIService apiService = null;
     BottomNavigationView navigationView;
-    public MealList favourites;
-    public MealList ownRecipes;
-    public MealList lastClicked;
     private MealPreviewAdapter mealPreviewAdapter;
     private RecyclerView mealPreviewRecyclerView;
     private MainActivity self=this;
-
+    private SwipeRefreshLayout swipeContainer;
+    private FileHandler fileHandler;
+    public String filter=null;
+    private List<Meal> mealList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        filter= getIntent().getStringExtra("filter");
         navigationView = findViewById(R.id.bottom_navigation);
         navigationView.setSelectedItemId(R.id.bottom_nav_home);
 
@@ -82,57 +85,24 @@ public class MainActivity extends AppCompatActivity {
 
         initRetrofit();
 
+        fileHandler=FileHandler.getInstance();
+        fileHandler.setContext(getApplicationContext());
 
-        readFiles();
+        fileHandler.readFiles();
 
-        if (favourites == null) favourites = new MealList();
-        if (ownRecipes == null) ownRecipes = new MealList();
-        if (lastClicked == null) lastClicked = new MealList();
+        Log.d("dev","files read...");
 
         getSupportActionBar().hide();
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container, new HomeFragment(self)).commit();
 
-
-
-
-
-        /*MainActivity self=this;
-        findViewById(R.id.btnCreateOwn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i= new Intent(self,CreateOwnRecipeActivity.class);
-                startActivity(i);
-            }
-        });*/
-
-       /* findViewById(R.id.toMeal).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MealFragment frag = new MealFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, frag, "findThisFragment")
-                        .addToBackStack(null)
-                        .commit();
-
-                *//*
-                android.app.Fragment selectedFragment = null;
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-
-                ft.replace(R.id.fragment_container, new MealFragment()).commit();*//*
-
-            }
-        });*/
-
-
-
-
     }
 
     @Override
     protected void onPostResume() {
         Log.d("test","Resume");
+
         super.onPostResume();
     }
 
@@ -141,64 +111,170 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("ResourceType")
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        mealPreviewRecyclerView = findViewById(R.id.recyclerViewOfMeals);
+        mealPreviewRecyclerView.setLayoutManager(new LinearLayoutManager(self, RecyclerView.VERTICAL, false));
+        mealPreviewAdapter = new MealPreviewAdapter(mealList, self);
 
-
-
+        if(filter!=null)areaFilter();
+        pullDownRefresh();
+        swipeFunctionality();
         queryFunctionality();
+        super.onPostCreate(savedInstanceState);
+    }
+    void recipeById(String id)
+    {
+
+        Call<MealList> call = apiService.getRecipeById(id);
+        call.enqueue(new Callback<MealList>() {
+            @Override
+            public void onResponse(@NonNull Call<MealList> call, @NonNull Response<MealList> response) {
+                //TODO etwas mit den daten anfangen, hier nur beispielsweise in die konsole gehauen...
+                //Abfangen/Ausgeben Fehlercode Bsp. 404
+                if (!response.isSuccessful()) {
+                    Log.d("ERROR", "Code: " + response.code());
+                    return;
+                }
+                List<Meal> tmp2MealList = response.body().getMeals();
+                Meal m=tmp2MealList.get(0);
+                m.fillArrays();
+
+                mealPreviewAdapter.update(m);
+                mealPreviewRecyclerView.setAdapter(mealPreviewAdapter);
+
+            }
+
+            @Override
+            public void onFailure(Call<MealList> call, Throwable t) {
+
+            }
+        });
+
+    }
+    void areaFilter()
+    {
+        Log.d("filer: ",filter);
+        Call<MealList> call = apiService.filterByArea(filter);
+        call.enqueue(new Callback<MealList>() {
+            @Override
+            public void onResponse(Call<MealList> call, Response<MealList> response) {
+                //TODO etwas mit den daten anfangen, hier nur beispielsweise in die konsole gehauen...
+                //Abfangen/Ausgeben Fehlercode Bsp. 404
+                if (!response.isSuccessful()) {
+                    Log.d("ERROR", "Code: " + response.code());
+                    Snackbar snackbar = Snackbar
+                            .make(findViewById(R.id.body_container), "Errorcode: " + response.code(), Snackbar.LENGTH_SHORT).setAction("X", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                }
+                            });
+                    snackbar.show();
+                    return;
+                }
+
+                try {
+                    List<Meal> list = response.body().getMeals();
+
+                    Log.d("Arraygröße", String.valueOf(list.size()));
+
+                    for (int i = 0; i < list.size(); i++) {
+                        //Aufruf von recipebyid
+                        recipeById(String.valueOf(list.get(i).getIdMeal()));
+                    }
+
+
+                    Snackbar snackbar = Snackbar
+                            .make(findViewById(R.id.body_container), String.valueOf(list.size()) + " entrys found for the area:"+filter, Snackbar.LENGTH_SHORT).setAction("X", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                }
+                            });
+                    snackbar.show();
+
+
+                    Log.d("TAG", new Gson().toJson(list));
+
+                } catch (NullPointerException n1) {
+                    Snackbar snackbar = Snackbar
+                            .make(findViewById(R.id.body_container), "No Recipes for the area: "+filter, Snackbar.LENGTH_LONG).setAction("X", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                }
+                            });
+
+                    snackbar.show();
+                    Log.d("TAG", "No entrys found");
+
+                }
+
+            }
+            @Override
+            public void onFailure(Call<MealList> call, Throwable t) {
+                Snackbar snackbar = Snackbar
+                        .make(findViewById(R.id.body_container), "Network error!", Snackbar.LENGTH_LONG).setAction("X", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                            }
+                        });
+
+                snackbar.show();
+                Log.d("TAG", "error: " + t.toString());
+            }
+        });
+
+    }
+    void swipeFunctionality()
+    {
         findViewById(R.id.body_container).setOnTouchListener(new OnSwipeTouchListener(self) {
             public void onSwipeTop() {
                 Log.d("TAG", "Top");
             }
             public void onSwipeLeft() {
-            Log.d("TAG", "Right");
+                Log.d("TAG", "Right");
                 navigationView = findViewById(R.id.bottom_navigation);
-            switch(fragment){
-                case 0:
-                    fragment=1;
-                    navigationView.setSelectedItemId(R.id.bottom_nav_categories);
-                    break;
-                case 1:
-                    fragment=2;
-                    navigationView.setSelectedItemId(R.id.bottom_nav_favorites);
-                    break;
-                case 2:
-                    fragment=3;
-                    navigationView.setSelectedItemId(R.id.bottom_nav_api_test);
-                    break;
-                case 3:
-                    break;
-            }
+                switch(fragment){
+                    case 0:
+                        fragment=1;
+                        navigationView.setSelectedItemId(R.id.bottom_nav_categories);
+                        break;
+                    case 1:
+                        fragment=2;
+                        navigationView.setSelectedItemId(R.id.bottom_nav_favorites);
+                        break;
+                    case 2:
+                        fragment=3;
+                        navigationView.setSelectedItemId(R.id.bottom_nav_api_test);
+                        break;
+                    case 3:
+                        break;
+                }
             }
             public void onSwipeRight() {
-            Log.d("TAG", "Left");
+                Log.d("TAG", "Left");
                 navigationView = findViewById(R.id.bottom_navigation);
-            switch(fragment){
-                case 0:
-                    break;
-                case 1:
-                    fragment=0;
-                    navigationView.setSelectedItemId(R.id.bottom_nav_home);
-                    break;
-                case 2:
-                    fragment=1;
-                    navigationView.setSelectedItemId(R.id.bottom_nav_categories);
-                    break;
-                case 3:
-                    fragment=2;
-                    navigationView.setSelectedItemId(R.id.bottom_nav_favorites);
-                    break;
+                switch(fragment){
+                    case 0:
+                        break;
+                    case 1:
+                        fragment=0;
+                        navigationView.setSelectedItemId(R.id.bottom_nav_home);
+                        break;
+                    case 2:
+                        fragment=1;
+                        navigationView.setSelectedItemId(R.id.bottom_nav_categories);
+                        break;
+                    case 3:
+                        fragment=2;
+                        navigationView.setSelectedItemId(R.id.bottom_nav_favorites);
+                        break;
+                }
             }
-        }
 
             public void onSwipeBottom() {
                 Log.d("TAG", "Bottom");
             }
 
         });
-
-        super.onPostCreate(savedInstanceState);
     }
-
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -217,31 +293,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-       saveFiles();
+       fileHandler.saveFiles();
 
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        saveFiles();
+        fileHandler.saveFiles();
     }
 
-    public void saveFiles(){
-        save(new Gson().toJson(favourites),FILENAME_FAVOURITES);
-        Log.d("test","Favourites saved");
-        save(new Gson().toJson(ownRecipes),FILENAME_OWN_RECIPES);
-        Log.d("test","Own Recipes saved");
-        save(new Gson().toJson(lastClicked),FILENAME_LAST_CLICKED);
-        Log.d("test","Last Clicked saved");
-    }
 
-    public void readFiles(){
-        //Favouriten und eigene Rezepte laden
-        favourites = new Gson().fromJson(load(FILENAME_FAVOURITES), MealList.class);
-        ownRecipes = new Gson().fromJson(load(FILENAME_OWN_RECIPES), MealList.class);
-        lastClicked = new Gson().fromJson(load(FILENAME_LAST_CLICKED), MealList.class);
-    }
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -253,8 +315,9 @@ public class MainActivity extends AppCompatActivity {
 
                     switch(item.getItemId()){
                         case R.id.bottom_nav_home:
+                            if(fragment!=0){
                             fragment=0;
-                            ft.replace(R.id.fragment_container, new HomeFragment(self)).commit();
+                            ft.replace(R.id.fragment_container, new HomeFragment(self)).commit();}
                             break;
                         case R.id.bottom_nav_categories:
                             fragment=1;
@@ -262,7 +325,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case R.id.bottom_nav_favorites:
                             fragment=2;
-                            ft.replace(R.id.fragment_container, new FavoritesFragment()).commit();
+                            ft.replace(R.id.fragment_container, new FavoritesFragment(self)).commit();
                             break;
                         case R.id.bottom_nav_api_test:
                             fragment=3;
@@ -298,6 +361,34 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+    }
+    public void pullDownRefresh()
+    {
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+
+        //Custom weg zum ziehen, um zu refreshe, (standard zu sensibel)
+        final DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int mDistanceToTriggerSync = (int) (120 * metrics.density);
+
+        swipeContainer.setDistanceToTriggerSync(mDistanceToTriggerSync);
+
+
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                navigationView = findViewById(R.id.bottom_navigation);
+                navigationView.setSelectedItemId(R.id.bottom_nav_categories);
+                navigationView.setSelectedItemId(R.id.bottom_nav_home);
+                swipeContainer.setRefreshing(false);
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
     }
     /**
      * Created by Marcel Vidmar
@@ -354,8 +445,8 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("TAG", new Gson().toJson(list));
 
                 //Speichern und öffnen von response zu Testzwecken
-                save(new Gson().toJson(response.body().getMeals()),"test.txt");
-                load("test.txt");
+                fileHandler.save(new Gson().toJson(response.body().getMeals()),"test.txt");
+                fileHandler.load("test.txt");
             }
 
             @Override
@@ -420,7 +511,13 @@ public class MainActivity extends AppCompatActivity {
                     //Abfangen/Ausgeben Fehlercode Bsp. 404
                     if (!response.isSuccessful()) {
                         Log.d("ERROR", "Code: " + response.code());
-
+                        Snackbar snackbar = Snackbar
+                                .make(findViewById(R.id.body_container), "Errorcode: " + response.code(), Snackbar.LENGTH_SHORT).setAction("X", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                    }
+                                });
+                        snackbar.show();
                         return;
                     }
 
@@ -472,6 +569,14 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<MealList> call, Throwable t) {
+                    Snackbar snackbar = Snackbar
+                            .make(findViewById(R.id.body_container), "Network error!", Snackbar.LENGTH_LONG).setAction("X", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                }
+                            });
+
+                    snackbar.show();
                     Log.d("TAG", "error: " + t.toString());
                 }
             });}
@@ -503,105 +608,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * Erstellt von Marcel Vidmar
-     * Prüft, ob Rezept bereits in Favouriten-Liste ist, wenn nicht, wird die ses hinzugefügt
-     * @param meal Rezept, dass zu den Favouriten hinzugefügt werden soll
-     */
-    public void addToFavourites(Meal meal){
-        //prüfen, dass meal noch nicht in favs ist
-        for(Meal m:favourites.getMeals()) if(m.getIdMeal()==meal.getIdMeal())  return;
 
-        favourites.getMeals().add(meal);
-
-        Log.d("test",meal.getStrMeal()+" zu favouriten hinzugefügt");
-    }
 
     private void ShowText(String msg){
         AlertDialog.Builder a = new AlertDialog.Builder(this);
         a.setTitle("Delete entry")
                 .setMessage(msg);
-    }
-
-    /**
-     * Erstellt von Johannes Fahr
-     * @param jsonString Jsonstring aus Abfrage welcher gespeichert werden soll
-     * @param fileName Dateiname der benutzt werden soll zum Speichern
-     */
-
-    public void save(String jsonString, String fileName) {
-        FileOutputStream fos = null;
-        try {
-            fos = this.openFileOutput(fileName, MODE_PRIVATE);
-            fos.write(jsonString.getBytes());
-            Log.d("TAG", "Saved: "+ jsonString + "to " + getFilesDir() + "/" + fileName);
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-    /**
-     * Erstellt von Johannes Fahr
-     * @param fileName Dateiname der Datei zum richtigen Aufrufen
-     * @return Gibt den Inhalt der Datei als String zurück
-     */
-    public String load(String fileName)
-    {
-        FileInputStream fis = null;
-        try {
-            fis = openFileInput(fileName);
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader br= new BufferedReader(isr);
-            StringBuilder sb = new StringBuilder();
-            String text;
-
-            while((text = br.readLine())!=null){
-                sb.append(text);
-            }
-            Log.d("TAG", "Read:"+sb.toString() +" from " + getFilesDir() + "/" + fileName);
-
-            return sb.toString();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    public void lastClicked(Meal meal)
-    {
-        MealList temp;
-        temp=new MealList();
-        for(Meal m:lastClicked.getMeals()) if(m.getIdMeal()==meal.getIdMeal()) {
-            lastClicked.getMeals().remove(meal);
-
-            temp.getMeals().add(m);
-            for(int i=0;i<lastClicked.getMeals().size();i++)
-            {
-                temp.getMeals().add(lastClicked.getMeals().get(i));
-            }
-            lastClicked=temp;
-            Log.d("test",meal.getStrMeal()+" zu last clicked hinzugefügt");
-            return;
-        }
-
-        temp.getMeals().add(meal);
-        for(int i=0;i<lastClicked.getMeals().size();i++)
-        {
-            temp.getMeals().add(lastClicked.getMeals().get(i));
-        }
-        lastClicked=temp;
-        Log.d("test",meal.getStrMeal()+" zu last clicked hinzugefügt");
     }
 
 

@@ -34,34 +34,43 @@
         app:layout_constraintTop_toBottomOf="@+id/search_box" />
 
 
-    <Button
-        android:id="@+id/toMeal"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_back_label" />
-
-    <!--<com.dhbw.informatik.recipeapp.MealListView
-        app:layout_constraintTop_toBottomOf="@id/toMeal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        custom:entireText="This is a test"
-        />-->
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewOfMeals"
-        android:layout_width="0dp"
-
-        android:layout_height="0dp"
-        android:paddingBottom="?attr/actionBarSize"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_back_label"
-        tools:listitem="@layout/meal_preview_element" />
+        android:paddingTop="80dp"
+
+        android:paddingBottom="?attr/actionBarSize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcome_back_label">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewOfMeals"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="?attr/actionBarSize"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:listitem="@layout/meal_preview_element"
+                />
+
+
+
+
+        </FrameLayout>
+
+
+
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
