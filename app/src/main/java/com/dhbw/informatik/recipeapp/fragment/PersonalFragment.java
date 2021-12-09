@@ -17,15 +17,16 @@ import com.dhbw.informatik.recipeapp.activity.LastClickedActivity;
 import com.dhbw.informatik.recipeapp.activity.MainActivity;
 import com.dhbw.informatik.recipeapp.model.Meal;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.tabs.TabLayout;
 
-public class ApiTestFragment extends Fragment {
+public class PersonalFragment extends Fragment {
 
     private MainActivity mainActivity;
 
     BottomNavigationView navigationView;
 
 
-    public ApiTestFragment(MainActivity mainActivity) {
+    public PersonalFragment(MainActivity mainActivity) {
         this.mainActivity=mainActivity;
     }
 
@@ -40,7 +41,7 @@ public class ApiTestFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_api_test, container, false);
+        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_personal, container, false);
         root.findViewById(R.id.btnCreateOwn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,6 +56,7 @@ public class ApiTestFragment extends Fragment {
                 startActivityForResult(i,1);
             }
         });
+
         return root;
     }
 

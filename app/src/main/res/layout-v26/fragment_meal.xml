@@ -66,7 +66,7 @@
                 android:autoSizeMaxTextSize="28dp"
                 android:autoSizeStepGranularity="2sp"
                 android:text="Arrabiata with some more"
-
+                
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                 android:textColor="@color/dark_grey"
                 app:layout_constraintLeft_toLeftOf="parent"

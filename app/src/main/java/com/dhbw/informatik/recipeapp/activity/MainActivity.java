@@ -21,7 +21,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.dhbw.informatik.recipeapp.adapter.MealPreviewAdapter;
-import com.dhbw.informatik.recipeapp.fragment.ApiTestFragment;
+import com.dhbw.informatik.recipeapp.fragment.PersonalFragment;
 import com.dhbw.informatik.recipeapp.OnSwipeTouchListener;
 import com.dhbw.informatik.recipeapp.fragment.SelectFilterFragment;
 import com.dhbw.informatik.recipeapp.fragment.FavoritesFragment;
@@ -266,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case R.id.bottom_nav_api_test:
                             fragment=3;
-                            ft.replace(R.id.fragment_container, new ApiTestFragment(self)).commit();
+                            ft.replace(R.id.fragment_container, new PersonalFragment(self)).commit();
 
                             break;
                     }

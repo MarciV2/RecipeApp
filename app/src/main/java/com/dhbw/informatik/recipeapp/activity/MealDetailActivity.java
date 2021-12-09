@@ -56,6 +56,7 @@ public class MealDetailActivity extends AppCompatActivity {
 
 
         tvTitle.setText(meal.getStrMeal());
+        getSupportActionBar().setTitle(meal.getStrMeal());
 
         //Ingredients&Measures
         //Aus 2 listen 1 string zum anzeigen machen
