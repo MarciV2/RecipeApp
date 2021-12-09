@@ -1,26 +1,16 @@
 <resources>
     <string name="app_name">Recipes4You</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
     <string name="title_activity_main_nav">MainNav</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 
-    <string name="bottom_nav_home">Home</string>
-    <string name="bottom_nav_categories">Categories</string>
-    <string name="bottom_nav_favorites">Favorites</string>
-
     <string name="main_sites_title_home">Welcome back</string>
     <string name="main_sites_title_categories">Select</string>
     <string name="main_sites_title_favorites">Your favorites</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="create_own_recipe">Create own Recipe</string>
     <string name="create_recipe">Create Recipe</string>
     <string name="ingredient">Ingredient</string>
