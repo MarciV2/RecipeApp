@@ -10,10 +10,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.dhbw.informatik.recipeapp.activity.MealDetailActivity;
 import com.dhbw.informatik.recipeapp.adapter.MealPreviewAdapter;
@@ -40,6 +42,7 @@ public class HomeFragment extends Fragment {
     private MealPreviewAdapter mealPreviewAdapter;
     private RecyclerView mealPreviewRecyclerView;
     private SwipeRefreshLayout swipeContainer;
+    private ProgressBar progressBar;
     public HomeFragment(MainActivity mainActivity) {
 
         this.mainActivity=mainActivity;
@@ -68,6 +71,8 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        progressBar=view.findViewById(R.id.progress_loader);
+
         mealPreviewRecyclerView=view.findViewById(R.id.recyclerViewOfMeals);
 
         mealPreviewRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
@@ -75,14 +80,23 @@ public class HomeFragment extends Fragment {
         mealPreviewRecyclerView.setAdapter(mealPreviewAdapter);
 
 
-        getActivity().findViewById(R.id.toMeal).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        //Delay zum Prüfen, ob Liste voll ist -> progress bar verstecken
+        new CountDownTimer(500, 500) {
 
-                Intent i = new Intent(getActivity(), MealDetailActivity.class);
-                startActivity(i);
+            public void onTick(long millisUntilFinished) {
             }
-        });
+
+            public void onFinish() {
+                if(mealList.size()>5){
+                    progressBar.setVisibility(View.GONE);
+                    mealPreviewRecyclerView.setVisibility(View.VISIBLE);
+                    mealPreviewAdapter.notifyDataSetChanged();
+                }
+            }
+
+        }.start();
+
+
 
     }
 
@@ -102,6 +116,10 @@ public class HomeFragment extends Fragment {
     public void updateMeals() {
 
         //API-Aufrufe starten
+        if(progressBar!=null) {
+            mealPreviewRecyclerView.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+        }
 
                 for(int i=0; i<10; i++){
                     Call<MealList> call = MainActivity.apiService.getRandomRecipe();
@@ -128,6 +146,7 @@ public class HomeFragment extends Fragment {
 
                             mealPreviewAdapter.update(m);
 
+
                         }
 
                         @Override
@@ -136,8 +155,15 @@ public class HomeFragment extends Fragment {
                         }
                     });
 
-                }
 
+
+                }
+                //Am ende Progress-Bar unsichtbar machen
+                if(progressBar!=null){
+                    progressBar.setVisibility(View.GONE);
+                    mealPreviewRecyclerView.setVisibility(View.VISIBLE);
+                    mealPreviewAdapter.notifyDataSetChanged();
+                }
 
     }
 

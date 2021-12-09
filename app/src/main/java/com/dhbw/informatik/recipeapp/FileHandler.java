@@ -1,7 +1,10 @@
 package com.dhbw.informatik.recipeapp;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.dhbw.informatik.recipeapp.model.Meal;
 import com.dhbw.informatik.recipeapp.model.lists.MealList;
@@ -53,11 +56,15 @@ public class FileHandler {
         Log.d("test","Last Clicked saved");
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void readFiles(){
         //Favouriten und eigene Rezepte laden
         favourites = new Gson().fromJson(load(FILENAME_FAVOURITES), MealList.class);
+        favourites.getMeals().forEach(Meal::fillArrays);
         ownRecipes = new Gson().fromJson(load(FILENAME_OWN_RECIPES), MealList.class);
+        ownRecipes.getMeals().forEach(Meal::fillArrays);
         lastClicked = new Gson().fromJson(load(FILENAME_LAST_CLICKED), MealList.class);
+        lastClicked.getMeals().forEach(Meal::fillArrays);
     }
 
 
