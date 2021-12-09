@@ -56,15 +56,14 @@ public class FileHandler {
         Log.d("test","Last Clicked saved");
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void readFiles(){
         //Favouriten und eigene Rezepte laden
         favourites = new Gson().fromJson(load(FILENAME_FAVOURITES), MealList.class);
-        favourites.getMeals().forEach(Meal::fillArrays);
+        for(Meal m:favourites.getMeals()) m.fillArrays();
         ownRecipes = new Gson().fromJson(load(FILENAME_OWN_RECIPES), MealList.class);
-        ownRecipes.getMeals().forEach(Meal::fillArrays);
+        for(Meal m:ownRecipes.getMeals()) m.fillArrays();
         lastClicked = new Gson().fromJson(load(FILENAME_LAST_CLICKED), MealList.class);
-        lastClicked.getMeals().forEach(Meal::fillArrays);
+        for(Meal m:lastClicked.getMeals()) m.fillArrays();
     }
 
 
@@ -152,7 +151,6 @@ public class FileHandler {
      * Prüft, ob angegebenes Rezept in der Favouriten-Liste ist
      * @return ob angegebenes Rezept in der Favouriten-Liste ist
      */
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public boolean isMealFav(Meal m) {
         readFiles();
         for(Meal m2:favourites.getMeals()){
