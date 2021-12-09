@@ -263,8 +263,6 @@ public class MainActivity extends AppCompatActivity {
         //Custom weg zum ziehen, um zu refreshe, (standard zu sensibel)
         final DisplayMetrics metrics = getResources().getDisplayMetrics();
         int mDistanceToTriggerSync = (int) (120 * metrics.density);
-        Log.d("dev","height:"+((View) swipeContainer.getParent().getParent()).getHeight()*0.6);
-        Log.d("dev","density: "+30*metrics.density);
 
         swipeContainer.setDistanceToTriggerSync(mDistanceToTriggerSync);
 

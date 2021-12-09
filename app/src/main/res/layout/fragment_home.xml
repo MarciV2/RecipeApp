@@ -34,22 +34,6 @@
         app:layout_constraintTop_toBottomOf="@+id/search_box" />
 
 
-    <Button
-        android:id="@+id/toMeal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_back_label" />
-
-    <!--<com.dhbw.informatik.recipeapp.MealListView
-        app:layout_constraintTop_toBottomOf="@id/toMeal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        custom:entireText="This is a test"
-        />-->
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeContainer"
         android:layout_width="wrap_content"
@@ -62,15 +46,37 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/welcome_back_label">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewOfMeals"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:paddingBottom="?attr/actionBarSize"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            tools:listitem="@layout/meal_preview_element" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewOfMeals"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="?attr/actionBarSize"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:listitem="@layout/meal_preview_element"
+                android:visibility="gone"/>
+
+            <ProgressBar
+                android:id="@+id/progress_loader"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleX="0.20"
+                android:scaleY="0.20"
+                android:layout_centerInParent="true"/>
+
+
+        </FrameLayout>
+
+
+
+
+
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
