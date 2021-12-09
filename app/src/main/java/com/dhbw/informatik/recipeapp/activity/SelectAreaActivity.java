@@ -47,7 +47,7 @@ public class SelectAreaActivity extends AppCompatActivity {
     public MealAreaList mealAreaList;
     private ListView listView;
     private SelectAreaActivity self=this;
-    public String selectedArera=null;
+    public String selectedArea=null;
     List<String> your_array_list = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,10 +87,10 @@ public class SelectAreaActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedArera=your_array_list.get(position);
-                Log.d("Test",selectedArera);
+                selectedArea=your_array_list.get(position);
+                Log.d("Test",selectedArea);
                 Intent i = new Intent(self, MainActivity.class);
-                i.putExtra("filter", selectedArera);
+                i.putExtra("filter", "area:"+selectedArea);
                 startActivity(i);
             }
         });
