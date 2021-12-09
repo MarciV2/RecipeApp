@@ -48,8 +48,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="40dp"
-        android:paddingTop="20dp"
         android:background="@drawable/layout_bg"
+        android:paddingTop="20dp"
+        android:paddingBottom="30dp"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,12 +62,12 @@
                 android:id="@+id/title_label"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:autoSizeTextType="uniform"
-                android:autoSizeMinTextSize="20dp"
                 android:autoSizeMaxTextSize="28dp"
+                android:autoSizeMinTextSize="20dp"
                 android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
                 android:text="Arrabiata with some more"
-                
+
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                 android:textColor="@color/dark_grey"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -86,36 +87,34 @@ Here, Cool, Text, To, Show"
                 android:id="@+id/categoryLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/badge_corners"
                 android:text="Vegetarian"
-                android:layout_marginTop="10dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/areaLabel"
                 app:layout_constraintTop_toBottomOf="@id/ingredients_label" />
 
             <TextView
                 android:id="@+id/areaLabel"
-                android:text="Italian"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@id/ingredients_label"
-                app:layout_constraintLeft_toRightOf="@id/categoryLabel"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/badge_corners"
-                />
+                android:text="Italian"
+                app:layout_constraintLeft_toRightOf="@id/categoryLabel"
+                app:layout_constraintTop_toBottomOf="@id/ingredients_label" />
 
             <TextView
                 android:id="@+id/instructions"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:layout_marginTop="15dp"
                 android:text="Bring a large pot of water to a boil. Add kosher salt to the boiling water, then add the pasta. Cook according to the package instructions, about 9 minutes.\r\nIn a large skillet over medium-high heat, add the olive oil and heat until the oil starts to shimmer. Add the garlic and cook, stirring, until fragrant, 1 to 2 minutes. Add the chopped tomatoes, red chile flakes, Italian seasoning and salt and pepper to taste. Bring to a boil and cook for 5 minutes. Remove from the heat and add the chopped basil.\r\nDrain the pasta and add it to the sauce. Garnish with Parmigiano-Reggiano flakes and more basil and serve warm."
-                app:layout_constraintTop_toBottomOf="@id/categoryLabel"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                />
+                app:layout_constraintTop_toBottomOf="@id/categoryLabel" />
 
             <Button
                 android:id="@+id/btnWatchOnYT"
@@ -126,7 +125,6 @@ Here, Cool, Text, To, Show"
                 app:icon="@drawable/ic_video_slomo"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/instructions" />
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
