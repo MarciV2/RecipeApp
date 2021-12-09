@@ -118,6 +118,13 @@ public class FileHandler {
             return sb.toString();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+
+            //Datei als leer erstellen
+            Log.d("dev","Datei wurde nicht gefunden, leere neue erstellen");
+            MealList newMealList=new MealList();
+            save(new Gson().toJson(newMealList),fileName);
+            return new Gson().toJson(newMealList);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -145,6 +152,7 @@ public class FileHandler {
      * Prüft, ob angegebenes Rezept in der Favouriten-Liste ist
      * @return ob angegebenes Rezept in der Favouriten-Liste ist
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public boolean isMealFav(Meal m) {
         readFiles();
         for(Meal m2:favourites.getMeals()){

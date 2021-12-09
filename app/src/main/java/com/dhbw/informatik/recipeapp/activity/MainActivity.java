@@ -2,6 +2,7 @@ package com.dhbw.informatik.recipeapp.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     public String filter=null;
     private List<Meal> mealList;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
         fileHandler.readFiles();
 
-
+        Log.d("dev","files read...");
 
         getSupportActionBar().hide();
 
