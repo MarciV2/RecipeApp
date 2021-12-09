@@ -1,5 +1,6 @@
 package com.dhbw.informatik.recipeapp.adapter;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -32,24 +33,15 @@ Adapter für die Rezept-Previews
 public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.MealPreviewViewHolder> {
 
     private List<Meal> mealList;
-    private MainActivity mainActivity;
-    private LastClickedActivity lastClickedActivity;
-    private boolean lastClicked = false;
+    private Activity previousActivity;
     private FileHandler fileHandler;
 
-    public MealPreviewAdapter(List<Meal> mealList, MainActivity mainActivity) {
+    public MealPreviewAdapter(List<Meal> mealList, Activity previousActivity) {
         this.mealList = mealList;
-        this.mainActivity = mainActivity;
+        this.previousActivity = previousActivity;
         this.fileHandler=FileHandler.getInstance();
     }
 
-    public MealPreviewAdapter(List<Meal> mealList, LastClickedActivity lastClickedActivity, boolean lastClicked) {
-        this.mealList = mealList;
-        this.lastClickedActivity = lastClickedActivity;
-        this.lastClicked = lastClicked;
-        this.fileHandler=FileHandler.getInstance();
-
-    }
 
 
     @NonNull
@@ -127,8 +119,7 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
                 fileHandler.lastClicked(meal);
                     Intent i = new Intent(view.getContext(), MealDetailActivity.class);
                     i.putExtra("meal", meal);
-                    if(!lastClicked)mainActivity.startActivity(i);
-                    else lastClickedActivity.startActivity(i);
+                    previousActivity.startActivity(i);
 
             }
         };

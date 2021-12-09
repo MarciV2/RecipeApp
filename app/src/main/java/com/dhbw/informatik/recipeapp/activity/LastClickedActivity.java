@@ -69,7 +69,7 @@ public class LastClickedActivity extends AppCompatActivity {
 
         mealPreviewRecyclerView=findViewById(R.id.recyclerViewLastClicked);
         mealPreviewRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext(),RecyclerView.VERTICAL,false));
-        mealPreviewAdapter=new MealPreviewAdapter(mealList,this,true);
+        mealPreviewAdapter=new MealPreviewAdapter(mealList,this);
         mealPreviewAdapter.update(mealList);
         mealPreviewRecyclerView.setAdapter(mealPreviewAdapter);
         //API-Aufrufe starten
