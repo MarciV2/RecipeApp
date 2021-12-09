@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
     void categoryFilter()
     {
         filter=filter.substring(9);
-        Log.d("filer: ",filter);
+        Log.d("filter: ",filter);
         Call<MealList> call = apiService.filterByCategory(filter);
         call.enqueue(new Callback<MealList>() {
             @Override

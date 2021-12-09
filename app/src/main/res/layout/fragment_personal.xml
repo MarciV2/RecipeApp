@@ -8,43 +8,6 @@
     tools:context=".fragment.PersonalFragment">
 
 
-    <Button
-        android:id="@+id/apiCall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="startApiCall"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:text="API Call"
-
-        />
-
-    <Button
-        android:id="@+id/lastClickedActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="open lastclicked"
-        app:layout_constraintBottom_toBottomOf="parent"
-
-        tools:layout_editor_absoluteY="48dp" />
-
-    <Button
-        android:id="@+id/youtube"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        android:onClick="randomVid"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:text="youtubetest"
-        tools:layout_editor_absoluteY="96dp" />
-
-    <Button
-        android:id="@+id/btnCreateOwn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:text="create own recipe" />
-
-
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
         android:layout_width="0dp"
