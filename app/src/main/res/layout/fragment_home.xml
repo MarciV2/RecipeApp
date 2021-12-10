@@ -20,7 +20,6 @@
         android:focusedByDefault="false"
         android:iconifiedByDefault="false"
         android:queryHint="Search by recipe name"
-
         />
 
     <TextView
