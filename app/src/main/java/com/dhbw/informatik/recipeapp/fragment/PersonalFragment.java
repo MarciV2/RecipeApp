@@ -51,6 +51,7 @@ private FileHandler fileHandler;
         // Inflate the layout for this fragment
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_personal, container, false);
 
+
         ViewPager2 mViewPager = root.findViewById(R.id.viewPager);//Get ViewPager2 view
         mViewPager.setAdapter(new ViewPagerAdapter(getActivity()));//Attach the adapter with our ViewPagerAdapter passing the host activity
 
@@ -68,6 +69,25 @@ private FileHandler fileHandler;
         return root;
     }
 
-
+    /**
+     * CREATED BY Marcel Vidmar
+     * Callback, für wenn die CreateOwnRecipeActivity fertig ist und ein rezept liefert
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==RESULT_OK)
+        {
+            Meal m= (Meal) data.getSerializableExtra("meal");
+            if(m!=null) {
+                fileHandler.ownRecipes.getMeals().add(m);
+                fileHandler.saveFiles();
+            }
+        }
+    }
 
 }

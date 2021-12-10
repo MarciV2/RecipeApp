@@ -76,8 +76,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         filter= getIntent().getStringExtra("filter");
-
-
         navigationView = findViewById(R.id.bottom_navigation);
         navigationView.setSelectedItemId(R.id.bottom_nav_home);
 
@@ -117,8 +115,7 @@ public class MainActivity extends AppCompatActivity {
         mealPreviewRecyclerView.setLayoutManager(new LinearLayoutManager(self, RecyclerView.VERTICAL, false));
         mealPreviewAdapter = new MealPreviewAdapter(mealList, self);
 
-        if(filter!=null&&filter.startsWith("area:"))areaFilter();
-        if(filter!=null&&filter.startsWith("category:"))categoryFilter();
+        if(filter!=null)areaFilter();
         pullDownRefresh();
         swipeFunctionality();
         queryFunctionality();
@@ -153,81 +150,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-    void categoryFilter()
-    {
-        filter=filter.substring(9);
-        Log.d("filter: ",filter);
-        Call<MealList> call = apiService.filterByCategory(filter);
-        call.enqueue(new Callback<MealList>() {
-            @Override
-            public void onResponse(Call<MealList> call, Response<MealList> response) {
-                //TODO etwas mit den daten anfangen, hier nur beispielsweise in die konsole gehauen...
-                //Abfangen/Ausgeben Fehlercode Bsp. 404
-                if (!response.isSuccessful()) {
-                    Log.d("ERROR", "Code: " + response.code());
-                    Snackbar snackbar = Snackbar
-                            .make(findViewById(R.id.body_container), "Errorcode: " + response.code(), Snackbar.LENGTH_SHORT).setAction("X", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                }
-                            });
-                    snackbar.show();
-                    return;
-                }
-
-                try {
-                    List<Meal> list = response.body().getMeals();
-
-                    Log.d("Arraygröße", String.valueOf(list.size()));
-
-                    for (int i = 0; i < list.size(); i++) {
-                        //Aufruf von recipebyid
-                        recipeById(String.valueOf(list.get(i).getIdMeal()));
-                    }
-
-
-                    Snackbar snackbar = Snackbar
-                            .make(findViewById(R.id.body_container), String.valueOf(list.size()) + " entrys found for the category:"+filter, Snackbar.LENGTH_SHORT).setAction("X", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                }
-                            });
-                    snackbar.show();
-
-
-                    Log.d("TAG", new Gson().toJson(list));
-
-                } catch (NullPointerException n1) {
-                    Snackbar snackbar = Snackbar
-                            .make(findViewById(R.id.body_container), "No Recipes for the category: "+filter, Snackbar.LENGTH_LONG).setAction("X", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                }
-                            });
-
-                    snackbar.show();
-                    Log.d("TAG", "No entrys found");
-
-                }
-
-            }
-            @Override
-            public void onFailure(Call<MealList> call, Throwable t) {
-                Snackbar snackbar = Snackbar
-                        .make(findViewById(R.id.body_container), "Network error!", Snackbar.LENGTH_LONG).setAction("X", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                            }
-                        });
-
-                snackbar.show();
-                Log.d("TAG", "error: " + t.toString());
-            }
-        });
-    }
     void areaFilter()
     {
-        filter=filter.substring(5);
         Log.d("filer: ",filter);
         Call<MealList> call = apiService.filterByArea(filter);
         call.enqueue(new Callback<MealList>() {

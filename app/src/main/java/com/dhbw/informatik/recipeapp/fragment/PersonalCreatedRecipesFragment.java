@@ -1,109 +1,77 @@
 package com.dhbw.informatik.recipeapp.fragment;
 
-import static android.app.Activity.RESULT_OK;
-
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.dhbw.informatik.recipeapp.FileHandler;
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.activity.CreateOwnRecipeActivity;
-import com.dhbw.informatik.recipeapp.adapter.MealPreviewAdapter;
-import com.dhbw.informatik.recipeapp.model.Meal;
 
-import java.util.List;
-
-
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link PersonalCreatedRecipesFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
 public class PersonalCreatedRecipesFragment extends Fragment {
-    private List<Meal> mealList;
-    private MealPreviewAdapter mealPreviewAdapter;
-    private RecyclerView mealPreviewRecyclerView;
-    private FileHandler fileHandler;
 
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
 
     public PersonalCreatedRecipesFragment() {
-        fileHandler=FileHandler.getInstance();
+        // Required empty public constructor
     }
 
-
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment PersonalCreatedRecipesFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static PersonalCreatedRecipesFragment newInstance(String param1, String param2) {
+        PersonalCreatedRecipesFragment fragment = new PersonalCreatedRecipesFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_personal_created_recipes, container, false);
 
         root.findViewById(R.id.btnCreateOwn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i= new Intent(getActivity(), CreateOwnRecipeActivity.class);
-                startActivityForResult(i,111);
+                startActivityForResult(i,1);
             }
         });
-
         return root;
-    }
-
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        updateMeals();
-    }
-
-
-    /**
-     * befüllt das recycler view
-     */
-    private void updateMeals() {
-
-        if(fileHandler.lastClicked==null)return;
-        mealList=fileHandler.ownRecipes.getMeals();
-
-
-        mealPreviewRecyclerView=getView().findViewById(R.id.recyclerViewLastClicked);
-        mealPreviewRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext(),RecyclerView.VERTICAL,false));
-        mealPreviewAdapter=new MealPreviewAdapter(mealList,getActivity());
-        mealPreviewAdapter.update(mealList);
-        mealPreviewRecyclerView.setAdapter(mealPreviewAdapter);
-    }
-
-    /**
-     * CREATED BY Marcel Vidmar
-     * Callback, für wenn die CreateOwnRecipeActivity fertig ist und ein rezept liefert
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==111)
-        {
-            Meal m= (Meal) data.getSerializableExtra("meal");
-            if(m!=null) {
-                fileHandler.ownRecipes.getMeals().add(m);
-                fileHandler.saveFiles();
-                updateMeals();
-            }
-        }
     }
 }

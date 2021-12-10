@@ -12,7 +12,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="20dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
         android:id="@+id/fragment_container">
 
     </FrameLayout>
@@ -33,107 +34,5 @@
         app:labelVisibilityMode="selected"
         app:itemIconTint="@drawable/item_selector"
         />
-
-    <!--<SearchView
-        android:id="@+id/searchView2"
-        android:layout_width="match_parent"
-        android:layout_height="92dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="86dp"
-        android:layout_height="74dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
-        app:srcCompat="@mipmap/ic_launcher" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Tamiya"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintEnd_toStartOf="@+id/button6"
-        app:layout_constraintStart_toEndOf="@+id/imageButton"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="409dp"
-        android:layout_height="wrap_content"
-        android:text="Daily card"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView2" />
-
-    <Button
-        android:id="@+id/button6"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:background="@color/white"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:text="*"
-        app:layout_constraintBottom_toTopOf="@+id/ingredients"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView2"
-        android:onClick="addToFavourites"/>
-
-    <TextView
-        android:id="@+id/ingredients"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Zwiebeln, Bohnen, Gurken, Tomaten, Bärlauch, Brot, Laptops, Lorem, Ipsum, Dolor"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        app:layout_constraintEnd_toEndOf="@+id/button6"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/imageButton"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/MainNavGridBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:itemCount="5"
-        tools:listitem="@layout/recycler_view_item_1" />-->
-<!--
-    <Button
-        android:id="@+id/youtube"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/apiCall"
-        android:onClick="randomVid"
-        android:text="youtubetest"
-        />
-
-    <Button
-        android:id="@+id/btnCreateOwn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/youtube"
-        android:text="create own recipe"
-        />
-
-    <Button
-        android:id="@+id/apiCall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="startApiCall"
-        android:text="API Call"
-        app:layout_constraintBottom_toTopOf="@+id/MainNavAreaBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-         />-->
 
 </RelativeLayout>

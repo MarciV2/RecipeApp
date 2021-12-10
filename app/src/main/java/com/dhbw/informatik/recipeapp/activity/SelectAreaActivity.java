@@ -30,7 +30,6 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.dhbw.informatik.recipeapp.databinding.ActivitySelectAreaBinding;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -47,7 +46,7 @@ public class SelectAreaActivity extends AppCompatActivity {
     public MealAreaList mealAreaList;
     private ListView listView;
     private SelectAreaActivity self=this;
-    public String selectedArea=null;
+    public String selectedArera=null;
     List<String> your_array_list = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,10 +86,10 @@ public class SelectAreaActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedArea=your_array_list.get(position);
-                Log.d("Test",selectedArea);
+                selectedArera=your_array_list.get(position);
+                Log.d("Test",selectedArera);
                 Intent i = new Intent(self, MainActivity.class);
-                i.putExtra("filter", "area:"+selectedArea);
+                i.putExtra("filter", selectedArera);
                 startActivity(i);
             }
         });
