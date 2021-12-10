@@ -77,8 +77,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //Überprüfen ob Extra Filter vorhanden ist
         filter= getIntent().getStringExtra("filter");
-
-
         navigationView = findViewById(R.id.bottom_navigation);
         navigationView.setSelectedItemId(R.id.bottom_nav_home);
 

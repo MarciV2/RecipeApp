@@ -1,8 +1,6 @@
 package com.dhbw.informatik.recipeapp;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.util.Log;
 
@@ -66,52 +64,6 @@ public class FileHandler {
         for(Meal m:ownRecipes.getMeals()) m.fillArrays();
         lastClicked = new Gson().fromJson(load(FILENAME_LAST_CLICKED), MealList.class);
         for(Meal m:lastClicked.getMeals()) m.fillArrays();
-    }
-
-    /**
-     * Erstellt von Marcel Vidmar
-     * Speichert eine Bitmap in den Dateien der App ab, Verwendung bei eigenen Rezepten
-     * @param bmp Bitmap, die gespeichert werden soll
-     * @param fileName Dateiname, unter dem die Datei gespeichert werden soll
-     */
-    public void saveImg(Bitmap bmp,String fileName){
-        FileOutputStream fos = null;
-        try {
-            fos = context.openFileOutput(fileName, context.MODE_PRIVATE);
-            bmp.compress(Bitmap.CompressFormat.PNG, 90, fos);
-            fos.flush();
-            Log.d("dev","Img saved to "+ context.getFilesDir()+"/"+fileName);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally{
-            if(fos!=null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    /**
-     * Erstellt von Marcel Vidmar
-     * @param fileName Dateiname der Bitmap, die geladen werden soll, Verwendung bei eigenen Rezepten
-     * @return geladene Bitmap, wenn nicht gefunden: null
-     */
-    public Bitmap loadImg(String fileName) {
-        FileInputStream fis = null;
-        try {
-            fis = context.openFileInput(fileName);
-            if(fis==null) return null;
-
-            Bitmap bmp= BitmapFactory.decodeStream(fis);
-            return bmp;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 
 
@@ -278,6 +230,5 @@ public class FileHandler {
         lastClicked=temp;
         Log.d("Gericht: ",meal.getStrMeal()+" zu last clicked hinzugefügt");
     }
-
 
 }

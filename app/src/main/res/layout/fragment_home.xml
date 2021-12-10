@@ -20,9 +20,7 @@
         android:focusedByDefault="false"
         android:iconifiedByDefault="false"
         android:queryHint="Search by recipe name"
-
         />
-
 
     <TextView
         android:id="@+id/welcome_back_label"
@@ -32,7 +30,8 @@
         android:text="@string/main_sites_title_home"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_box" />
+        app:layout_constraintTop_toBottomOf="@id/search_box"
+        />
 
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -42,10 +41,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:paddingTop="80dp"
 
-        android:paddingBottom="?attr/actionBarSize"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_back_label">
+        app:layout_constraintTop_toBottomOf="@+id/welcome_back_label"
+        >
+
 
         <FrameLayout
             android:layout_width="match_parent"
