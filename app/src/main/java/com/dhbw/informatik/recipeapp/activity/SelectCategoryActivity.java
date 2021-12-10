@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,7 +14,6 @@ import android.widget.ListView;
 
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.RecipeAPIService;
-import com.dhbw.informatik.recipeapp.model.lists.MealAreaList;
 import com.dhbw.informatik.recipeapp.model.lists.MealCategoriesList;
 import com.google.gson.Gson;
 
@@ -27,7 +25,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
+//Activity zur Auswahl eines Filters in Form von einer Kategorie
 public class SelectCategoryActivity extends AppCompatActivity {
     static public RecipeAPIService apiService = null;
     public MealCategoriesList mealCategoriesList;
@@ -39,6 +37,7 @@ public class SelectCategoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_category);
+        //Apiservice und Listenbefüllung werden aufgerufen
         initRetrofit();
         fillList();
         ActionBar ab = getSupportActionBar();
@@ -47,6 +46,9 @@ public class SelectCategoryActivity extends AppCompatActivity {
         }
 
     }
+    /**
+     * Adapter zum befüllen der Liste mit Kategoriearray
+     */
     public void setAdapter(){
         listView = (ListView) findViewById(R.id.listCategory);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
@@ -58,13 +60,16 @@ public class SelectCategoryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedCategory=your_array_list.get(position);
-                Log.d("Test",selectedCategory);
                 Intent i = new Intent(self, MainActivity.class);
+                //Extra mit prefix und ausgewählter Kategorie weitergeben an MainActivity
                 i.putExtra("filter", "category:"+selectedCategory);
                 startActivity(i);
             }
         });
     }
+    /**
+     * Funktion macht einen API Aufruf welcher alle Kategorien abfrägt
+     */
     private void fillList()
     {
 
@@ -75,22 +80,20 @@ public class SelectCategoryActivity extends AppCompatActivity {
 
                 //Abfangen/Ausgeben Fehlercode Bsp. 404
                 if (!response.isSuccessful()) {
-                    Log.d("ERROR", "Code: " + response.code());
+                    Log.e("ERROR", "Code: " + response.code());
                     return;
                 }
 
                 mealCategoriesList=response.body();
-                Log.d("TAG", "Areas: "+new Gson().toJson(mealCategoriesList));
+                Log.d("Kategorienliste", new Gson().toJson(mealCategoriesList));
 
-
+                //Durchgehen der Kategorienlist und hinzufügen der einzelnen Kategorien zu der Arraylist
                 for(int i=0; i<mealCategoriesList.getCategories().size();i++)
                 {
                     your_array_list.add(mealCategoriesList.getCategories().get(i).getStrCategory());
                 }
-                Log.d("test", String.valueOf(your_array_list.size()));
-                // This is the array adapter, it takes the context of the activity as a
-                // first parameter, the type of list view as a second parameter and your
-                // array as a third parameter.
+                Log.d("Anzahl Kategorien:", String.valueOf(your_array_list.size()));
+                //Mit setAdapter wird die Liste mit dem nun befüllten array befüllt
                 setAdapter();
 
 

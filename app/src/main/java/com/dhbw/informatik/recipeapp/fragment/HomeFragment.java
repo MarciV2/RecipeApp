@@ -54,6 +54,7 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mealList=new ArrayList<>();
+        //Updatemeals soll um performance zu sparen nur aufgerufen werden wenn Filter nicht vorhanden ist
         if(mainActivity.filter==null)updateMeals();
     }
 

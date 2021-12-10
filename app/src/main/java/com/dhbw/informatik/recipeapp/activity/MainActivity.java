@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //Überprüfen ob Extra Filter vorhanden ist
         filter= getIntent().getStringExtra("filter");
 
 
@@ -101,14 +102,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onPostResume() {
-        Log.d("test","Resume");
-
-        super.onPostResume();
-    }
-
-
 
     @SuppressLint("ResourceType")
     @Override
@@ -116,14 +109,22 @@ public class MainActivity extends AppCompatActivity {
         mealPreviewRecyclerView = findViewById(R.id.recyclerViewOfMeals);
         mealPreviewRecyclerView.setLayoutManager(new LinearLayoutManager(self, RecyclerView.VERTICAL, false));
         mealPreviewAdapter = new MealPreviewAdapter(mealList, self);
-
+        //Prefix Abfrage um passende Funktion aufzurufen
         if(filter!=null&&filter.startsWith("area:"))areaFilter();
         if(filter!=null&&filter.startsWith("category:"))categoryFilter();
+        if(filter!=null&&filter.startsWith("ingredient:"))ingredientFilter();
+        //Initialfunktion müssen um Nullpointerexceptions zu vermeiden innerhalb von postcreate sein
         pullDownRefresh();
         swipeFunctionality();
         queryFunctionality();
         super.onPostCreate(savedInstanceState);
     }
+
+    /**
+     * Erstellt von Johannes Fahr
+     * Fügt ein Rezept anhand seiner id zur Recyclerview hinzu
+     * @param id id zum identifizieren des Rezepts
+     */
     void recipeById(String id)
     {
 
@@ -131,16 +132,15 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<MealList>() {
             @Override
             public void onResponse(@NonNull Call<MealList> call, @NonNull Response<MealList> response) {
-                //TODO etwas mit den daten anfangen, hier nur beispielsweise in die konsole gehauen...
                 //Abfangen/Ausgeben Fehlercode Bsp. 404
                 if (!response.isSuccessful()) {
-                    Log.d("ERROR", "Code: " + response.code());
+                    Log.e("ERROR", "Code: " + response.code());
                     return;
                 }
                 List<Meal> tmp2MealList = response.body().getMeals();
                 Meal m=tmp2MealList.get(0);
                 m.fillArrays();
-
+                //Hinzufügen des gefundenen Gerichts zur Recyclerview
                 mealPreviewAdapter.update(m);
                 mealPreviewRecyclerView.setAdapter(mealPreviewAdapter);
 
@@ -153,18 +153,23 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+    /**
+     * Erstell von Johannes Fahr
+     * Funktion holt mit dem über extra erhaltenen Kategoriefilter alle passenden Gerichte in eine Liste
+     */
     void categoryFilter()
     {
+        //Prefix entfernen
         filter=filter.substring(9);
         Log.d("filter: ",filter);
         Call<MealList> call = apiService.filterByCategory(filter);
         call.enqueue(new Callback<MealList>() {
             @Override
             public void onResponse(Call<MealList> call, Response<MealList> response) {
-                //TODO etwas mit den daten anfangen, hier nur beispielsweise in die konsole gehauen...
                 //Abfangen/Ausgeben Fehlercode Bsp. 404
                 if (!response.isSuccessful()) {
-                    Log.d("ERROR", "Code: " + response.code());
+                    Log.e("ERROR", "Code: " + response.code());
                     Snackbar snackbar = Snackbar
                             .make(findViewById(R.id.body_container), "Errorcode: " + response.code(), Snackbar.LENGTH_SHORT).setAction("X", new View.OnClickListener() {
                                 @Override
@@ -178,10 +183,10 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     List<Meal> list = response.body().getMeals();
 
-                    Log.d("Arraygröße", String.valueOf(list.size()));
+                    Log.d("Arraygröße: ", String.valueOf(list.size()));
 
                     for (int i = 0; i < list.size(); i++) {
-                        //Aufruf von recipebyid
+                        //Aufruf von recipebyid mit der passenden id
                         recipeById(String.valueOf(list.get(i).getIdMeal()));
                     }
 
@@ -221,22 +226,27 @@ public class MainActivity extends AppCompatActivity {
                         });
 
                 snackbar.show();
-                Log.d("TAG", "error: " + t.toString());
+                Log.e("Error",  t.toString());
             }
         });
     }
-    void areaFilter()
+    /**
+     * Erstell von Johannes Fahr
+     * Funktion holt mit dem über extra erhaltenen Zutatenfilter alle passenden Gerichte in eine Liste
+     */
+    void ingredientFilter()
     {
-        filter=filter.substring(5);
-        Log.d("filer: ",filter);
-        Call<MealList> call = apiService.filterByArea(filter);
+        //Prefix entfernen
+        filter=filter.substring(11);
+        Log.d("filter: ",filter);
+        Call<MealList> call = apiService.filterByMainIngredient(filter);
         call.enqueue(new Callback<MealList>() {
             @Override
             public void onResponse(Call<MealList> call, Response<MealList> response) {
-                //TODO etwas mit den daten anfangen, hier nur beispielsweise in die konsole gehauen...
+
                 //Abfangen/Ausgeben Fehlercode Bsp. 404
                 if (!response.isSuccessful()) {
-                    Log.d("ERROR", "Code: " + response.code());
+                    Log.e("ERROR", "Code: " + response.code());
                     Snackbar snackbar = Snackbar
                             .make(findViewById(R.id.body_container), "Errorcode: " + response.code(), Snackbar.LENGTH_SHORT).setAction("X", new View.OnClickListener() {
                                 @Override
@@ -250,7 +260,82 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     List<Meal> list = response.body().getMeals();
 
-                    Log.d("Arraygröße", String.valueOf(list.size()));
+                    Log.d("Arraygröße: ", String.valueOf(list.size()));
+
+                    for (int i = 0; i < list.size(); i++) {
+                        //Aufruf von recipebyid
+                        recipeById(String.valueOf(list.get(i).getIdMeal()));
+                    }
+
+
+                    Snackbar snackbar = Snackbar
+                            .make(findViewById(R.id.body_container), String.valueOf(list.size()) + " entrys found for the ingredient:"+filter, Snackbar.LENGTH_SHORT).setAction("X", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                }
+                            });
+                    snackbar.show();
+
+
+                    Log.d("TAG", new Gson().toJson(list));
+
+                } catch (NullPointerException n1) {
+                    Snackbar snackbar = Snackbar
+                            .make(findViewById(R.id.body_container), "No Recipes for the ingredient: "+filter, Snackbar.LENGTH_LONG).setAction("X", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                }
+                            });
+
+                    snackbar.show();
+                    Log.d("TAG", "No entrys found");
+
+                }
+
+            }
+            @Override
+            public void onFailure(Call<MealList> call, Throwable t) {
+                Snackbar snackbar = Snackbar
+                        .make(findViewById(R.id.body_container), "Network error!", Snackbar.LENGTH_LONG).setAction("X", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                            }
+                        });
+
+                snackbar.show();
+                Log.e("Error",  t.toString());
+            }
+        });
+    }
+    /**
+     * Erstell von Johannes Fahr
+     * Funktion holt mit dem über extra erhaltenen Ortsfilter alle passenden Gerichte in eine Liste
+     */
+    void areaFilter()
+    {
+        filter=filter.substring(5);
+        Log.d("filer: ",filter);
+        Call<MealList> call = apiService.filterByArea(filter);
+        call.enqueue(new Callback<MealList>() {
+            @Override
+            public void onResponse(Call<MealList> call, Response<MealList> response) {
+                //Abfangen/Ausgeben Fehlercode Bsp. 404
+                if (!response.isSuccessful()) {
+                    Log.e("ERROR", "Code: " + response.code());
+                    Snackbar snackbar = Snackbar
+                            .make(findViewById(R.id.body_container), "Errorcode: " + response.code(), Snackbar.LENGTH_SHORT).setAction("X", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                }
+                            });
+                    snackbar.show();
+                    return;
+                }
+
+                try {
+                    List<Meal> list = response.body().getMeals();
+
+                    Log.d("Arraygröße: ", String.valueOf(list.size()));
 
                     for (int i = 0; i < list.size(); i++) {
                         //Aufruf von recipebyid
@@ -293,19 +378,24 @@ public class MainActivity extends AppCompatActivity {
                         });
 
                 snackbar.show();
-                Log.d("TAG", "error: " + t.toString());
+                Log.e("Error",  t.toString());
             }
         });
 
     }
+
+    /**
+     * Erstellt von Johannes Fahr
+     * Funktion vergibt die Swipefunktionalität um mittels Swippen Fragments bzw. die Navbar Items durchzuwechseln
+     */
     void swipeFunctionality()
     {
         findViewById(R.id.body_container).setOnTouchListener(new OnSwipeTouchListener(self) {
             public void onSwipeTop() {
-                Log.d("TAG", "Top");
             }
             public void onSwipeLeft() {
-                Log.d("TAG", "Right");
+                Log.d("Swiped: ", "Right");
+                //In Navbar passendes Item festlegen und auch fragment Variable richtig belegen
                 navigationView = findViewById(R.id.bottom_navigation);
                 switch(fragment){
                     case 0:
@@ -325,7 +415,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             public void onSwipeRight() {
-                Log.d("TAG", "Left");
+                Log.d("Swiped: ", "Left");
+                //In Navbar passendes Item festlegen und auch fragment Variable richtig belegen
                 navigationView = findViewById(R.id.bottom_navigation);
                 switch(fragment){
                     case 0:
@@ -346,12 +437,17 @@ public class MainActivity extends AppCompatActivity {
             }
 
             public void onSwipeBottom() {
-                Log.d("TAG", "Bottom");
             }
 
         });
     }
 
+    /**
+     * Erstellt von Johannes Fahr
+     * Funktion soll Focus der Searchview auf false stellen sobald außerhalb der Tastatur getippt wird
+     * @param event
+     * @return
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
@@ -391,6 +487,7 @@ public class MainActivity extends AppCompatActivity {
 
                     switch(item.getItemId()){
                         case R.id.bottom_nav_home:
+                            //Wenn bereits Fragment 0 ausgewählt ist und auf 0 gewechselt wird kommt es zu Problemen weshalb dieser Fall verboten wurde
                             if(fragment!=0){
                             fragment=0;
                             ft.replace(R.id.fragment_container, new HomeFragment(self)).commit();}
@@ -415,6 +512,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             };
 
+    /**
+     * Erstellt von Johannes Fahr
+     * Funktion erstellt die Funktionalität des klickens der Lupe der Tastatur der Searchview
+     */
     public void queryFunctionality()
     {
 
@@ -429,15 +530,18 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Log.d("TEst","submit");
+                Log.d("Query","submit");
                 search();
-
-
                 return false;
             }
 
         });
     }
+
+    /**
+     * Erstellt von Johannes Fahr
+     * Pull down refresh um Rezepte in Recclerview durch neue zu ersetzen
+     */
     public void pullDownRefresh()
     {
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
@@ -449,14 +553,16 @@ public class MainActivity extends AppCompatActivity {
         swipeContainer.setDistanceToTriggerSync(mDistanceToTriggerSync);
 
 
-        // Setup refresh listener which triggers new data loading
+        // Trifft ein wenn gezogen wurde
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
 
+                //Einfachste Methode um Rezepte neu zu lasen ist einfach das homefragment einmal kurz durchzuwechseln
                 navigationView = findViewById(R.id.bottom_navigation);
                 navigationView.setSelectedItemId(R.id.bottom_nav_categories);
                 navigationView.setSelectedItemId(R.id.bottom_nav_home);
+                //Wichtig am Ende um Funktionalität wieder zurückzusetzen
                 swipeContainer.setRefreshing(false);
             }
         });
@@ -479,100 +585,14 @@ public class MainActivity extends AppCompatActivity {
         apiService = retrofit.create(RecipeAPIService.class);
     }
 
-    /**
-     * Erstellt von Marcel Vidmar
-     * zu testzwecken: fügt dem test-button einen sinn zu, derzeit:
-     * API-Aufruf zum abfragen der kategorien, die dann wieder als json in die konsole geschrieben werden
-     */
-    public void startApiCall(View v){
-        Call<MealCategoriesList> call = apiService.getAllCategoriesDetailed();
-        call.enqueue(new Callback<MealCategoriesList>() {
-            @Override
-            public void onResponse(Call<MealCategoriesList> call, Response<MealCategoriesList> response) {
-                //TODO etwas mit den daten anfangen, hier nur beispielsweise in die konsole gehauen...
-                //Abfangen/Ausgeben Fehlercode Bsp. 404
-                if (!response.isSuccessful()) {
-                    Log.d("ERROR", "Code: " + response.code());
-                    return;
-                }
-                Log.d("TAG", new Gson().toJson(response.body().getCategories()));
-            }
-
-            @Override
-            public void onFailure(Call<MealCategoriesList> call, Throwable t) {
-                Log.d("TAG", "error: " + t.toString());
-            }
-        });
-
-
-                Call<MealList> call2 = apiService.getRandomRecipe();
-                call2.enqueue(new Callback<MealList>() {
-                    @Override
-                    public void onResponse(@NonNull Call<MealList> call, @NonNull Response<MealList> response) {
-                        //TODO etwas mit den daten anfangen, hier nur beispielsweise in die konsole gehauen...
-                        //Abfangen/Ausgeben Fehlercode Bsp. 404
-                        if (!response.isSuccessful()) {
-                            Log.d("ERROR", "Code: " + response.code());
-                            return;
-                        }
-                        List<Meal> list=response.body().getMeals();
-                        list.get(0).fillArrays();
-
-                        Log.d("TAG", new Gson().toJson(list));
-
-                //Speichern und öffnen von response zu Testzwecken
-                fileHandler.save(new Gson().toJson(response.body().getMeals()),"test.txt");
-                fileHandler.load("test.txt");
-            }
-
-            @Override
-            public void onFailure(Call<MealList> call, Throwable t) {
-
-            }
-        });
-    }
-
-
-    private void showText(String msg){
-        AlertDialog.Builder a = new AlertDialog.Builder(this);
-        a.setTitle("Delete entry")
-                .setMessage(msg);
-    }
 
     /**
      * Erstellt von Johannes Fahr
-     * Wählt ein zufälliges Gericht aus und öffnet das Zubereitungsvideo
-     * @param v
+     * Funktion die aufgerufen wird wenn auf Lupe geklickt wurde, sei sucht nach dem Eingegebenen Stichwort
      */
-    public void randomVid(View v)
-    {
-        Call<MealList> call = apiService.getRandomRecipe();
-        call.enqueue(new Callback<MealList>() {
-            @Override
-            public void onResponse(@NonNull Call<MealList> call, @NonNull Response<MealList> response) {
-
-                //Abfangen/Ausgeben Fehlercode Bsp. 404
-                if (!response.isSuccessful()) {
-                    Log.d("ERROR", "Code: " + response.code());
-                    return;
-                }
-                List<Meal> list=response.body().getMeals();
-                list.get(0).fillArrays();
-
-                playVid(list.get(0).getStrYoutube());
-                Log.d("TAG", new Gson().toJson(list));
-
-            }
-
-            @Override
-            public void onFailure(Call<MealList> call, Throwable t) {
-
-            }
-        });
-    }
-
     public void search()
     {
+        //Query aus Searchview holen
         SearchView sV = findViewById(R.id.search_box);
         query=sV.getQuery().toString();
 
@@ -583,10 +603,10 @@ public class MainActivity extends AppCompatActivity {
             call.enqueue(new Callback<MealList>() {
                 @Override
                 public void onResponse(Call<MealList> call, Response<MealList> response) {
-                    //TODO etwas mit den daten anfangen, hier nur beispielsweise in die konsole gehauen...
+
                     //Abfangen/Ausgeben Fehlercode Bsp. 404
                     if (!response.isSuccessful()) {
-                        Log.d("ERROR", "Code: " + response.code());
+                        Log.e("ERROR", "Code: " + response.code());
                         Snackbar snackbar = Snackbar
                                 .make(findViewById(R.id.body_container), "Errorcode: " + response.code(), Snackbar.LENGTH_SHORT).setAction("X", new View.OnClickListener() {
                                     @Override
@@ -600,13 +620,13 @@ public class MainActivity extends AppCompatActivity {
                     try{
                         List<Meal> list=response.body().getMeals();
 
-                        Log.d("Arraygröße", String.valueOf(list.size()));
+                        Log.d("Arraygröße: ", String.valueOf(list.size()));
 
                         for(int i=0;i<list.size();i++)
                         {
                             list.get(i).fillArrays();
                         }
-
+                        //Recyclerview mit gefundenen Rezepten befüllen
                         mealPreviewRecyclerView=findViewById(R.id.recyclerViewOfMeals);
                         mealPreviewRecyclerView.setLayoutManager(new LinearLayoutManager(self,RecyclerView.VERTICAL,false));
                         mealPreviewAdapter=new MealPreviewAdapter(list,self);
@@ -621,9 +641,10 @@ public class MainActivity extends AppCompatActivity {
                         snackbar.show();
                         sV.clearFocus();
 
-                        Log.d("TAG", new Gson().toJson(list));
+                        Log.d("Gefundene Rezepte: ", new Gson().toJson(list));
 
                     }
+                    //Keine Rezepte gefunden
                     catch(NullPointerException n1)
                     {
                         Snackbar snackbar = Snackbar
@@ -657,40 +678,19 @@ public class MainActivity extends AppCompatActivity {
                 }
             });}
     }
+
+    /**
+     * Erstellt von Johannes Fahr
+     * Ermöglicht Suche auch durch klicken der Lupe oben links
+     * @param v
+     */
     public void clickSearch(View v)
     {
         Log.d("TAG", "Searchview clicked");
         search();
     }
 
-    /**
-     * Erstellt von Johannes Fahr
-     * Ermöglicht den Aufruf von Links die innerhalb des JSON ausgelesen werden und als Parameter weitergegeben werden.
-     * @param videourl Die Url die aufgerufen werden soll
-     */
-    public void playVid(String videourl)
-    {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(videourl)));
-        Log.i("Video", "Video Playing....");
-    }
 
-
-    private void showToast(){
-        showToast("Fallback text");
-    }
-
-    private void showToast(String msg){
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-    }
-
-
-
-
-    private void ShowText(String msg){
-        AlertDialog.Builder a = new AlertDialog.Builder(this);
-        a.setTitle("Delete entry")
-                .setMessage(msg);
-    }
 
 
 }

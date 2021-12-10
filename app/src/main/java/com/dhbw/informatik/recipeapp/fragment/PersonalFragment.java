@@ -1,8 +1,5 @@
 package com.dhbw.informatik.recipeapp.fragment;
 
-import static android.app.Activity.RESULT_OK;
-
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,11 +12,8 @@ import android.view.ViewGroup;
 
 import com.dhbw.informatik.recipeapp.FileHandler;
 import com.dhbw.informatik.recipeapp.R;
-import com.dhbw.informatik.recipeapp.activity.CreateOwnRecipeActivity;
-import com.dhbw.informatik.recipeapp.activity.LastClickedActivity;
 import com.dhbw.informatik.recipeapp.activity.MainActivity;
 import com.dhbw.informatik.recipeapp.adapter.ViewPagerAdapter;
-import com.dhbw.informatik.recipeapp.model.Meal;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;

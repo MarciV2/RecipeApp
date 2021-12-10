@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 //Code von
 //https://stackoverflow.com/questions/33382244/what-does-requestcode-and-resultcode-in-onactivityresult-refer-to
+//Wird benutzt um Gesten wie swiping up/down/left/right benutzt wird nur left/right
 public class OnSwipeTouchListener implements OnTouchListener {
 
     private final GestureDetector gestureDetector;

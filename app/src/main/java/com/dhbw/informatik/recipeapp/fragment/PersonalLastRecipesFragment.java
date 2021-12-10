@@ -14,8 +14,6 @@ import android.view.ViewGroup;
 
 import com.dhbw.informatik.recipeapp.FileHandler;
 import com.dhbw.informatik.recipeapp.R;
-import com.dhbw.informatik.recipeapp.activity.LastClickedActivity;
-import com.dhbw.informatik.recipeapp.activity.MainActivity;
 import com.dhbw.informatik.recipeapp.adapter.MealPreviewAdapter;
 import com.dhbw.informatik.recipeapp.model.Meal;
 

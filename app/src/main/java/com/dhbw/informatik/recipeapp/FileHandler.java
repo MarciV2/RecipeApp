@@ -224,6 +224,11 @@ public class FileHandler {
         save(new Gson().toJson(favourites),FILENAME_FAVOURITES);
         Log.d("test",meal.getStrMeal()+" von favouriten entfernt");
     }
+
+    /**
+     * Funktion löscht ein Gericht aus der Liste raus
+     * @param meal gibt das Gericht an welches gelöscht werden soll
+     */
     public void removeFromLastClicked(Meal meal){
         lastClicked = new Gson().fromJson(load(FILENAME_LAST_CLICKED), MealList.class);
 
@@ -233,7 +238,6 @@ public class FileHandler {
 
         lastClicked.getMeals().removeAll(mealsToRemove);
         save(new Gson().toJson(lastClicked),FILENAME_LAST_CLICKED);
-        Log.d("test",meal.getStrMeal()+" von favouriten entfernt");
     }
 
     public void saveFavourites(){
@@ -241,30 +245,38 @@ public class FileHandler {
         Log.d("test","Favourites saved");
     }
 
+    /**
+     * Erstellt von Johannes Fahr
+     * @param meal Gericht das angeklickt wurde
+     */
     public void lastClicked(Meal meal)
     {
         MealList temp;
         temp=new MealList();
+        //Kommt Gericht in Liste vor?
         for(Meal m:lastClicked.getMeals()) if(m.getIdMeal()==meal.getIdMeal()) {
+            //Entfernen des Gerichts aus der List
             removeFromLastClicked(m);
-
+            //hinzufügen des Gericht am Anfang der temporären Liste
             temp.getMeals().add(m);
+            //hinzufügen der Gerichte aus der Liste zur temporären List
             for(int i=0;i<lastClicked.getMeals().size();i++)
             {
                 temp.getMeals().add(lastClicked.getMeals().get(i));
             }
+            //temporäre Liste in Hauptliste übertragen
             lastClicked=temp;
-            Log.d("test",meal.getStrMeal()+" zu last clicked hinzugefügt");
+            Log.d("Gericht: ",meal.getStrMeal()+" zu last clicked hinzugefügt");
             return;
         }
-
+        //Wenn Gericht nicht in Liste einfach temporäre Liste erstellen mit Gericht an erster Stelle und danach die anderen Gericht einfügen und als Hauptliste speichern
         temp.getMeals().add(meal);
         for(int i=0;i<lastClicked.getMeals().size();i++)
         {
             temp.getMeals().add(lastClicked.getMeals().get(i));
         }
         lastClicked=temp;
-        Log.d("test",meal.getStrMeal()+" zu last clicked hinzugefügt");
+        Log.d("Gericht: ",meal.getStrMeal()+" zu last clicked hinzugefügt");
     }
 
 

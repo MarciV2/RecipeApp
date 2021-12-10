@@ -69,7 +69,7 @@ public class MealDetailActivity extends AppCompatActivity {
         TextView tvInstructions=findViewById(R.id.instructions);
         Button btnWatchOnYT=findViewById(R.id.btnWatchOnYT);
 
-        //Bild laden
+        //Bild laden mit Picasso addon
         String mealThumb=meal.getStrMealThumb();
         if(URLUtil.isValidUrl(mealThumb)){
             Picasso.get().load(meal.getStrMealThumb()).into(ivThumb);
@@ -122,6 +122,7 @@ public class MealDetailActivity extends AppCompatActivity {
                 btnWatchOnYT.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        //Intent mit youtube Aufruf ist deutlich einfacher umsetzbar wie embeded Player
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(meal.getStrYoutube())));
                     }
                 });

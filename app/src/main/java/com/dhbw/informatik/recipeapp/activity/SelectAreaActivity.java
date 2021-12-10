@@ -1,16 +1,12 @@
 package com.dhbw.informatik.recipeapp.activity;
 
-import static android.app.PendingIntent.getActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.RecipeAPIService;
-import com.dhbw.informatik.recipeapp.model.Meal;
 import com.dhbw.informatik.recipeapp.model.lists.MealAreaList;
-import com.dhbw.informatik.recipeapp.model.lists.MealList;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,18 +15,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.PersistableBundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
-import com.dhbw.informatik.recipeapp.databinding.ActivitySelectAreaBinding;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -41,7 +31,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
+//Activity zur Auswahl eines Filters in Form von einer Ortsangabe
 public class SelectAreaActivity extends AppCompatActivity {
     static public RecipeAPIService apiService = null;
     public MealAreaList mealAreaList;
@@ -53,11 +43,7 @@ public class SelectAreaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_area);
-
-
-        // Instanciating an array list (you don't need to do this,
-        // you already have yours).
-
+        //Apiservice und Listenbefüllung werden aufgerufen
         initRetrofit();
         fillList();
 
@@ -69,14 +55,9 @@ public class SelectAreaActivity extends AppCompatActivity {
 
 
     }
-
-
-    @Override
-    public void onPostCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-
-
-        super.onPostCreate(savedInstanceState, persistentState);
-    }
+    /**
+     * Adapter zum befüllen der Liste mit Ortsarray
+     */
     public void setAdapter(){
         listView = (ListView) findViewById(R.id.listArea);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
@@ -88,8 +69,8 @@ public class SelectAreaActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedArea=your_array_list.get(position);
-                Log.d("Test",selectedArea);
                 Intent i = new Intent(self, MainActivity.class);
+                //Extra mit prefix und ausgewähltem Ort weitergeben an MainActivity
                 i.putExtra("filter", "area:"+selectedArea);
                 startActivity(i);
             }
@@ -107,6 +88,9 @@ public class SelectAreaActivity extends AppCompatActivity {
                 .build();
         apiService = retrofit.create(RecipeAPIService.class);
     }
+    /**
+     * Funktion macht einen API Aufruf welcher alle Kategorien abfrägt
+     */
    private void fillList()
     {
 
@@ -117,28 +101,21 @@ public class SelectAreaActivity extends AppCompatActivity {
 
                 //Abfangen/Ausgeben Fehlercode Bsp. 404
                 if (!response.isSuccessful()) {
-                    Log.d("ERROR", "Code: " + response.code());
+                    Log.e("ERROR", "Code: " + response.code());
                     return;
                 }
 
                 mealAreaList=response.body();
-                Log.d("TAG", "Areas: "+new Gson().toJson(mealAreaList));
+                Log.d("Arealiste:", new Gson().toJson(mealAreaList));
 
-
+                //Durchgehen der Arealist und hinzufügen der einzelnen Areas zu der Arraylist
                 for(int i=0; i<mealAreaList.getAreaList().size();i++)
                 {
                     your_array_list.add(mealAreaList.getAreaList().get(i).getStrArea());
                 }
-                Log.d("test", String.valueOf(your_array_list.size()));
-                // This is the array adapter, it takes the context of the activity as a
-                // first parameter, the type of list view as a second parameter and your
-                // array as a third parameter.
+                Log.d("Anzahl Areas:", String.valueOf(your_array_list.size()));
                 setAdapter();
-
-
         }
-
-
 
             @Override
             public void onFailure(Call<MealAreaList> call, Throwable t) {

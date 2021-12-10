@@ -16,9 +16,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dhbw.informatik.recipeapp.FileHandler;
-import com.dhbw.informatik.recipeapp.activity.LastClickedActivity;
 import com.dhbw.informatik.recipeapp.R;
-import com.dhbw.informatik.recipeapp.activity.MainActivity;
 import com.dhbw.informatik.recipeapp.activity.MealDetailActivity;
 
 import com.dhbw.informatik.recipeapp.model.Meal;
@@ -126,7 +124,7 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
             }
         });
 
-        //Click-Handler für Aufruf der Detailseite des Rezepts
+        //Click-Handler für Aufruf der Detailseite des Rezepts und aufrufen der Funktion um zu lastclicked hinzuzufügen
         View.OnClickListener clOpenMeal = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
