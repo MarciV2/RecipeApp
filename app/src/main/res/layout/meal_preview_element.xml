@@ -55,7 +55,7 @@
         <TextView
             android:id="@+id/titleLabel"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="45dp"
             android:autoSizeTextType="uniform"
             android:autoSizeMinTextSize="13dp"
             android:autoSizeMaxTextSize="20dp"
