@@ -4,11 +4,13 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
@@ -37,6 +39,7 @@ import com.dhbw.informatik.recipeapp.model.OwnRecipeIngredientElement;
 import com.dhbw.informatik.recipeapp.model.lists.MealAreaList;
 import com.dhbw.informatik.recipeapp.model.lists.MealCategoriesList;
 import com.dhbw.informatik.recipeapp.model.lists.MealIngredientList;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -45,6 +48,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -79,8 +83,6 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_own_recipe);
 
 
-        initThumbGetter();
-
         //Werte für AutoComplete-Felder holen
         updateCategories();
         updateAreas();
@@ -99,7 +101,11 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
         findViewById(R.id.ivThumbnail).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getThumb.launch("image/*");
+                ImagePicker.with(self)
+                        .crop()	    			//Crop image(Optional), Check Customization for more option
+                        .compress(1024)			//Final image size will be less than 1 MB(Optional)
+                        .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                        .start();
             }
         });
 
@@ -227,35 +233,6 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * Initialisiert den Handler, der die Auswahlprozedur des thumbnails übernimmt
-     */
-    private void initThumbGetter() {
-        getThumb = registerForActivityResult(new ActivityResultContracts.GetContent(),
-                new ActivityResultCallback<Uri>() {
-                    @Override
-                    public void onActivityResult(Uri uri) {
-
-                        Log.d("tag", "I'm back from selecting an image!");
-                        if (uri == null) {
-                            Log.d("tag", "Nichts wurde ausgewählt");
-                            Snackbar.make(findViewById(R.id.ivThumbnail), "No image has been selected!", BaseTransientBottomBar.LENGTH_LONG).show();
-                            return;
-                        }
-                        Log.d("tag", "Bild wurde gefunden: " + uri);
-
-                        ImageView ivThumb = findViewById(R.id.ivThumbnail);
-
-                        ivThumb.setImageURI(uri);
-                        ivThumb.setTag(uri);
-
-                        selectedBmp=loadFromUri(uri);
-
-
-                    }
-
-                });
-    }
 
     public Bitmap loadFromUri(Uri photoUri) {
         Bitmap image = null;
@@ -410,6 +387,38 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Wird bei Rückkehr aus den Image-Chooser aufgerufen, setzt das vorschaubild und die gemerkte bitmap
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
 
+            if (data != null) {
+                Uri uri = data.getData();
+
+                    Log.d("tag", "I'm back from selecting an image!");
+                    if (uri == null) {
+                        Log.d("tag", "Nichts wurde ausgewählt");
+                        Snackbar.make(findViewById(R.id.ivThumbnail), "No image has been selected!", BaseTransientBottomBar.LENGTH_LONG).show();
+                        return;
+                    }
+                    Log.d("tag", "Bild wurde gefunden: " + uri);
+
+                    ImageView ivThumb = findViewById(R.id.ivThumbnail);
+
+                    ivThumb.setImageURI(uri);
+                    ivThumb.setTag(uri);
+
+                    selectedBmp=loadFromUri(uri);
+
+            }
+
+        }
+    }
 
 }
