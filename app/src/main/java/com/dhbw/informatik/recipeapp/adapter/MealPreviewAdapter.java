@@ -144,8 +144,7 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
     }
 
     public void update(List<Meal> data) {
-        mealList.clear();
-        mealList.addAll(data);
+
         notifyDataSetChanged();
     }
 
