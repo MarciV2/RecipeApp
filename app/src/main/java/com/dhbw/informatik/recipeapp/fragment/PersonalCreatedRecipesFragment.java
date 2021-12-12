@@ -104,20 +104,7 @@ public class PersonalCreatedRecipesFragment extends Fragment {
             Meal m= (Meal) data.getSerializableExtra("meal");
             if(m!=null) {
 
-                //Abfrage höchste eigene id
-                String currentId=fileHandler.getCurrentId();
 
-                //Keine höchste id vorhanden dann Id Own:1 vergeben
-                if(currentId==null)m.setIdMeal("Own:1");
-                else
-                {
-                    Log.d("Highest id:",currentId);
-                    int id= Integer.parseInt(currentId);
-                    id++;
-                    //Aktuel höchste id um eins erhöhen und an Rezept vergeben
-                    m.setIdMeal("Own:"+id);
-                }
-                Log.d("Set Id:",m.getIdMeal());
                 fileHandler.ownRecipes.getMeals().add(m);
                 fileHandler.saveFiles();
                 updateMeals();

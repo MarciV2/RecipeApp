@@ -13,9 +13,11 @@ import com.dhbw.informatik.recipeapp.model.lists.MealList;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -266,7 +268,7 @@ public class FileHandler {
     public void saveImg(Bitmap bmp,String fileName){
         FileOutputStream fos = null;
         try {
-            fos = context.openFileOutput(fileName, context.MODE_PRIVATE);
+            fos = context.openFileOutput(fileName+".png", context.MODE_PRIVATE);
             bmp.compress(Bitmap.CompressFormat.PNG, 90, fos);
             fos.flush();
             Log.d("dev","Img saved to "+ context.getFilesDir()+"/"+fileName+".png");
@@ -304,6 +306,21 @@ public class FileHandler {
     }
 
     /**
+     * Erstellt von Marcel Vidmar
+     * WARNUNG löscht alle Bilder!
+     */
+    public void deleteImgages(){
+       File[] filesToDelete=context.getFilesDir().listFiles(new FilenameFilter() {
+           @Override
+           public boolean accept(File file, String s) {
+               return s.contains(".png");
+           }
+       });
+
+       for(File f:filesToDelete) f.delete();
+    }
+
+    /**
      * Erstellt von Johannes Fahr
      * WARNUNG löscht Favouriten
      */
@@ -329,8 +346,10 @@ public class FileHandler {
     {
         ownRecipes = new MealList();
         save(new Gson().toJson(ownRecipes),FILENAME_OWN_RECIPES);
-        //TODO Bilder müssen noch gelöscht
+        deleteImgages();
     }
+
+
 
 
 }

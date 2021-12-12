@@ -120,13 +120,7 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
                 String instructions=etInstructions.getText().toString();
                 String thumbnail = null;
 
-                //Bild speichern
-                String filename=title+"_"+instructions.hashCode();
-                fileHandler.saveImg(selectedBmp,filename);
 
-
-                if(ivThumb.getTag()!=null) thumbnail=filename;
-                else thumbnail="https://www.pngkey.com/png/detail/258-2582338_food-symbol-restaurant-simbolo-comida-png.png";
 
 
 
@@ -149,7 +143,6 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
                     meal.setStrCategory(category);
                     meal.setStrInstructions(instructions);
                     if(!area.isEmpty()) meal.setStrArea(area);
-                    meal.setStrMealThumb(thumbnail);
                     ArrayList<String> ingredientsList=new ArrayList<>();
                     ArrayList<String> measuresList=new ArrayList<>();
 
@@ -162,6 +155,34 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
 
                     Snackbar.make(findViewById(R.id.btnCreate),"Recipe '"+title+"' was sucessfully created!",BaseTransientBottomBar.LENGTH_LONG).show();
                     Log.d("dev","Recipe '"+title+"' was sucessfully created!");
+
+
+                    //Abfrage höchste eigene id
+                    String currentId=fileHandler.getCurrentId();
+
+                    //Keine höchste id vorhanden dann Id Own:1 vergeben
+                    if(currentId==null)meal.setIdMeal("Own:1");
+                    else
+                    {
+                        Log.d("Highest id:",currentId);
+                        int id= Integer.parseInt(currentId);
+                        id++;
+                        //Aktuel höchste id um eins erhöhen und an Rezept vergeben
+                        meal.setIdMeal("Own:"+id);
+                    }
+                    Log.d("Set Id:",meal.getIdMeal());
+
+
+                    //Bild speichern
+                    String filename=meal.getIdMeal().substring(4);
+                    fileHandler.saveImg(selectedBmp,filename);
+
+
+                    if(ivThumb.getTag()!=null) thumbnail=filename;
+                    else thumbnail="https://www.pngkey.com/png/detail/258-2582338_food-symbol-restaurant-simbolo-comida-png.png";
+
+                    meal.setStrMealThumb(thumbnail);
+
 
                     Intent intent=new Intent();
                     intent.putExtra("meal",meal);
