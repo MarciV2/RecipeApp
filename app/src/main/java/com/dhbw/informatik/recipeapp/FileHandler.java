@@ -269,7 +269,7 @@ public class FileHandler {
             fos = context.openFileOutput(fileName, context.MODE_PRIVATE);
             bmp.compress(Bitmap.CompressFormat.PNG, 90, fos);
             fos.flush();
-            Log.d("dev","Img saved to "+ context.getFilesDir()+"/"+fileName);
+            Log.d("dev","Img saved to "+ context.getFilesDir()+"/"+fileName+".png");
         } catch (Exception e) {
             e.printStackTrace();
         }finally{
@@ -291,7 +291,7 @@ public class FileHandler {
     public Bitmap loadImg(String fileName) {
         FileInputStream fis = null;
         try {
-            fis = context.openFileInput(fileName);
+            fis = context.openFileInput(fileName+".png");
             if(fis==null) return null;
 
             Bitmap bmp= BitmapFactory.decodeStream(fis);
@@ -301,6 +301,35 @@ public class FileHandler {
         }
 
         return null;
+    }
+
+    /**
+     * Erstellt von Johannes Fahr
+     * WARNUNG löscht Favouriten
+     */
+    public void deleteFavourites()
+    {
+        favourites = new MealList();
+        save(new Gson().toJson(favourites),FILENAME_FAVOURITES);
+    }
+    /**
+     * Erstellt von Johannes Fahr
+     * WARNUNG löscht zuletzt geklickte Rezepte
+     */
+    public void deleteLastClicked()
+    {
+        lastClicked = new MealList();
+        save(new Gson().toJson(lastClicked),FILENAME_LAST_CLICKED);
+    }
+    /**
+     * Erstellt von Johannes Fahr
+     * WARNUNG löscht zuletzt geklickte Rezepte
+     */
+    public void deleteOwnRecipes()
+    {
+        ownRecipes = new MealList();
+        save(new Gson().toJson(ownRecipes),FILENAME_OWN_RECIPES);
+        //TODO Bilder müssen noch gelöscht
     }
 
 
