@@ -52,36 +52,22 @@ public class DEMO_ORIEadapter extends RecyclerView.Adapter<DEMO_ORIEadapter.ORIE
 
     @Override
     public void onBindViewHolder(@NonNull DEMO_ORIEadapter.ORIEViewHolder holder, int position) {
-        if (position == orieList.size()) {
-            //am ende -> button
-            holder.btnAddIngr.setOnClickListener(
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            createOwnRecipeActivity.addIngredient();
-                            RecyclerView rv= createOwnRecipeActivity.findViewById(R.id.rvIngredients);
-                            rv.scrollToPosition(rv.getAdapter().getItemCount()-1);
-                        }
-                    }
-            );
-        } else {
+        if (position != orieList.size()) {
             //nicht am ende -> ingredientElement
             OwnRecipeIngredientElement orie = orieList.get(position);
 
 
+
             //text setzen, dient, um beim scrollen werte von recycelten elementen nicht zu verlieren
             holder.actvIngredient.setText(orie.getIngredient());
-            holder.etMeasurement.setText(orie.getMeasurement());
 
             //hint anhand von locale setzen mit fortlaufender nummerierung
             holder.actvIngredient.setHint( createOwnRecipeActivity.getString(R.string.ingredient)+String.valueOf(position+1));
-            holder.etMeasurement.setHint( createOwnRecipeActivity.getString(R.string.measurement)+String.valueOf(position+1));
 
 
             //Funktionalität für auto-complete
             holder.actvIngredient.setThreshold(1);
             holder.actvIngredient.setAdapter(arrayAdapter);
-
 
 
 
@@ -93,14 +79,22 @@ public class DEMO_ORIEadapter extends RecyclerView.Adapter<DEMO_ORIEadapter.ORIE
                 }
             });
 
-            //TextWatcher, um eingegebene Menge zu übernehmen, würde sonst beim scrollen verloren gehen! + keine end-speicherung notwendig
-            holder.etMeasurement.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    orie.setMeasurement(editable.toString());
-                }
-            });
 
+            //Alles auch für Measurement notwendig!!
+
+
+        } else   {
+            //am ende -> button
+            holder.btnAddIngr.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            createOwnRecipeActivity.addIngredient();
+                            RecyclerView rv= createOwnRecipeActivity.findViewById(R.id.rvIngredients);
+                            rv.scrollToPosition(rv.getAdapter().getItemCount()-1);
+                        }
+                    }
+            );
         }
     }
 
