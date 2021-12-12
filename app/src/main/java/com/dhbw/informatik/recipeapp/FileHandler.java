@@ -141,7 +141,7 @@ public class FileHandler {
      */
     public void addToFavourites(Meal meal){
         //prüfen, dass meal noch nicht in favs ist
-        for(Meal m:favourites.getMeals()) if(m.getIdMeal()==meal.getIdMeal())  return;
+        for(Meal m:favourites.getMeals()) if(m.getIdMeal().equals(meal.getIdMeal()))  return;
 
         favourites.getMeals().add(meal);
         save(new Gson().toJson(favourites),FILENAME_FAVOURITES);
@@ -157,7 +157,7 @@ public class FileHandler {
     public boolean isMealFav(Meal m) {
         readFiles();
         for(Meal m2:favourites.getMeals()){
-            if(m.getIdMeal()==m2.getIdMeal()) return true;
+            if(m.getIdMeal().equals(m2.getIdMeal())) return true;
         }
         return false;
     }
@@ -173,7 +173,7 @@ public class FileHandler {
 
         List<Meal> mealsToRemove=new ArrayList<>();
 
-        for(Meal m:favourites.getMeals()) if(m.getIdMeal()==meal.getIdMeal())  mealsToRemove.add(m);
+        for(Meal m:favourites.getMeals()) if(m.getIdMeal().equals(meal.getIdMeal()))  mealsToRemove.add(m);
 
         favourites.getMeals().removeAll(mealsToRemove);
         save(new Gson().toJson(favourites),FILENAME_FAVOURITES);
@@ -189,7 +189,7 @@ public class FileHandler {
 
         List<Meal> mealsToRemove=new ArrayList<>();
 
-        for(Meal m:lastClicked.getMeals()) if(m.getIdMeal()==meal.getIdMeal())  mealsToRemove.add(m);
+        for(Meal m:lastClicked.getMeals()) if(m.getIdMeal().equals(meal.getIdMeal()))  mealsToRemove.add(m);
 
         lastClicked.getMeals().removeAll(mealsToRemove);
         save(new Gson().toJson(lastClicked),FILENAME_LAST_CLICKED);
@@ -232,7 +232,7 @@ public class FileHandler {
         MealList temp;
         temp=new MealList();
         //Kommt Gericht in Liste vor?
-        for(Meal m:lastClicked.getMeals()) if(m.getIdMeal()==meal.getIdMeal()) {
+        for(Meal m:lastClicked.getMeals()) if(m.getIdMeal().equals(meal.getIdMeal())) {
             //Entfernen des Gerichts aus der List
             removeFromLastClicked(m);
             //hinzufügen des Gericht am Anfang der temporären Liste
