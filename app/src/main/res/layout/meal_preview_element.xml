@@ -28,7 +28,8 @@
             android:layout_margin="5dp"
 
             android:scaleType="centerCrop"
-            tools:src="@mipmap/ic_sample_meal_foreground" />
+            tools:src="@mipmap/ic_sample_meal_foreground"
+            android:contentDescription="thumb Image" />
         
         <!--Implementierung für URL-Unterstützung:
         https://www.tutorialspoint.com/how-do-i-load-an-imageview-by-url-on-android-->
@@ -36,7 +37,9 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/image_round_corners"/>
+            android:src="@drawable/image_round_corners"
+            android:contentDescription="simple round corners"
+            />
 
     </FrameLayout>
 
@@ -103,7 +106,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginRight="32dp"
+            android:layout_marginEnd="32dp"
             />
 
 
@@ -126,7 +129,8 @@
         app:layout_anchor="@id/contentLayout"
         app:layout_anchorGravity="end|top"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        android:contentDescription="set as favorite" />
     <!--wenn aktiviert: kann man mit backgroundTint="@color/primary" machen,
         sieht zwar nicht besonders aus und ist nicht intuitiv, aber besser als nichts -->
 

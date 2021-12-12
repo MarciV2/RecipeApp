@@ -2,10 +2,21 @@
     <string name="app_name">Recipes4You</string>
     <!-- Strings used for fragments for navigation -->
 
-    <string name="title_activity_main_nav">MainNav</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+
+    <string name="bottom_nav_label_home">Home</string>
+    <string name="site_title_home">Welcome back</string>
+
+    <string name="bottom_nav_label_filters">Select</string>
+    <string name="site_title_select">Select</string>
+
+    <string name="bottom_nav_label_favorites">Favorites</string>
+    <string name="site_title_favorites">Your favorites</string>
+
+    <string name="bottom_nav_label_personal">My stuff</string>
+    <string name="site_title_personal">Your personal stuff</string>
+
+    <string name="recipe_detail_video_btn_label">Watch tutorial</string>
+
 
     <string name="main_sites_title_home">Welcome back</string>
     <string name="main_sites_title_categories">Select</string>
