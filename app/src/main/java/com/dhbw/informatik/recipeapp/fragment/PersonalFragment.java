@@ -1,5 +1,6 @@
 package com.dhbw.informatik.recipeapp.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import com.dhbw.informatik.recipeapp.FileHandler;
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.activity.MainActivity;
 import com.dhbw.informatik.recipeapp.adapter.ViewPagerAdapter;
+import com.dhbw.informatik.recipeapp.model.Meal;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -21,11 +23,8 @@ import com.google.android.material.tabs.TabLayoutMediator;
 public class PersonalFragment extends Fragment {
 
     private MainActivity mainActivity;
-private FileHandler fileHandler;
+    private FileHandler fileHandler;
     BottomNavigationView navigationView;
-
-    boolean isCreatedRecipes = true;
-
 
     public PersonalFragment(MainActivity mainActivity) {
         this.mainActivity=mainActivity;
@@ -42,12 +41,13 @@ private FileHandler fileHandler;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_personal, container, false);
 
 
-        ViewPager2 mViewPager = root.findViewById(R.id.viewPager);//Get ViewPager2 view
-        mViewPager.setAdapter(new ViewPagerAdapter(getActivity()));//Attach the adapter with our ViewPagerAdapter passing the host activity
+        ViewPager2 mViewPager = root.findViewById(R.id.viewPager);
+
+        // Attach the adapter with our ViewPagerAdapter passing the host activity
+        mViewPager.setAdapter(new ViewPagerAdapter(getActivity()));
 
         TabLayout tabLayout = root.findViewById(R.id.tabs);
         new TabLayoutMediator(tabLayout, mViewPager,
@@ -74,14 +74,14 @@ private FileHandler fileHandler;
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==RESULT_OK)
+        /*if(requestCode==RESULT_OK)
         {
             Meal m= (Meal) data.getSerializableExtra("meal");
             if(m!=null) {
                 fileHandler.ownRecipes.getMeals().add(m);
                 fileHandler.saveFiles();
             }
-        }
+        }*/
     }
 
 }

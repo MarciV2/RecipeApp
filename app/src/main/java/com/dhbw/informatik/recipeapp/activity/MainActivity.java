@@ -229,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     /**
-     * Erstell von Johannes Fahr
+     * Erstellt von Johannes Fahr
      * Funktion holt mit dem über extra erhaltenen Zutatenfilter alle passenden Gerichte in eine Liste
      */
     void ingredientFilter()
@@ -306,7 +306,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     /**
-     * Erstell von Johannes Fahr
+     * Erstellt von Johannes Fahr
      * Funktion holt mit dem über extra erhaltenen Ortsfilter alle passenden Gerichte in eine Liste
      */
     void areaFilter()
@@ -475,12 +475,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment selectedFragment = null;
                     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
                     switch(item.getItemId()){
@@ -505,14 +503,13 @@ public class MainActivity extends AppCompatActivity {
                             break;
                     }
 
-
                     return true;
                 }
             };
 
     /**
      * Erstellt von Johannes Fahr
-     * Funktion erstellt die Funktionalität des klickens der Lupe der Tastatur der Searchview
+     * Funktion erstellt die Funktionalität des Klickens der Lupe der Tastatur der Searchview
      */
     public void queryFunctionality()
     {
@@ -687,8 +684,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d("TAG", "Searchview clicked");
         search();
     }
-
-
 
 
 }

@@ -25,7 +25,7 @@ import java.util.List;
 
 /*
 Erstellt von Marcel Vidmar
-Listet die favouriten als previews auf
+Listet die Favoriten als previews auf
  */
 public class FavoritesFragment extends Fragment {
 
