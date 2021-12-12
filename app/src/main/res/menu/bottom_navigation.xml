@@ -3,22 +3,22 @@
 
     <item
         android:id="@+id/bottom_nav_home"
-        android:title="Home"
+        android:title="@string/bottom_nav_label_home"
         android:icon="@drawable/ic_home"/>
 
     <item
         android:id="@+id/bottom_nav_categories"
-        android:title="Categories"
+        android:title="@string/bottom_nav_label_filters"
         android:icon="@drawable/ic_dashboard"/>
 
     <item
         android:id="@+id/bottom_nav_favorites"
-        android:title="Favorites"
+        android:title="@string/bottom_nav_label_favorites"
         android:icon="@drawable/ic_favoritesfull"/>
 
     <item
         android:id="@+id/bottom_nav_api_test"
-        android:title="My stuff"
+        android:title="@string/bottom_nav_label_personal"
         android:icon="@drawable/ic_person"/>
 
 </menu>

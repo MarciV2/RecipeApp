@@ -20,7 +20,7 @@ Umsetzung der Zutaten mittels dynamischem RecyclerView
       android:layout_height="wrap_content"
       android:text="@string/create_own_recipe"
       android:layout_marginTop="16dp"
-      android:textSize="24dp"
+      android:textSize="24sp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent" />
@@ -64,7 +64,9 @@ Umsetzung der Zutaten mittels dynamischem RecyclerView
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintWidth_percent="0.25"
       app:layout_constraintDimensionRatio="1:1"
-      android:layout_marginEnd="16dp"/>
+      android:layout_marginEnd="16dp"
+      android:contentDescription="create own recipe"
+      />
 
 
 
@@ -110,9 +112,9 @@ Umsetzung der Zutaten mittels dynamischem RecyclerView
       app:layout_constraintBottom_toTopOf="@id/btnCreate"
       android:layout_margin="16dp"
       android:hint="Instructions"
-      android:gravity="center_vertical" />
-
-
+      android:gravity="center_vertical"
+      android:autofillHints="instructions"
+      />
 
 
   <Button

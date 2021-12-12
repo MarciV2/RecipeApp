@@ -26,9 +26,6 @@ public class PersonalFragment extends Fragment {
 private FileHandler fileHandler;
     BottomNavigationView navigationView;
 
-    boolean isCreatedRecipes = true;
-
-
     public PersonalFragment(MainActivity mainActivity) {
         this.mainActivity=mainActivity;
     }
@@ -44,7 +41,6 @@ private FileHandler fileHandler;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_personal, container, false);
 
 
@@ -65,25 +61,5 @@ private FileHandler fileHandler;
         return root;
     }
 
-    /**
-     * CREATED BY Marcel Vidmar
-     * Callback, für wenn die CreateOwnRecipeActivity fertig ist und ein rezept liefert
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==-1)
-        {
-            Meal m= (Meal) data.getSerializableExtra("meal");
-            if(m!=null) {
-                fileHandler.ownRecipes.getMeals().add(m);
-                fileHandler.saveFiles();
-            }
-        }
-    }
 
 }

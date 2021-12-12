@@ -34,7 +34,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 /*
 Erstellt von Marcel Vidmar
-home-seite mit 10 zufälligen rezepten
+home-seite mit einer definierten Anzahl an zufälligen Rezepten
  */
 public class HomeFragment extends Fragment {
     private MainActivity mainActivity;
@@ -42,6 +42,7 @@ public class HomeFragment extends Fragment {
     private MealPreviewAdapter mealPreviewAdapter;
     private RecyclerView mealPreviewRecyclerView;
     private SwipeRefreshLayout swipeContainer;
+    final int numberOfRecipes = 10;
 
     public HomeFragment(MainActivity mainActivity) {
 
@@ -105,7 +106,7 @@ updateMeals();
         //API-Aufrufe starten
 
 
-                for(int i=0; i<10; i++){
+                for(int i=0; i<numberOfRecipes; i++){
                     Call<MealList> call = MainActivity.apiService.getRandomRecipe();
                     call.enqueue(new Callback<MealList>() {
                         @Override
@@ -140,12 +141,8 @@ updateMeals();
                     });
 
 
-
                 }
-//
 
     }
-
-
 
 }

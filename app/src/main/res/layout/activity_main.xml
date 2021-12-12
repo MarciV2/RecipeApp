@@ -14,9 +14,11 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="20dp"
-        android:id="@+id/fragment_container">
-
-    </FrameLayout>
+        android:layout_marginBottom="25dp"
+        android:id="@+id/fragment_container"
+        />
+    <!-- marginBottom wurde ausgelassen. kann in den einzelnen Frames dann nachgerüstet werden
+    wenn die BottomNav nicht über dem Inhalt der Seite "schweben" soll -->
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -26,10 +28,10 @@
         android:elevation="2dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="5dp"
         android:background="@drawable/round_corners"
         app:itemTextColor="@drawable/selector"
-        app:menu="@menu/menu_navigation"
+        app:menu="@menu/bottom_navigation"
         app:itemRippleColor="@android:color/transparent"
         app:labelVisibilityMode="selected"
         app:itemIconTint="@drawable/item_selector"

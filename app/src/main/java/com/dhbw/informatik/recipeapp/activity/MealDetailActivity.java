@@ -138,7 +138,4 @@ public class MealDetailActivity extends AppCompatActivity {
     }
 
 
-
-
-
 }

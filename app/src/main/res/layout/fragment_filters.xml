@@ -45,7 +45,6 @@
                             android:background="@drawable/categories_corners"
                             android:drawableTop="@drawable/ic_store_big"
                             android:padding="20dp"
-
                             android:text="Ingredients" />
                 </TableRow>
 

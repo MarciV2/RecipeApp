@@ -1,38 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.SelectMainIngredientActivity">
+    <!-- Dieses Fragment hätte man wohl ausgezeichnet automatisieren können:
+    lediglich der Filter, das Bild und evtl noch ein Parameter für die Recyclerview hätten
+    übergeben werden müssen. Hab ich (Bernd Mayinger) in der Klausurvorbereitung nicht mehr
+    geschafft -->
+
+    <!-- Aus design-Sicht hätte man mit dem Bild und der Überschrift beim Scrollen noch coole
+    Sachen machen können. So ein Design frisst aber - gerade bei Unkenntnis - extrem Zeit und
+    konnte deswegen nicht mehr vorgenommen werden -->
 
 
     <ImageView
         android:id="@+id/title_image"
         android:layout_width="0dp"
-        android:layout_height="500px"
+        android:layout_height="200dp"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_world_map_foreground" />
+        app:srcCompat="@mipmap/ic_world_map_foreground"
+        android:contentDescription="world map" />
 
 
     <TextView
         android:id="@+id/separator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:text="___________________________"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title_image" />
+    <!-- Ich entschuldige mich für diese sehr primitive Art der Linienerzeugung,
+    aber war einfacher als ein Border -->
 
     <TextView
         android:id="@+id/title_label_main_ingredient"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:text="Select a country"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
@@ -43,7 +54,7 @@
         android:id="@+id/listArea"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
