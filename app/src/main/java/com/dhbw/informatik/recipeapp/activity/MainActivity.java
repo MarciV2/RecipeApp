@@ -36,6 +36,7 @@ import com.dhbw.informatik.recipeapp.RecipeAPIService;
 import com.dhbw.informatik.recipeapp.model.Meal;
 import com.dhbw.informatik.recipeapp.model.lists.MealCategoriesList;
 import com.dhbw.informatik.recipeapp.model.lists.MealList;
+import com.google.android.gms.tagmanager.Container;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
@@ -625,14 +626,16 @@ public class MainActivity extends AppCompatActivity {
                         mealPreviewRecyclerView=findViewById(R.id.recyclerViewOfMeals);
                         mealPreviewRecyclerView.setLayoutManager(new LinearLayoutManager(self,RecyclerView.VERTICAL,false));
                         mealPreviewAdapter=new MealPreviewAdapter(list,self);
-                        mealPreviewAdapter.update(list);
+                        mealPreviewAdapter.search(list);
                         mealPreviewRecyclerView.setAdapter(mealPreviewAdapter);
+
                         Snackbar snackbar = Snackbar
-                                .make(findViewById(R.id.body_container), String.valueOf(list.size())+" entrys found!", Snackbar.LENGTH_SHORT).setAction("X", new View.OnClickListener() {
+                                .make(findViewById(R.id.recyclerViewOfMeals), String.valueOf(list.size())+" entrys found!", Snackbar.LENGTH_SHORT).setAction("X", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
                                     }
                                 });
+
                         snackbar.show();
                         sV.clearFocus();
 

@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 public class FileHandler {
 
@@ -199,6 +200,29 @@ public class FileHandler {
         Log.d("test","Favourites saved");
     }
 
+    /**
+     * Erstellt von Johannes Fahr
+     * @return gibt die höchste Ziffer hinter dem Prefix "Own:" zurück
+     */
+    public String getCurrentId()
+    {
+        ownRecipes= new Gson().fromJson(load(FILENAME_OWN_RECIPES), MealList.class);
+        //Kein Gericht liste null zurückgeben
+        if(ownRecipes.getMeals().size()==0)return null;
+        //TreeSet erstellen um automatisch sortierte Lise mit id's zu haben
+        TreeSet<String> idList = new TreeSet<String>();
+        for(int i=0;i<ownRecipes.getMeals().size();i++)
+        {
+            //Abfrage ob id länger als 1 ist
+            if(ownRecipes.getMeals().get(i).getIdMeal().length()>1){
+            //Abschneiden Prefix Own: und speichern in sortierte List
+            idList.add(ownRecipes.getMeals().get(i).getIdMeal().substring(4));}
+        }
+        //Wenn keine vorhandene Id dann null zurückgeben
+        if(idList.size()==0)return null;
+        //Zurückgeben des höchsten Wert für Id
+        return idList.last();
+    }
     /**
      * Erstellt von Johannes Fahr
      * @param meal Gericht das angeklickt wurde

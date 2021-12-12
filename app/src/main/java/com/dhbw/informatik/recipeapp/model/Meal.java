@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class Meal implements Serializable {
 
     @SerializedName("idMeal")
-    private int idMeal;
+    private String idMeal;
 
     @SerializedName("strMeal")
     private String strMeal;
@@ -212,11 +212,11 @@ public class Meal implements Serializable {
 
 
 
-    public int getIdMeal() {
+    public String getIdMeal() {
         return idMeal;
     }
 
-    public void setIdMeal(int idMeal) {
+    public void setIdMeal(String idMeal) {
         this.idMeal = idMeal;
     }
 
