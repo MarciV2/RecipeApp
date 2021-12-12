@@ -1,5 +1,6 @@
 package com.dhbw.informatik.recipeapp.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import com.dhbw.informatik.recipeapp.FileHandler;
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.activity.MainActivity;
 import com.dhbw.informatik.recipeapp.adapter.ViewPagerAdapter;
+import com.dhbw.informatik.recipeapp.model.Meal;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -74,7 +76,7 @@ private FileHandler fileHandler;
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==RESULT_OK)
+        if(requestCode==-1)
         {
             Meal m= (Meal) data.getSerializableExtra("meal");
             if(m!=null) {
