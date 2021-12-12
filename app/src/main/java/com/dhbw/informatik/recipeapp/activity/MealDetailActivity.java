@@ -3,10 +3,12 @@ package com.dhbw.informatik.recipeapp.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -59,7 +61,18 @@ public class MealDetailActivity extends AppCompatActivity {
         Button btnWatchOnYT=findViewById(R.id.btnWatchOnYT);
 
 
-        Picasso.get().load(meal.getStrMealThumb()).into(ivThumb);
+        //Bild laden
+        String mealThumb=meal.getStrMealThumb();
+        if(URLUtil.isValidUrl(mealThumb)){
+            Picasso.get().load(meal.getStrMealThumb()).into(ivThumb);
+
+
+        }else  {
+            if(mealThumb!=null) {
+                Bitmap bmp = fileHandler.loadImg(mealThumb);
+                ivThumb.setImageBitmap(bmp);
+            }
+        }
 
 
         tvTitle.setText(meal.getStrMeal());
@@ -93,7 +106,7 @@ public class MealDetailActivity extends AppCompatActivity {
 
         //YT-Button
         if(meal.getStrYoutube()==null)
-            btnWatchOnYT.setEnabled(false);
+            btnWatchOnYT.setVisibility(View.GONE);
         else
             if(meal.getStrYoutube().isEmpty())
                 btnWatchOnYT.setEnabled(false);
