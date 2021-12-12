@@ -36,7 +36,7 @@ import com.dhbw.informatik.recipeapp.RecipeAPIService;
 import com.dhbw.informatik.recipeapp.model.Meal;
 import com.dhbw.informatik.recipeapp.model.lists.MealCategoriesList;
 import com.dhbw.informatik.recipeapp.model.lists.MealList;
-import com.google.android.gms.tagmanager.Container;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
