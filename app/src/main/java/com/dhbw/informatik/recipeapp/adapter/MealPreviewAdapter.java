@@ -44,7 +44,6 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
     }
 
 
-
     @NonNull
     @Override
     public MealPreviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
