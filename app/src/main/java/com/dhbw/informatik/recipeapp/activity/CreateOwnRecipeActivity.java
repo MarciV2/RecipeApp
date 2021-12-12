@@ -10,9 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,6 +26,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.dhbw.informatik.recipeapp.FileHandler;
 import com.dhbw.informatik.recipeapp.adapter.ORIEadapter;
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.model.Meal;
@@ -35,6 +40,9 @@ import com.dhbw.informatik.recipeapp.model.lists.MealIngredientList;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,11 +63,13 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
     private List<OwnRecipeIngredientElement> ingredients;
     private ORIEadapter adapter;
     private ActivityResultLauncher<String> getThumb;
+    private Bitmap selectedBmp;
+    private FileHandler fileHandler;
 
     private CreateOwnRecipeActivity self=this;
 
     public CreateOwnRecipeActivity() {
-
+        fileHandler=FileHandler.getInstance();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
@@ -109,7 +119,18 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
                 String area=actvArea.getText().toString();
                 String instructions=etInstructions.getText().toString();
                 String thumbnail = null;
-                if(ivThumb.getTag()!=null) thumbnail=ivThumb.getTag().toString();
+
+                //Bild speichern
+                String filename=title+"_"+instructions.hashCode();
+                fileHandler.saveImg(selectedBmp,filename);
+
+
+                if(ivThumb.getTag()!=null) thumbnail=filename;
+                else thumbnail="https://www.pngkey.com/png/detail/258-2582338_food-symbol-restaurant-simbolo-comida-png.png";
+
+
+
+
 
                 boolean ingredientsOK=trimIngredients();
                 adapter.notifyDataSetChanged();
@@ -201,14 +222,36 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
                             return;
                         }
                         Log.d("tag", "Bild wurde gefunden: " + uri);
+
                         ImageView ivThumb = findViewById(R.id.ivThumbnail);
+
                         ivThumb.setImageURI(uri);
                         ivThumb.setTag(uri);
+
+                        selectedBmp=loadFromUri(uri);
 
 
                     }
 
                 });
+    }
+
+    public Bitmap loadFromUri(Uri photoUri) {
+        Bitmap image = null;
+        try {
+            // check version of Android on device
+            if(Build.VERSION.SDK_INT > 27){
+                // on newer versions of Android, use the new decodeBitmap method
+                ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(), photoUri);
+                image = ImageDecoder.decodeBitmap(source);
+            } else {
+                // support older versions of Android by using getBitmap
+                image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
     }
 
     @Override

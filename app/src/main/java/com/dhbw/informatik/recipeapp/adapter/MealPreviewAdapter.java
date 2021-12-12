@@ -2,10 +2,12 @@ package com.dhbw.informatik.recipeapp.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -56,7 +58,19 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
         holder.tvTitle.setText(meal.getStrMeal());
         holder.tvArea.setText(meal.getStrArea());
         holder.tvCategory.setText(meal.getStrCategory());
-        Picasso.get().load(meal.getStrMealThumb()).into(holder.ivThumb);
+
+        //Bild laden
+        String mealThumb=meal.getStrMealThumb();
+        if(URLUtil.isValidUrl(mealThumb)){
+            Picasso.get().load(meal.getStrMealThumb()).into(holder.ivThumb);
+
+
+        }else  {
+            if(mealThumb!=null) {
+                Bitmap bmp = fileHandler.loadImg(mealThumb);
+                holder.ivThumb.setImageBitmap(bmp);
+            }
+        }
 
 
         //Aus liste 1 string zum anzeigen machen, trennzeichen:" , "
@@ -105,8 +119,6 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
                     fileHandler.removeFromFavourites(meal);
                 }
 
-
-
             }
         });
 
@@ -118,7 +130,6 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
                     Intent i = new Intent(view.getContext(), MealDetailActivity.class);
                     i.putExtra("meal", meal);
                     previousActivity.startActivity(i);
-
             }
         };
         //Angewanth auf titel und thumbnail
@@ -133,6 +144,8 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
     }
 
     public void update(List<Meal> data) {
+        mealList.clear();
+        mealList.addAll(data);
         notifyDataSetChanged();
     }
 

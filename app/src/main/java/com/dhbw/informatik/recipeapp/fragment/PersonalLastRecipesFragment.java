@@ -53,6 +53,7 @@ public class PersonalLastRecipesFragment extends Fragment {
      * befüllt das recycler view
      */
     private void updateMeals() {
+        fileHandler.readFiles();
 
         if(fileHandler.lastClicked==null)return;
         mealList=fileHandler.lastClicked.getMeals();
@@ -61,7 +62,6 @@ public class PersonalLastRecipesFragment extends Fragment {
         mealPreviewRecyclerView=getView().findViewById(R.id.recyclerViewLastClicked);
         mealPreviewRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext(),RecyclerView.VERTICAL,false));
         mealPreviewAdapter=new MealPreviewAdapter(mealList,getActivity());
-        mealPreviewAdapter.update(mealList);
         mealPreviewRecyclerView.setAdapter(mealPreviewAdapter);
     }
 }
