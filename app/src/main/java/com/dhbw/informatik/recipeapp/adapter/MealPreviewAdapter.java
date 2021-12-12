@@ -143,11 +143,7 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
         return mealList.size();
     }
 
-    public void update(List<Meal> data) {
-        mealList.clear();
-        mealList.addAll(data);
-        notifyDataSetChanged();
-    }
+
     public void search(List<Meal> data){notifyDataSetChanged();}
 
     public void update(Meal meal) {
@@ -158,7 +154,7 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
         }
 
         for (Meal m : mealList)
-            if (m.getIdMeal() == meal.getIdMeal()) return;
+            if (m.getIdMeal().equals(meal.getIdMeal())) return;
 
         mealList.add(meal);
         notifyItemChanged(mealList.size());
