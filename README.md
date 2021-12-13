@@ -35,7 +35,7 @@ Auf der Vierten Seite des Navigations-Menü befindet sich der **persönliche Ber
 Hier können **selbst Rezepte erstellt** und auch angezeigt werden . Geht man oben auf die zweite Seite, werden **zuletzt aufgerufene Rezepte** (**Verlauf**) angezeigt und auf der dritten Seite können sowohl eigene Rezepte, als auch der **Verlauf gelöscht** werden.
 
 #### Eigenes Rezept
-Möchte man ein **eigenes Rezept anlegen**, geht man auf die erste Seite "My Recipes" des persönlichen Bereichs. Rechts unten tippt man auf den runden "+"-Button und gelangt in die entsprechende Ansicht. Hier muss man einen Titel, Kategorie, Gebiet und Beschreibung eingeben. Ebenfalls kann ein Bild aus dem Speicher des Geräts ausgewählt und hinterlegt werden.
+Möchte man ein **eigenes Rezept anlegen**, geht man auf die erste Seite "My Recipes" des persönlichen Bereichs. Rechts unten tippt man auf den runden "+"-Button und gelangt in die entsprechende Ansicht. Hier muss man einen Titel, Kategorie, Gebiet und Beschreibung eingeben. Ebenfalls kann ein Bild aus dem Speicher des Geräts ausgewählt und hinterlegt werden. Hierzu tippt man auf das Kamera-Symbol rechts. Ein Zuschneiden des Bilds wird direkt unterstützt.
 Zum Eintragen von Zutaten sind standardgemäß zwei Zutaten (Je Name und Menge) vorgesehen. Benötigt man mehr, kann man bis zu insgesamt 20 Zutaten mittels Tippen auf  "Add Ingredient" hinzufügen.
 Die Eingabefelder von Kategorie sowie Gebiet (Area) verfügen über eine automatische Text-Vervollständigung.
 
@@ -43,8 +43,8 @@ Die Eingabefelder von Kategorie sowie Gebiet (Area) verfügen über eine automat
 
 ### Haupt-Arbeitsbereiche
 
-Marcel Vidmar: API Anbindung, Dateiverwaltung, Feautures, Eigene Rezepte, Favoriten
+Marcel Vidmar: API Anbindung, Dateiverwaltung, Features, Eigene Rezepte, Favoriten
 
-Johannes Fahr: Interaktionen, Feautures, Dateiverwaltung, Letzte Rezepte, Suche/Filter
+Johannes Fahr: Interaktionen, Features, Dateiverwaltung, Letzte Rezepte, Suche/Filter
 
 Bernd Mayinger: Design, Fragments, Preview Element der Rezepte
