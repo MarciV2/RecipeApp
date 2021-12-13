@@ -43,7 +43,6 @@ Die Eingabefelder von Kategorie sowie Gebiet (Area) verfügen über eine automat
 
 ### Haupt-Arbeitsbereiche
 
-
-
-Erstellt von Marcel Vidmar
-edited by Bernd Mayinger
+Marcel Vidmar: API Anbindung, Dateiverwaltung, Feautures, Eigene Rezepte, Favoriten
+Johannes Fahr: Interaktionen, Feautures, Dateiverwaltung, Letzte Rezepte, Suche/Filter
+Bernd Mayinger: Design, Fragments, Preview Element der Rezepte
