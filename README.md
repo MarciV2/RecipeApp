@@ -3,7 +3,7 @@
 Android-App zur Darstellung, Verwaltung, Favorisierung und Erstellung von Rezepten.
 Verwendung der [TheMealDB](https://www.themealdb.com/api.php "TheMealDB").
 
-# Recipe4U
+# Recipes4U
 
 ![](https://github.com/MarciV2/RecipeApp/blob/main/app/src/main/ic_launcher-playstore.png?raw=true)
 
