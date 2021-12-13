@@ -40,6 +40,7 @@ import com.dhbw.informatik.recipeapp.model.lists.MealAreaList;
 import com.dhbw.informatik.recipeapp.model.lists.MealCategoriesList;
 import com.dhbw.informatik.recipeapp.model.lists.MealIngredientList;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
