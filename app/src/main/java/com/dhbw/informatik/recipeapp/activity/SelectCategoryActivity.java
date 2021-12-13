@@ -18,6 +18,7 @@ import com.dhbw.informatik.recipeapp.model.lists.MealCategoriesList;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -50,6 +51,9 @@ public class SelectCategoryActivity extends AppCompatActivity {
      * Adapter zum befüllen der Liste mit Kategoriearray
      */
     public void setAdapter(){
+        //Sortierung
+        Collections.sort(your_array_list);
+
         listView = (ListView) findViewById(R.id.listCategory);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this,

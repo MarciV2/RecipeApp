@@ -24,7 +24,9 @@ import android.widget.ListView;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.TreeSet;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -59,6 +61,9 @@ public class SelectAreaActivity extends AppCompatActivity {
      * Adapter zum befüllen der Liste mit Ortsarray
      */
     public void setAdapter(){
+        //Sortierung
+        Collections.sort(your_array_list);
+
         listView = (ListView) findViewById(R.id.listArea);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this,

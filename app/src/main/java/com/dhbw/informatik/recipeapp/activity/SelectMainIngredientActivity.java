@@ -18,6 +18,7 @@ import com.dhbw.informatik.recipeapp.model.lists.MealIngredientList;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -89,6 +90,9 @@ public class SelectMainIngredientActivity extends AppCompatActivity {
      * Adapter zum befüllen der Liste mit Zutatenarray
      */
     public void setAdapter(){
+        //Sortierung
+        Collections.sort(your_array_list);
+
         listView = (ListView) findViewById(R.id.listIngredient);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this,
