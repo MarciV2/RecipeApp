@@ -21,7 +21,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
     public final String[] mFragmentNames = new String[] {//Tabs names array
             "My Recipes",
             "Last Visited",
-            "edit"
+            "Settings"
     };
 
     public ViewPagerAdapter(FragmentActivity fa){//Pager constructor receives Activity instance

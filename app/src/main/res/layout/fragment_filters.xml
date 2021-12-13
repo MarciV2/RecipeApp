@@ -12,7 +12,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="@string/main_sites_title_categories"
+            android:text="@string/site_title_select"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,9 +43,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="30dp"
                             android:background="@drawable/categories_corners"
-                            android:drawableTop="@drawable/ic_store_big"
+                            android:drawableTop="@drawable/ic_ingredients_big"
                             android:padding="20dp"
-                            android:text="Ingredients" />
+                            android:text="@string/filter_title_ingredients" />
                 </TableRow>
 
                 <TableRow
@@ -60,7 +60,7 @@
                             android:background="@drawable/categories_corners"
                             android:drawableTop="@drawable/ic_categories_big"
                             android:padding="20dp"
-                            android:text="Category" />
+                            android:text="@string/filter_title_category" />
                 </TableRow>
 
                 <TableRow
@@ -70,13 +70,12 @@
                         <Button
                             android:id="@+id/toCountries"
                             android:background="@drawable/categories_corners"
-                            android:backgroundTint="@color/light_grey"
                             android:layout_marginTop="30dp"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:drawableTop="@drawable/ic_map_pin_big"
                             android:padding="20dp"
-                            android:text="Country"
+                            android:text="@string/filter_title_country"
                             />
                 </TableRow>
 

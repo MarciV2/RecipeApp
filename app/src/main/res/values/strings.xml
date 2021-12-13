@@ -15,6 +15,14 @@
     <string name="bottom_nav_label_personal">My stuff</string>
     <string name="site_title_personal">Your personal stuff</string>
 
+    <string name="filter_title_ingredients">Ingredients</string>
+
+    <string name="filter_title_category">Category</string>
+
+    <string name="filter_title_country">Country</string>
+
+
+
     <string name="recipe_detail_video_btn_label">Watch tutorial</string>
 
 
