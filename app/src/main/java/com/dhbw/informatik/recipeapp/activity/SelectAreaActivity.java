@@ -50,7 +50,7 @@ public class SelectAreaActivity extends AppCompatActivity {
 
         ActionBar ab = getSupportActionBar();
         if(ab != null){
-            ab.setTitle("Select an area or country");
+            ab.setTitle(getString(R.string.filter_action_bar_title_country));
         }
 
 

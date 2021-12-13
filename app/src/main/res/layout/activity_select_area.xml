@@ -19,7 +19,7 @@
     <ImageView
         android:id="@+id/title_image"
         android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_height="100dp"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,12 +40,12 @@
     aber war einfacher als ein Border -->
 
     <TextView
-        android:id="@+id/title_label_main_ingredient"
+        android:id="@+id/title_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:text="Select a country"
+        android:text="@string/filter_site_title_country"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/separator" />
@@ -59,6 +59,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_label_main_ingredient" />
+        app:layout_constraintTop_toBottomOf="@id/title_label" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

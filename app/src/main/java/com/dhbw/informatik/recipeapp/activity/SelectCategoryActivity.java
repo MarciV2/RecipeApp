@@ -42,7 +42,7 @@ public class SelectCategoryActivity extends AppCompatActivity {
         fillList();
         ActionBar ab = getSupportActionBar();
         if(ab != null){
-            ab.setTitle("Select a category");
+            ab.setTitle(getString(R.string.filter_action_bar_title_category));
         }
 
     }

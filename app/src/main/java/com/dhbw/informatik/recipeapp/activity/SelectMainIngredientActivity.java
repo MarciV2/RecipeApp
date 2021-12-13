@@ -42,10 +42,9 @@ public class SelectMainIngredientActivity extends AppCompatActivity {
         fillList();
         ActionBar ab = getSupportActionBar();
         if(ab != null){
-            ab.setTitle("Select your main ingredient");
+            ab.setTitle(getString(R.string.filter_action_bar_title_ingredient));
         }
     }
-
 
 
     /**
@@ -90,7 +89,7 @@ public class SelectMainIngredientActivity extends AppCompatActivity {
      * Adapter zum befüllen der Liste mit Zutatenarray
      */
     public void setAdapter(){
-        listView = (ListView) findViewById(R.id.listIngridient);
+        listView = (ListView) findViewById(R.id.listIngredient);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_list_item_1,

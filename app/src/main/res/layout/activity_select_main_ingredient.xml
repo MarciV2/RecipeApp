@@ -10,13 +10,14 @@
     <ImageView
         android:id="@+id/title_image"
         android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_height="100dp"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
 
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_collection_of_ingredients_foreground" />
+        app:srcCompat="@mipmap/ic_collection_of_ingredients_foreground"
+        android:contentDescription="some sample ingredients" />
 
 
     <TextView
@@ -29,18 +30,18 @@
         app:layout_constraintTop_toBottomOf="@id/title_image" />
 
     <TextView
-        android:id="@+id/title_label_main_ingredient"
+        android:id="@+id/title_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:text="Select a main ingredient"
+        android:text="@string/filter_site_title_ingredient"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/separator" />
 
     <ListView
-        android:id="@+id/listIngridient"
+        android:id="@+id/listIngredient"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
@@ -48,6 +49,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_label_main_ingredient" />
+        app:layout_constraintTop_toBottomOf="@id/title_label" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

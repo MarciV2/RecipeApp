@@ -45,7 +45,7 @@
                             android:background="@drawable/categories_corners"
                             android:drawableTop="@drawable/ic_ingredients_big"
                             android:padding="20dp"
-                            android:text="@string/filter_title_ingredients" />
+                            android:text="@string/filter_action_bar_title_ingredient" />
                 </TableRow>
 
                 <TableRow
@@ -60,7 +60,7 @@
                             android:background="@drawable/categories_corners"
                             android:drawableTop="@drawable/ic_categories_big"
                             android:padding="20dp"
-                            android:text="@string/filter_title_category" />
+                            android:text="@string/filter_action_bar_title_category" />
                 </TableRow>
 
                 <TableRow
@@ -75,7 +75,7 @@
                             android:layout_height="wrap_content"
                             android:drawableTop="@drawable/ic_map_pin_big"
                             android:padding="20dp"
-                            android:text="@string/filter_title_country"
+                            android:text="@string/filter_action_bar_title_country"
                             />
                 </TableRow>
 
