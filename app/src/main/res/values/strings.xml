@@ -18,10 +18,6 @@
     <string name="recipe_detail_video_btn_label">Watch tutorial</string>
 
 
-    <string name="main_sites_title_home">Welcome back</string>
-    <string name="main_sites_title_categories">Select</string>
-    <string name="main_sites_title_favorites">Your favorites</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="create_own_recipe">Create own Recipe</string>
     <string name="create_recipe">Create Recipe</string>
     <string name="ingredient">Ingredient</string>
