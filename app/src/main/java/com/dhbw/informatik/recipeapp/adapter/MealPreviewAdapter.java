@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-/*
+/**
 Erstellt von Marcel Vidmar
 Adapter für die Rezept-Previews
  */
@@ -63,10 +63,9 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
         String mealThumb=meal.getStrMealThumb();
         if(URLUtil.isValidUrl(mealThumb)){
             Picasso.get().load(meal.getStrMealThumb()).into(holder.ivThumb);
-
-
         }else  {
             if(mealThumb!=null) {
+                //Eigenes Rezept / lokales Bild
                 Bitmap bmp = fileHandler.loadImg(mealThumb);
                 holder.ivThumb.setImageBitmap(bmp);
             }
@@ -94,14 +93,10 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
         holder.tvIngredients.setText(ingredientsStr);
 
         //Icon für Fav setzen
-
             if (fileHandler.isMealFav(meal))
                 holder.faBtnFavourite.setImageResource(R.drawable.ic_favoritesfull);
             else
                 holder.faBtnFavourite.setImageResource(R.drawable.ic_favouriteempty);
-
-
-
 
 
         //Click-Handler für Favourite-button
@@ -111,10 +106,12 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
             public void onClick(View view) {
 
                 if (!fileHandler.isMealFav(meal)) {
+                    //zuvor kein Fav -> Gefüllter Stern als Bild setzen
                     holder.faBtnFavourite.setImageResource(R.drawable.ic_favoritesfull);
                     fileHandler.addToFavourites(meal);
                 }
                 else{
+                    //zuvor Fav -> Leerer Stern als Bild setzen
                     holder.faBtnFavourite.setImageResource(R.drawable.ic_favouriteempty);
                     fileHandler.removeFromFavourites(meal);
                 }
@@ -146,6 +143,11 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
 
     public void search(List<Meal> data){notifyDataSetChanged();}
 
+    /**
+     * Fügt einzelnes Meal der Liste hinzu, mit Überprüfung auf Duplikate
+     * Triggert auch ItemChanged im Adapter
+     * @param meal Meal, das hinzugefügt werden soll
+     */
     public void update(Meal meal) {
         if (mealList == null) {
             mealList = new ArrayList<>();
@@ -161,6 +163,9 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
 
     }
 
+    /**
+     * Viewholder-Klasse für Vorschau-Element
+     */
     public class MealPreviewViewHolder extends RecyclerView.ViewHolder {
         ImageView ivThumb;
         TextView tvTitle;

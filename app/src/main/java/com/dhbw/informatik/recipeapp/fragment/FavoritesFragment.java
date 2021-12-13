@@ -23,7 +23,7 @@ import com.dhbw.informatik.recipeapp.model.Meal;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
+/**
 Erstellt von Marcel Vidmar
 Listet die Favoriten als previews auf
  */

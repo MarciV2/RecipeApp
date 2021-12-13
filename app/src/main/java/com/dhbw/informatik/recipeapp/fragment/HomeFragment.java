@@ -73,25 +73,16 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-
         mealPreviewRecyclerView=view.findViewById(R.id.recyclerViewOfMeals);
-
         mealPreviewRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
         mealPreviewAdapter=new MealPreviewAdapter(mealList,mainActivity);
         mealPreviewRecyclerView.setAdapter(mealPreviewAdapter);
 
-
-
-updateMeals();
-
-
+        updateMeals();
     }
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-
-
         mainActivity.queryFunctionality();
         mainActivity.pullDownRefresh();
         super.onViewStateRestored(savedInstanceState);
@@ -104,44 +95,42 @@ updateMeals();
     public void updateMeals() {
 
         //API-Aufrufe starten
+        for(int i=0; i<numberOfRecipes; i++){
+            Call<MealList> call = MainActivity.apiService.getRandomRecipe();
+            call.enqueue(new Callback<MealList>() {
+                @Override
+                public void onResponse(@NonNull Call<MealList> call, @NonNull Response<MealList> response) {
 
+                    //Abfangen/Ausgeben Fehlercode Bsp. 404
+                    if (!response.isSuccessful()) {
+                        Log.d("ERROR", "Code: " + response.code());
+                        Snackbar snackbar = Snackbar
+                                .make(mainActivity.findViewById(R.id.body_container), "Errorcode: " + response.code(), Snackbar.LENGTH_SHORT).setAction("X", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                    }
+                                });
+                        snackbar.show();
+                        return;
+                    }
+                    List<Meal> tmp2MealList = response.body().getMeals();
+                    Meal m=tmp2MealList.get(0);
+                    m.fillArrays();
+                    Log.d("dev","Rezept geholt: "+tmp2MealList.get(0).getStrMeal()+" insgesamt: "+mealList.size());
 
-                for(int i=0; i<numberOfRecipes; i++){
-                    Call<MealList> call = MainActivity.apiService.getRandomRecipe();
-                    call.enqueue(new Callback<MealList>() {
-                        @Override
-                        public void onResponse(@NonNull Call<MealList> call, @NonNull Response<MealList> response) {
-
-                            //Abfangen/Ausgeben Fehlercode Bsp. 404
-                            if (!response.isSuccessful()) {
-                                Log.d("ERROR", "Code: " + response.code());
-                                Snackbar snackbar = Snackbar
-                                        .make(mainActivity.findViewById(R.id.body_container), "Errorcode: " + response.code(), Snackbar.LENGTH_SHORT).setAction("X", new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                            }
-                                        });
-                                snackbar.show();
-                                return;
-                            }
-                            List<Meal> tmp2MealList = response.body().getMeals();
-                            Meal m=tmp2MealList.get(0);
-                            m.fillArrays();
-                            Log.d("dev","Rezept geholt: "+tmp2MealList.get(0).getStrMeal()+" insgesamt: "+mealList.size());
-
-                            mealPreviewAdapter.update(m);
-
-
-                        }
-
-                        @Override
-                        public void onFailure(Call<MealList> call, Throwable t) {
-                            Snackbar.make(mealPreviewRecyclerView, "Network error!", BaseTransientBottomBar.LENGTH_LONG).show();
-                        }
-                    });
+                    mealPreviewAdapter.update(m);
 
 
                 }
+
+                @Override
+                public void onFailure(Call<MealList> call, Throwable t) {
+                    Snackbar.make(mealPreviewRecyclerView, "Network error!", BaseTransientBottomBar.LENGTH_LONG).show();
+                }
+            });
+
+
+        }
 
     }
 

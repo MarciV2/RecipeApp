@@ -76,9 +76,8 @@ public class PersonalCreatedRecipesFragment extends Fragment {
     private void updateMeals() {
         fileHandler.readFiles();
 
-        if(fileHandler.lastClicked==null)return;
+        if(fileHandler.ownRecipes==null)return;
         mealList=fileHandler.ownRecipes.getMeals();
-
 
         mealPreviewRecyclerView=getView().findViewById(R.id.recyclerViewLastClicked);
         mealPreviewRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext(),RecyclerView.VERTICAL,false));

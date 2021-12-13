@@ -30,7 +30,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
+/**
 Erstellt von Marcel Vidmar
 Dynamische Anzeige und sonstige Aktionen in der Detailansicht eines Rezepts
  */
@@ -65,9 +65,8 @@ public class MealDetailActivity extends AppCompatActivity {
         String mealThumb=meal.getStrMealThumb();
         if(URLUtil.isValidUrl(mealThumb)){
             Picasso.get().load(meal.getStrMealThumb()).into(ivThumb);
-
-
         }else  {
+            //Eigenes Rezept / lokales Bild
             if(mealThumb!=null) {
                 Bitmap bmp = fileHandler.loadImg(mealThumb);
                 ivThumb.setImageBitmap(bmp);
@@ -136,13 +135,14 @@ public class MealDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 if (!fileHandler.isMealFav(meal)) {
+                    //zuvor kein Fav -> Gefüllter Stern als Bild setzen
                     btn_addToFavs.setImageResource(R.drawable.ic_favoritesfull);
                     fileHandler.addToFavourites(meal);
                 }
                 else {
+                    //zuvor Fav -> Leerer Stern als Bild setzen
                     btn_addToFavs.setImageResource(R.drawable.ic_favouriteempty);
                     List<Meal> mealsToRemove=new ArrayList<>();
-
                     fileHandler.removeFromFavourites(meal);
                 }
 

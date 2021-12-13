@@ -57,7 +57,7 @@ import retrofit2.Response;
 /**
  * Created by Marcel Vidmar
  * Activity, um eigene Rezepte erstellen zu können. Verwendet Recycler view mit angehängtem Button, um bis zu 20 Zutaten dynamisch zufügen zu können.
- * Bei Eingabe werden als Auto-Vervollständigung bereits verwendete Zutaten (aus der API) vorgeschlagen
+ * Bei Eingabe von Category und Area werden als Auto-Vervollständigung bereits verwendete Zutaten (aus der API) vorgeschlagen
  */
 public class CreateOwnRecipeActivity extends AppCompatActivity {
 
@@ -90,7 +90,7 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rvIngredients);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
         ingredients = new ArrayList<OwnRecipeIngredientElement>();
-        ingredients.add(new OwnRecipeIngredientElement("banane", "0,75"));
+        ingredients.add(new OwnRecipeIngredientElement());
         ingredients.add(new OwnRecipeIngredientElement());
         adapter = new ORIEadapter(ingredients, this);
         updateAllIngredientsInAdapter();
@@ -110,16 +110,18 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
         });
 
 
-        //ClickListener für erstellen button
+        //ClickListener für "Erstellen"-Button
         findViewById(R.id.btnCreate).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Views holen
                 EditText etTitle=findViewById(R.id.etTitle);
                 AutoCompleteTextView actvCategory=findViewById(R.id.actvCategory);
                 AutoCompleteTextView actvArea=findViewById(R.id.actvArea);
                 EditText etInstructions=findViewById(R.id.etInstructions);
                 ImageView ivThumb=findViewById(R.id.ivThumbnail);
 
+                //String-Werte extrahieren
                 String title=etTitle.getText().toString();
                 String category= actvCategory.getText().toString();
                 String area=actvArea.getText().toString();
@@ -149,6 +151,8 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
                     meal.setStrCategory(category);
                     meal.setStrInstructions(instructions);
                     if(!area.isEmpty()) meal.setStrArea(area);
+
+                    //Alle Eingegebene Zutaten verarbeiten
                     ArrayList<String> ingredientsList=new ArrayList<>();
                     ArrayList<String> measuresList=new ArrayList<>();
 
@@ -183,13 +187,12 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
                     String filename=meal.getIdMeal().substring(4);
                     fileHandler.saveImg(selectedBmp,filename);
 
-
                     if(ivThumb.getTag()!=null) thumbnail=filename;
                     else thumbnail="https://www.pngkey.com/png/detail/258-2582338_food-symbol-restaurant-simbolo-comida-png.png";
 
                     meal.setStrMealThumb(thumbnail);
 
-
+                    //End-Ergebnis der Activity
                     Intent intent=new Intent();
                     intent.putExtra("meal",meal);
                     setResult(RESULT_OK,intent);
@@ -233,7 +236,13 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * Lädt eine Bitmap aus der vom ImageChosser zurückgegebenen URI
+     * Diese kann später nicht verarbeitet werden, demnach muss das Bild in den lokalen Daten gespeichert werden
+     * Hier wird dieses jedoch nur Geladen
+     * @param photoUri URI des Bildes, das man laden möchte
+     * @return Bitmap, die hinter der URI steckt
+     */
     public Bitmap loadFromUri(Uri photoUri) {
         Bitmap image = null;
         try {
@@ -251,6 +260,7 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
         }
         return image;
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -389,9 +399,9 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
 
     /**
      * Wird bei Rückkehr aus den Image-Chooser aufgerufen, setzt das vorschaubild und die gemerkte bitmap
-     * @param requestCode
-     * @param resultCode
-     * @param data
+     * @param requestCode Wird beim Start der Activity gesetzt -> dass der richtige Handler das Event erhält
+     * @param resultCode Ob OK oder eben nicht
+     * @param data enthält URI zum ausgewählten Bild
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

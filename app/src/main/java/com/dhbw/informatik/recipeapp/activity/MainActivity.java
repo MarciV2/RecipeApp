@@ -571,6 +571,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Created by Marcel Vidmar
      * initialisiert den globalen API-Service, soll nur durch onCreate aufgerufen werden!
+     * Hier müsste der API-Key eingetragen werden
      */
     private void initRetrofit() {
         //API-Retrofit initialisieren
