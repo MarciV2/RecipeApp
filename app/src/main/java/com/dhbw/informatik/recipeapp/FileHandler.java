@@ -340,12 +340,27 @@ public class FileHandler {
     }
     /**
      * Erstellt von Johannes Fahr
-     * WARNUNG löscht zuletzt geklickte Rezepte
+     * WARNUNG löscht eigene Rezepte / Bilder dieser
      */
     public void deleteOwnRecipes()
     {
+        lastClicked= new Gson().fromJson(load(FILENAME_LAST_CLICKED), MealList.class);
+        for(int i=0;i<lastClicked.getMeals().size();i++)
+        {
+            //Löschen des eigenen Rezepts aus Lastclicked
+            if(lastClicked.getMeals().get(i).getIdMeal().startsWith("Own:"))removeFromLastClicked(lastClicked.getMeals().get(i));
+        }
+
+        favourites= new Gson().fromJson(load(FILENAME_FAVOURITES), MealList.class);
+        for(int i=0;i<favourites.getMeals().size();i++)
+        {
+            //Löschen des eigenen Rezepts aus Favoriten
+            if(favourites.getMeals().get(i).getIdMeal().startsWith("Own:"))removeFromFavourites(favourites.getMeals().get(i));
+        }
+        //Eigene Rezepte mit leerer Liste übereschreiben
         ownRecipes = new MealList();
         save(new Gson().toJson(ownRecipes),FILENAME_OWN_RECIPES);
+        //Funktion löscht die Bilder der eigenen Rezepte
         deleteImgages();
     }
 

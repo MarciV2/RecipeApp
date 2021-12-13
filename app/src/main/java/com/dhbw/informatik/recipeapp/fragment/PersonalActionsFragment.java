@@ -59,6 +59,11 @@ public class PersonalActionsFragment extends Fragment {
                 fileHandler.deleteLastClicked();
             }
         });
-        //TODO Button mit onclicklistener für delete favourites
+        view.findViewById(R.id.deleteMyFavorites).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fileHandler.deleteFavourites();
+            }
+        });
     }
 }
