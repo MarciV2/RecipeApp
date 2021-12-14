@@ -237,26 +237,18 @@ public class FileHandler {
         for(Meal m:lastClicked.getMeals()) if(m.getIdMeal().equals(meal.getIdMeal())) {
             //Entfernen des Gerichts aus der List
             removeFromLastClicked(m);
-            //hinzufügen des Gericht am Anfang der temporären Liste
-            temp.getMeals().add(m);
-            //hinzufügen der Gerichte aus der Liste zur temporären List
-            for(int i=0;i<lastClicked.getMeals().size();i++)
-            {
-                temp.getMeals().add(lastClicked.getMeals().get(i));
-            }
-            //temporäre Liste in Hauptliste übertragen
-            lastClicked=temp;
-            Log.d("Gericht: ",meal.getStrMeal()+" zu last clicked hinzugefügt");
-            return;
         }
-        //Wenn Gericht nicht in Liste einfach temporäre Liste erstellen mit Gericht an erster Stelle und danach die anderen Gericht einfügen und als Hauptliste speichern
+        //hinzufügen des Gericht am Anfang der temporären Liste
         temp.getMeals().add(meal);
+        //hinzufügen der Gerichte aus der Liste zur temporären List
         for(int i=0;i<lastClicked.getMeals().size();i++)
         {
             temp.getMeals().add(lastClicked.getMeals().get(i));
         }
+        //temporäre Liste in Hauptliste übertragen
         lastClicked=temp;
         Log.d("Gericht: ",meal.getStrMeal()+" zu last clicked hinzugefügt");
+
     }
 
     /**
