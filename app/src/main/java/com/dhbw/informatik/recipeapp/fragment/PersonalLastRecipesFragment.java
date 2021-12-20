@@ -1,16 +1,15 @@
 package com.dhbw.informatik.recipeapp.fragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.dhbw.informatik.recipeapp.FileHandler;
 import com.dhbw.informatik.recipeapp.R;
@@ -26,7 +25,7 @@ public class PersonalLastRecipesFragment extends Fragment {
     private FileHandler fileHandler;
 
     public PersonalLastRecipesFragment() {
-        fileHandler=FileHandler.getInstance();
+        fileHandler = FileHandler.getInstance();
 
     }
 
@@ -56,12 +55,12 @@ public class PersonalLastRecipesFragment extends Fragment {
     private void updateMeals() {
         fileHandler.readFiles();
 
-        if(fileHandler.lastClicked==null)return;
-        mealList=fileHandler.lastClicked.getMeals();
+        if (fileHandler.lastClicked == null) return;
+        mealList = fileHandler.lastClicked.getMeals();
 
-        mealPreviewRecyclerView=getView().findViewById(R.id.recyclerViewLastClicked);
-        mealPreviewRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext(),RecyclerView.VERTICAL,false));
-        mealPreviewAdapter=new MealPreviewAdapter(mealList,getActivity());
+        mealPreviewRecyclerView = getView().findViewById(R.id.recyclerViewLastClicked);
+        mealPreviewRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext(), RecyclerView.VERTICAL, false));
+        mealPreviewAdapter = new MealPreviewAdapter(mealList, getActivity());
         mealPreviewRecyclerView.setAdapter(mealPreviewAdapter);
     }
 }

@@ -1,21 +1,18 @@
 package com.dhbw.informatik.recipeapp.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.dhbw.informatik.recipeapp.FileHandler;
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.activity.MainActivity;
 import com.dhbw.informatik.recipeapp.adapter.ViewPagerAdapter;
-import com.dhbw.informatik.recipeapp.model.Meal;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -23,18 +20,18 @@ import com.google.android.material.tabs.TabLayoutMediator;
 public class PersonalFragment extends Fragment {
 
     private MainActivity mainActivity;
-private FileHandler fileHandler;
+    private FileHandler fileHandler;
     BottomNavigationView navigationView;
 
     public PersonalFragment(MainActivity mainActivity) {
-        this.mainActivity=mainActivity;
+        this.mainActivity = mainActivity;
     }
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fileHandler=FileHandler.getInstance();
+        fileHandler = FileHandler.getInstance();
 
     }
 
@@ -52,7 +49,7 @@ private FileHandler fileHandler;
                 new TabLayoutMediator.TabConfigurationStrategy() {
                     @Override
                     public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                        tab.setText(((ViewPagerAdapter)(mViewPager.getAdapter())).mFragmentNames[position]);//Sets tabs names as mentioned in ViewPagerAdapter fragmentNames array, this can be implemented in many different ways.
+                        tab.setText(((ViewPagerAdapter) (mViewPager.getAdapter())).mFragmentNames[position]);//Sets tabs names as mentioned in ViewPagerAdapter fragmentNames array, this can be implemented in many different ways.
                     }
                 }
         ).attach();

@@ -1,7 +1,5 @@
 package com.dhbw.informatik.recipeapp.model;
 
-import android.util.Log;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -154,62 +152,58 @@ public class Meal implements Serializable {
     private String strMeasure20;
 
 
-
-
     private transient String[] ingredients;
     private transient String[] measures;
 
 
-
-    public void fillArrays(){
+    public void fillArrays() {
         //Ingredients als Liste formatieren, um besseren Zugriff darauf zu erhalten
         ingredients = new String[20];
-        ingredients[0]=strIngredient1;
-        ingredients[1]=strIngredient2;
-        ingredients[2]=strIngredient3;
-        ingredients[3]=strIngredient4;
-        ingredients[4]=strIngredient5;
-        ingredients[5]=strIngredient6;
-        ingredients[6]=strIngredient7;
-        ingredients[7]=strIngredient8;
-        ingredients[8]=strIngredient9;
-        ingredients[9]=strIngredient10;
-        ingredients[10]=strIngredient11;
-        ingredients[11]=strIngredient12;
-        ingredients[12]=strIngredient13;
-        ingredients[13]=strIngredient14;
-        ingredients[14]=strIngredient15;
-        ingredients[15]=strIngredient16;
-        ingredients[16]=strIngredient17;
-        ingredients[17]=strIngredient18;
-        ingredients[18]=strIngredient19;
-        ingredients[19]=strIngredient20;
+        ingredients[0] = strIngredient1;
+        ingredients[1] = strIngredient2;
+        ingredients[2] = strIngredient3;
+        ingredients[3] = strIngredient4;
+        ingredients[4] = strIngredient5;
+        ingredients[5] = strIngredient6;
+        ingredients[6] = strIngredient7;
+        ingredients[7] = strIngredient8;
+        ingredients[8] = strIngredient9;
+        ingredients[9] = strIngredient10;
+        ingredients[10] = strIngredient11;
+        ingredients[11] = strIngredient12;
+        ingredients[12] = strIngredient13;
+        ingredients[13] = strIngredient14;
+        ingredients[14] = strIngredient15;
+        ingredients[15] = strIngredient16;
+        ingredients[16] = strIngredient17;
+        ingredients[17] = strIngredient18;
+        ingredients[18] = strIngredient19;
+        ingredients[19] = strIngredient20;
 
 
         //Measures als Liste formatieren, um besseren Zugriff darauf zu erhalten
         measures = new String[20];
-        measures[0]=strMeasure1;
-        measures[1]=strMeasure2;
-        measures[2]=strMeasure3;
-        measures[3]=strMeasure4;
-        measures[4]=strMeasure5;
-        measures[5]=strMeasure6;
-        measures[6]=strMeasure7;
-        measures[7]=strMeasure8;
-        measures[8]=strMeasure9;
-        measures[9]=strMeasure10;
-        measures[10]=strMeasure11;
-        measures[11]=strMeasure12;
-        measures[12]=strMeasure13;
-        measures[13]=strMeasure14;
-        measures[14]=strMeasure15;
-        measures[15]=strMeasure16;
-        measures[16]=strMeasure17;
-        measures[17]=strMeasure18;
-        measures[18]=strMeasure19;
-        measures[19]=strMeasure20;
+        measures[0] = strMeasure1;
+        measures[1] = strMeasure2;
+        measures[2] = strMeasure3;
+        measures[3] = strMeasure4;
+        measures[4] = strMeasure5;
+        measures[5] = strMeasure6;
+        measures[6] = strMeasure7;
+        measures[7] = strMeasure8;
+        measures[8] = strMeasure9;
+        measures[9] = strMeasure10;
+        measures[10] = strMeasure11;
+        measures[11] = strMeasure12;
+        measures[12] = strMeasure13;
+        measures[13] = strMeasure14;
+        measures[14] = strMeasure15;
+        measures[15] = strMeasure16;
+        measures[16] = strMeasure17;
+        measures[17] = strMeasure18;
+        measures[18] = strMeasure19;
+        measures[19] = strMeasure20;
     }
-
 
 
     public String getIdMeal() {
@@ -281,49 +275,49 @@ public class Meal implements Serializable {
     }
 
     public void setIngredients(String[] ingredients) {
-        
+
         this.ingredients = ingredients;
 
-        if(ingredients.length>=1)
-            strIngredient1=ingredients[0];
-        if(ingredients.length>=2)
-            strIngredient2=ingredients[1];
-        if(ingredients.length>=3)
-            strIngredient3=ingredients[2];
-        if(ingredients.length>=4)
-            strIngredient4=ingredients[3];
-        if(ingredients.length>=5)
-            strIngredient5=ingredients[4];
-        if(ingredients.length>=6)
-            strIngredient6=ingredients[5];
-        if(ingredients.length>=7)
-            strIngredient7=ingredients[6];
-        if(ingredients.length>=8)
-            strIngredient8=ingredients[7];
-        if(ingredients.length>=9)
-            strIngredient9=ingredients[8];
-        if(ingredients.length>=10)
-            strIngredient10=ingredients[9];
-        if(ingredients.length>=11)
-            strIngredient11=ingredients[10];
-        if(ingredients.length>=12)
-            strIngredient12=ingredients[11];
-        if(ingredients.length>=13)
-            strIngredient13=ingredients[12];
-        if(ingredients.length>=14)
-            strIngredient14=ingredients[13];
-        if(ingredients.length>=15)
-            strIngredient15=ingredients[14];
-        if(ingredients.length>=16)
-            strIngredient16=ingredients[15];
-        if(ingredients.length>=17)
-            strIngredient17=ingredients[16];
-        if(ingredients.length>=18)
-            strIngredient18=ingredients[17];
-        if(ingredients.length>=19)
-            strIngredient19=ingredients[18];
-        if(ingredients.length>=20)
-            strIngredient20=ingredients[19];
+        if (ingredients.length >= 1)
+            strIngredient1 = ingredients[0];
+        if (ingredients.length >= 2)
+            strIngredient2 = ingredients[1];
+        if (ingredients.length >= 3)
+            strIngredient3 = ingredients[2];
+        if (ingredients.length >= 4)
+            strIngredient4 = ingredients[3];
+        if (ingredients.length >= 5)
+            strIngredient5 = ingredients[4];
+        if (ingredients.length >= 6)
+            strIngredient6 = ingredients[5];
+        if (ingredients.length >= 7)
+            strIngredient7 = ingredients[6];
+        if (ingredients.length >= 8)
+            strIngredient8 = ingredients[7];
+        if (ingredients.length >= 9)
+            strIngredient9 = ingredients[8];
+        if (ingredients.length >= 10)
+            strIngredient10 = ingredients[9];
+        if (ingredients.length >= 11)
+            strIngredient11 = ingredients[10];
+        if (ingredients.length >= 12)
+            strIngredient12 = ingredients[11];
+        if (ingredients.length >= 13)
+            strIngredient13 = ingredients[12];
+        if (ingredients.length >= 14)
+            strIngredient14 = ingredients[13];
+        if (ingredients.length >= 15)
+            strIngredient15 = ingredients[14];
+        if (ingredients.length >= 16)
+            strIngredient16 = ingredients[15];
+        if (ingredients.length >= 17)
+            strIngredient17 = ingredients[16];
+        if (ingredients.length >= 18)
+            strIngredient18 = ingredients[17];
+        if (ingredients.length >= 19)
+            strIngredient19 = ingredients[18];
+        if (ingredients.length >= 20)
+            strIngredient20 = ingredients[19];
     }
 
     public String[] getMeasures() {
@@ -332,46 +326,46 @@ public class Meal implements Serializable {
 
     public void setMeasures(String[] measures) {
         this.measures = measures;
-        if(measures.length>=1)
-            strMeasure1=measures[0];
-        if(measures.length>=2)
-            strMeasure2=measures[1];
-        if(measures.length>=3)
-            strMeasure3=measures[2];
-        if(measures.length>=4)
-            strMeasure4=measures[3];
-        if(measures.length>=5)
-            strMeasure5=measures[4];
-        if(measures.length>=6)
-            strMeasure6=measures[5];
-        if(measures.length>=7)
-            strMeasure7=measures[6];
-        if(measures.length>=8)
-            strMeasure8=measures[7];
-        if(measures.length>=9)
-            strMeasure9=measures[8];
-        if(measures.length>=10)
-            strMeasure10=measures[9];
-        if(measures.length>=11)
-            strMeasure11=measures[10];
-        if(measures.length>=12)
-            strMeasure12=measures[11];
-        if(measures.length>=13)
-            strMeasure13=measures[12];
-        if(measures.length>=14)
-            strMeasure14=measures[13];
-        if(measures.length>=15)
-            strMeasure15=measures[14];
-        if(measures.length>=16)
-            strMeasure16=measures[15];
-        if(measures.length>=17)
-            strMeasure17=measures[16];
-        if(measures.length>=18)
-            strMeasure18=measures[17];
-        if(measures.length>=19)
-            strMeasure19=measures[18];
-        if(measures.length>=20)
-            strMeasure20=measures[19];
+        if (measures.length >= 1)
+            strMeasure1 = measures[0];
+        if (measures.length >= 2)
+            strMeasure2 = measures[1];
+        if (measures.length >= 3)
+            strMeasure3 = measures[2];
+        if (measures.length >= 4)
+            strMeasure4 = measures[3];
+        if (measures.length >= 5)
+            strMeasure5 = measures[4];
+        if (measures.length >= 6)
+            strMeasure6 = measures[5];
+        if (measures.length >= 7)
+            strMeasure7 = measures[6];
+        if (measures.length >= 8)
+            strMeasure8 = measures[7];
+        if (measures.length >= 9)
+            strMeasure9 = measures[8];
+        if (measures.length >= 10)
+            strMeasure10 = measures[9];
+        if (measures.length >= 11)
+            strMeasure11 = measures[10];
+        if (measures.length >= 12)
+            strMeasure12 = measures[11];
+        if (measures.length >= 13)
+            strMeasure13 = measures[12];
+        if (measures.length >= 14)
+            strMeasure14 = measures[13];
+        if (measures.length >= 15)
+            strMeasure15 = measures[14];
+        if (measures.length >= 16)
+            strMeasure16 = measures[15];
+        if (measures.length >= 17)
+            strMeasure17 = measures[16];
+        if (measures.length >= 18)
+            strMeasure18 = measures[17];
+        if (measures.length >= 19)
+            strMeasure19 = measures[18];
+        if (measures.length >= 20)
+            strMeasure20 = measures[19];
 
 
     }

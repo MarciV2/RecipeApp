@@ -39,16 +39,17 @@ public class ORIEadapter extends RecyclerView.Adapter<ORIEadapter.ORIEViewHolder
 
     /**
      * Setzt die Liste der bereits in api verwendeten zutaten und aktualisiert diese in allen auto-complete-feldern
+     *
      * @param availableIngredients Liste aller bereits in api verwendeten zutaten
      */
     public void setAvailableIngredients(String[] availableIngredients) {
         this.availableIngredients = availableIngredients;
 
         //Autocomplete für ingredient einfügen
-        arrayAdapter=new ArrayAdapter<String>(createOwnRecipeActivity,
+        arrayAdapter = new ArrayAdapter<String>(createOwnRecipeActivity,
                 android.R.layout.simple_selectable_list_item,
                 availableIngredients);
-                this.notifyDataSetChanged();
+        this.notifyDataSetChanged();
 
 
     }
@@ -76,8 +77,8 @@ public class ORIEadapter extends RecyclerView.Adapter<ORIEadapter.ORIEViewHolder
                         @Override
                         public void onClick(View view) {
                             createOwnRecipeActivity.addIngredient();
-                            RecyclerView rv= createOwnRecipeActivity.findViewById(R.id.rvIngredients);
-                            rv.scrollToPosition(rv.getAdapter().getItemCount()-1);
+                            RecyclerView rv = createOwnRecipeActivity.findViewById(R.id.rvIngredients);
+                            rv.scrollToPosition(rv.getAdapter().getItemCount() - 1);
                         }
                     }
             );
@@ -91,8 +92,8 @@ public class ORIEadapter extends RecyclerView.Adapter<ORIEadapter.ORIEViewHolder
             holder.etMeasurement.setText(orie.getMeasurement());
 
             //hint anhand von locale setzen mit fortlaufender nummerierung
-            holder.actvIngredient.setHint( createOwnRecipeActivity.getString(R.string.ingredient)+String.valueOf(position+1));
-            holder.etMeasurement.setHint( createOwnRecipeActivity.getString(R.string.measurement)+String.valueOf(position+1));
+            holder.actvIngredient.setHint(createOwnRecipeActivity.getString(R.string.ingredient) + String.valueOf(position + 1));
+            holder.etMeasurement.setHint(createOwnRecipeActivity.getString(R.string.measurement) + String.valueOf(position + 1));
 
 
             //Funktionalität für auto-complete
@@ -100,15 +101,15 @@ public class ORIEadapter extends RecyclerView.Adapter<ORIEadapter.ORIEViewHolder
             holder.actvIngredient.setAdapter(arrayAdapter);
 
 
-
-
             //TextWatcher, um eingegebene zutat zu übernehmen, würde sonst beim scrollen verloren gehen! + keine end-speicherung notwendig
             holder.actvIngredient.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
 
                 @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
 
                 @Override
                 public void afterTextChanged(Editable editable) {
@@ -119,10 +120,12 @@ public class ORIEadapter extends RecyclerView.Adapter<ORIEadapter.ORIEViewHolder
             //TextWatcher, um eingegebene Menge zu übernehmen, würde sonst beim scrollen verloren gehen! + keine end-speicherung notwendig
             holder.etMeasurement.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
 
                 @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
 
                 @Override
                 public void afterTextChanged(Editable editable) {
@@ -134,8 +137,9 @@ public class ORIEadapter extends RecyclerView.Adapter<ORIEadapter.ORIEViewHolder
     }
 
     /**
-     *  anzahl der elemente
-     * @return  Anzahl der zutaten +1, da button am ende
+     * anzahl der elemente
+     *
+     * @return Anzahl der zutaten +1, da button am ende
      */
     @Override
     public int getItemCount() {

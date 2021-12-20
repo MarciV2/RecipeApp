@@ -1,9 +1,5 @@
 package com.dhbw.informatik.recipeapp.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +7,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.RecipeAPIService;
@@ -26,14 +26,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
 //Activity zur Auswahl eines Filters in Form von einer Hauptzutat
 public class SelectMainIngredientActivity extends AppCompatActivity {
     static public RecipeAPIService apiService = null;
     public MealIngredientList mealIngredientList;
     private ListView listView;
-    private final SelectMainIngredientActivity self=this;
-    public String selectedIngridient=null;
+    private final SelectMainIngredientActivity self = this;
+    public String selectedIngridient = null;
     List<String> your_array_list = new ArrayList<String>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +44,7 @@ public class SelectMainIngredientActivity extends AppCompatActivity {
         initRetrofit();
         fillList();
         ActionBar ab = getSupportActionBar();
-        if(ab != null){
+        if (ab != null) {
             ab.setTitle(getString(R.string.filter_action_bar_title_ingredient));
         }
     }
@@ -51,8 +53,7 @@ public class SelectMainIngredientActivity extends AppCompatActivity {
     /**
      * Funktion macht einen API Aufruf welcher alle Zutaten abfrägt
      */
-    private void fillList()
-    {
+    private void fillList() {
 
         Call<MealIngredientList> call = apiService.getAllIngredients();
         call.enqueue(new Callback<MealIngredientList>() {
@@ -65,12 +66,11 @@ public class SelectMainIngredientActivity extends AppCompatActivity {
                     return;
                 }
 
-                mealIngredientList=response.body();
+                mealIngredientList = response.body();
                 Log.d("ZutatenListe:", new Gson().toJson(mealIngredientList));
 
                 //Durchgehen der Zutateniste und hinzufügen der einzelnen Zutaten zu der Arraylist
-                for(int i=0; i<mealIngredientList.getIngredientList().size();i++)
-                {
+                for (int i = 0; i < mealIngredientList.getIngredientList().size(); i++) {
                     your_array_list.add(mealIngredientList.getIngredientList().get(i).getStrIngredient());
                 }
                 Log.d("Anzahl Zutaten:", String.valueOf(your_array_list.size()));
@@ -79,6 +79,7 @@ public class SelectMainIngredientActivity extends AppCompatActivity {
 
 
             }
+
             @Override
             public void onFailure(Call<MealIngredientList> call, Throwable t) {
 
@@ -86,10 +87,11 @@ public class SelectMainIngredientActivity extends AppCompatActivity {
         });
 
     }
+
     /**
      * Adapter zum befüllen der Liste mit Zutatenarray
      */
-    public void setAdapter(){
+    public void setAdapter() {
         //Sortierung
         Collections.sort(your_array_list);
 
@@ -97,19 +99,20 @@ public class SelectMainIngredientActivity extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_list_item_1,
-                your_array_list );
+                your_array_list);
         listView.setAdapter(arrayAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedIngridient=your_array_list.get(position);
+                selectedIngridient = your_array_list.get(position);
                 Intent i = new Intent(self, MainActivity.class);
                 //Extra mit prefix und ausgewählter Zutat weitergeben an MainActivity
-                i.putExtra("filter", "ingredient:"+selectedIngridient);
+                i.putExtra("filter", "ingredient:" + selectedIngridient);
                 startActivity(i);
             }
         });
     }
+
     /**
      * Created by Marcel Vidmar
      * initialisiert den globalen API-Service, soll nur durch onCreate aufgerufen werden!

@@ -4,17 +4,15 @@ import static android.app.Activity.RESULT_OK;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.dhbw.informatik.recipeapp.FileHandler;
 import com.dhbw.informatik.recipeapp.R;
@@ -33,9 +31,8 @@ public class PersonalCreatedRecipesFragment extends Fragment {
 
 
     public PersonalCreatedRecipesFragment() {
-        fileHandler=FileHandler.getInstance();
+        fileHandler = FileHandler.getInstance();
     }
-
 
 
     @Override
@@ -53,8 +50,8 @@ public class PersonalCreatedRecipesFragment extends Fragment {
         root.findViewById(R.id.btnCreateOwn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i= new Intent(getActivity(), CreateOwnRecipeActivity.class);
-                startActivityForResult(i,111);
+                Intent i = new Intent(getActivity(), CreateOwnRecipeActivity.class);
+                startActivityForResult(i, 111);
             }
         });
 
@@ -76,12 +73,12 @@ public class PersonalCreatedRecipesFragment extends Fragment {
     private void updateMeals() {
         fileHandler.readFiles();
 
-        if(fileHandler.ownRecipes==null)return;
-        mealList=fileHandler.ownRecipes.getMeals();
+        if (fileHandler.ownRecipes == null) return;
+        mealList = fileHandler.ownRecipes.getMeals();
 
-        mealPreviewRecyclerView=getView().findViewById(R.id.recyclerViewLastClicked);
-        mealPreviewRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext(),RecyclerView.VERTICAL,false));
-        mealPreviewAdapter=new MealPreviewAdapter(mealList,getActivity());
+        mealPreviewRecyclerView = getView().findViewById(R.id.recyclerViewLastClicked);
+        mealPreviewRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext(), RecyclerView.VERTICAL, false));
+        mealPreviewAdapter = new MealPreviewAdapter(mealList, getActivity());
         mealPreviewRecyclerView.setAdapter(mealPreviewAdapter);
     }
 
@@ -89,25 +86,24 @@ public class PersonalCreatedRecipesFragment extends Fragment {
     /**
      * CREATED BY Marcel Vidmar
      * Callback, für wenn die CreateOwnRecipeActivity fertig ist und ein rezept liefert
+     *
      * @param requestCode
      * @param resultCode
      * @param data
      */
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==RESULT_OK)
-        if(requestCode==111)
-        {
-            Meal m= (Meal) data.getSerializableExtra("meal");
-            if(m!=null) {
+        if (resultCode == RESULT_OK)
+            if (requestCode == 111) {
+                Meal m = (Meal) data.getSerializableExtra("meal");
+                if (m != null) {
 
 
-                fileHandler.ownRecipes.getMeals().add(m);
-                fileHandler.saveFiles();
-                updateMeals();
+                    fileHandler.ownRecipes.getMeals().add(m);
+                    fileHandler.saveFiles();
+                    updateMeals();
+                }
             }
-        }
     }
 }

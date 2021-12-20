@@ -2,12 +2,11 @@ package com.dhbw.informatik.recipeapp.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
 
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.activity.SelectAreaActivity;
@@ -35,7 +34,7 @@ public class SelectFilterFragment extends Fragment {
         root.findViewById(R.id.toMainIngredients).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i= new Intent(getActivity(), SelectMainIngredientActivity.class);
+                Intent i = new Intent(getActivity(), SelectMainIngredientActivity.class);
                 startActivity(i);
             }
         });
@@ -43,7 +42,7 @@ public class SelectFilterFragment extends Fragment {
         root.findViewById(R.id.toCategories).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i= new Intent(getActivity(), SelectCategoryActivity.class);
+                Intent i = new Intent(getActivity(), SelectCategoryActivity.class);
                 startActivity(i);
             }
         });
@@ -51,7 +50,7 @@ public class SelectFilterFragment extends Fragment {
         root.findViewById(R.id.toCountries).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i= new Intent(getActivity(), SelectAreaActivity.class);
+                Intent i = new Intent(getActivity(), SelectAreaActivity.class);
                 startActivity(i);
             }
         });

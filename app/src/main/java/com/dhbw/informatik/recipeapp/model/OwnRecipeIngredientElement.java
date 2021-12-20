@@ -9,10 +9,9 @@ public class OwnRecipeIngredientElement {
     private String measurement;
 
 
-
-    public OwnRecipeIngredientElement(){
-        ingredient="";
-        measurement="";
+    public OwnRecipeIngredientElement() {
+        ingredient = "";
+        measurement = "";
     }
 
     public OwnRecipeIngredientElement(String ingredient, String measurement) {

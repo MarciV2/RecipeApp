@@ -1,9 +1,5 @@
 package com.dhbw.informatik.recipeapp.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +7,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.RecipeAPIService;
@@ -26,14 +26,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
 //Activity zur Auswahl eines Filters in Form von einer Kategorie
 public class SelectCategoryActivity extends AppCompatActivity {
     static public RecipeAPIService apiService = null;
     public MealCategoriesList mealCategoriesList;
     private ListView listView;
-    private SelectCategoryActivity self=this;
-    public String selectedCategory=null;
+    private SelectCategoryActivity self = this;
+    public String selectedCategory = null;
     List<String> your_array_list = new ArrayList<String>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,15 +44,16 @@ public class SelectCategoryActivity extends AppCompatActivity {
         initRetrofit();
         fillList();
         ActionBar ab = getSupportActionBar();
-        if(ab != null){
+        if (ab != null) {
             ab.setTitle(getString(R.string.filter_action_bar_title_category));
         }
 
     }
+
     /**
      * Adapter zum befüllen der Liste mit Kategoriearray
      */
-    public void setAdapter(){
+    public void setAdapter() {
         //Sortierung
         Collections.sort(your_array_list);
 
@@ -58,24 +61,24 @@ public class SelectCategoryActivity extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_list_item_1,
-                your_array_list );
+                your_array_list);
         listView.setAdapter(arrayAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedCategory=your_array_list.get(position);
+                selectedCategory = your_array_list.get(position);
                 Intent i = new Intent(self, MainActivity.class);
                 //Extra mit prefix und ausgewählter Kategorie weitergeben an MainActivity
-                i.putExtra("filter", "category:"+selectedCategory);
+                i.putExtra("filter", "category:" + selectedCategory);
                 startActivity(i);
             }
         });
     }
+
     /**
      * Funktion macht einen API Aufruf welcher alle Kategorien abfrägt
      */
-    private void fillList()
-    {
+    private void fillList() {
 
         Call<MealCategoriesList> call = apiService.getAllCategoriesDetailed();
         call.enqueue(new Callback<MealCategoriesList>() {
@@ -88,12 +91,11 @@ public class SelectCategoryActivity extends AppCompatActivity {
                     return;
                 }
 
-                mealCategoriesList=response.body();
+                mealCategoriesList = response.body();
                 Log.d("Kategorienliste", new Gson().toJson(mealCategoriesList));
 
                 //Durchgehen der Kategorienlist und hinzufügen der einzelnen Kategorien zu der Arraylist
-                for(int i=0; i<mealCategoriesList.getCategories().size();i++)
-                {
+                for (int i = 0; i < mealCategoriesList.getCategories().size(); i++) {
                     your_array_list.add(mealCategoriesList.getCategories().get(i).getStrCategory());
                 }
                 Log.d("Anzahl Kategorien:", String.valueOf(your_array_list.size()));
@@ -104,7 +106,6 @@ public class SelectCategoryActivity extends AppCompatActivity {
             }
 
 
-
             @Override
             public void onFailure(Call<MealCategoriesList> call, Throwable t) {
 
@@ -112,6 +113,7 @@ public class SelectCategoryActivity extends AppCompatActivity {
         });
 
     }
+
     /**
      * Created by Marcel Vidmar
      * initialisiert den globalen API-Service, soll nur durch onCreate aufgerufen werden!

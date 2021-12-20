@@ -1,7 +1,6 @@
 package com.dhbw.informatik.recipeapp.model.lists;
 
 import com.dhbw.informatik.recipeapp.model.Meal;
-import com.dhbw.informatik.recipeapp.model.MealCategory;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ public class MealList {
     }
 
     public MealList() {
-meals=new ArrayList<>();
+        meals = new ArrayList<>();
     }
 
     public List<Meal> getMeals() {

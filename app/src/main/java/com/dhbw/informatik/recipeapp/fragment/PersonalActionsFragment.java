@@ -1,28 +1,16 @@
 package com.dhbw.informatik.recipeapp.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
-import android.widget.ImageView;
-
 import com.dhbw.informatik.recipeapp.FileHandler;
 import com.dhbw.informatik.recipeapp.R;
-import com.dhbw.informatik.recipeapp.model.Meal;
-import com.dhbw.informatik.recipeapp.model.OwnRecipeIngredientElement;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.ArrayList;
 
 
 public class PersonalActionsFragment extends Fragment {
@@ -31,7 +19,7 @@ public class PersonalActionsFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        fileHandler=FileHandler.getInstance();
+        fileHandler = FileHandler.getInstance();
         super.onCreate(savedInstanceState);
     }
 
@@ -50,7 +38,7 @@ public class PersonalActionsFragment extends Fragment {
         view.findViewById(R.id.deleteOwnRecipes).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               fileHandler.deleteOwnRecipes();
+                fileHandler.deleteOwnRecipes();
             }
         });
         view.findViewById(R.id.deleteSearchHistory).setOnClickListener(new View.OnClickListener() {

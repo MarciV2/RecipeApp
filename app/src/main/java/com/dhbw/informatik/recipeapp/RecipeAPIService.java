@@ -5,7 +5,7 @@ import com.dhbw.informatik.recipeapp.model.lists.MealCategoriesList;
 import com.dhbw.informatik.recipeapp.model.lists.MealIngredientList;
 import com.dhbw.informatik.recipeapp.model.lists.MealList;
 
-import retrofit2.*;
+import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 

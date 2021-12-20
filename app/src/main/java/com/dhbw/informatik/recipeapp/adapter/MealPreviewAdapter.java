@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dhbw.informatik.recipeapp.FileHandler;
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.activity.MealDetailActivity;
-
 import com.dhbw.informatik.recipeapp.model.Meal;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
@@ -28,8 +27,8 @@ import java.util.List;
 
 
 /**
-Erstellt von Marcel Vidmar
-Adapter für die Rezept-Previews
+ * Erstellt von Marcel Vidmar
+ * Adapter für die Rezept-Previews
  */
 public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.MealPreviewViewHolder> {
 
@@ -40,7 +39,7 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
     public MealPreviewAdapter(List<Meal> mealList, Activity previousActivity) {
         this.mealList = mealList;
         this.previousActivity = previousActivity;
-        this.fileHandler=FileHandler.getInstance();
+        this.fileHandler = FileHandler.getInstance();
     }
 
 
@@ -60,11 +59,11 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
         holder.tvCategory.setText(meal.getStrCategory());
 
         //Bild laden
-        String mealThumb=meal.getStrMealThumb();
-        if(URLUtil.isValidUrl(mealThumb)){
+        String mealThumb = meal.getStrMealThumb();
+        if (URLUtil.isValidUrl(mealThumb)) {
             Picasso.get().load(meal.getStrMealThumb()).into(holder.ivThumb);
-        }else  {
-            if(mealThumb!=null) {
+        } else {
+            if (mealThumb != null) {
                 //Eigenes Rezept / lokales Bild
                 Bitmap bmp = fileHandler.loadImg(mealThumb);
                 holder.ivThumb.setImageBitmap(bmp);
@@ -93,10 +92,10 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
         holder.tvIngredients.setText(ingredientsStr);
 
         //Icon für Fav setzen
-            if (fileHandler.isMealFav(meal))
-                holder.faBtnFavourite.setImageResource(R.drawable.ic_favoritesfull);
-            else
-                holder.faBtnFavourite.setImageResource(R.drawable.ic_favouriteempty);
+        if (fileHandler.isMealFav(meal))
+            holder.faBtnFavourite.setImageResource(R.drawable.ic_favoritesfull);
+        else
+            holder.faBtnFavourite.setImageResource(R.drawable.ic_favouriteempty);
 
 
         //Click-Handler für Favourite-button
@@ -109,8 +108,7 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
                     //zuvor kein Fav -> Gefüllter Stern als Bild setzen
                     holder.faBtnFavourite.setImageResource(R.drawable.ic_favoritesfull);
                     fileHandler.addToFavourites(meal);
-                }
-                else{
+                } else {
                     //zuvor Fav -> Leerer Stern als Bild setzen
                     holder.faBtnFavourite.setImageResource(R.drawable.ic_favouriteempty);
                     fileHandler.removeFromFavourites(meal);
@@ -124,9 +122,9 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
             @Override
             public void onClick(View view) {
                 fileHandler.lastClicked(meal);
-                    Intent i = new Intent(view.getContext(), MealDetailActivity.class);
-                    i.putExtra("meal", meal);
-                    previousActivity.startActivity(i);
+                Intent i = new Intent(view.getContext(), MealDetailActivity.class);
+                i.putExtra("meal", meal);
+                previousActivity.startActivity(i);
             }
         };
         //Angewanth auf titel und thumbnail
@@ -141,11 +139,14 @@ public class MealPreviewAdapter extends RecyclerView.Adapter<MealPreviewAdapter.
     }
 
 
-    public void search(List<Meal> data){notifyDataSetChanged();}
+    public void search(List<Meal> data) {
+        notifyDataSetChanged();
+    }
 
     /**
      * Fügt einzelnes Meal der Liste hinzu, mit Überprüfung auf Duplikate
      * Triggert auch ItemChanged im Adapter
+     *
      * @param meal Meal, das hinzugefügt werden soll
      */
     public void update(Meal meal) {

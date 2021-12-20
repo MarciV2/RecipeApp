@@ -1,7 +1,10 @@
 package com.dhbw.informatik.recipeapp.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,17 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.os.CountDownTimer;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
-
-import com.dhbw.informatik.recipeapp.activity.MealDetailActivity;
-import com.dhbw.informatik.recipeapp.adapter.MealPreviewAdapter;
 import com.dhbw.informatik.recipeapp.R;
 import com.dhbw.informatik.recipeapp.activity.MainActivity;
+import com.dhbw.informatik.recipeapp.adapter.MealPreviewAdapter;
 import com.dhbw.informatik.recipeapp.model.Meal;
 import com.dhbw.informatik.recipeapp.model.lists.MealList;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -32,6 +27,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 /*
 Erstellt von Marcel Vidmar
 home-seite mit einer definierten Anzahl an zufälligen Rezepten
@@ -46,19 +42,17 @@ public class HomeFragment extends Fragment {
 
     public HomeFragment(MainActivity mainActivity) {
 
-        this.mainActivity=mainActivity;
+        this.mainActivity = mainActivity;
     }
-
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mealList=new ArrayList<>();
+        mealList = new ArrayList<>();
         //Updatemeals soll um performance zu sparen nur aufgerufen werden wenn Filter nicht vorhanden ist
-        if(mainActivity.filter==null)updateMeals();
+        if (mainActivity.filter == null) updateMeals();
     }
-
 
 
     @Override
@@ -73,9 +67,9 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mealPreviewRecyclerView=view.findViewById(R.id.recyclerViewOfMeals);
-        mealPreviewRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
-        mealPreviewAdapter=new MealPreviewAdapter(mealList,mainActivity);
+        mealPreviewRecyclerView = view.findViewById(R.id.recyclerViewOfMeals);
+        mealPreviewRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        mealPreviewAdapter = new MealPreviewAdapter(mealList, mainActivity);
         mealPreviewRecyclerView.setAdapter(mealPreviewAdapter);
 
         updateMeals();
@@ -95,7 +89,7 @@ public class HomeFragment extends Fragment {
     public void updateMeals() {
 
         //API-Aufrufe starten
-        for(int i=0; i<numberOfRecipes; i++){
+        for (int i = 0; i < numberOfRecipes; i++) {
             Call<MealList> call = MainActivity.apiService.getRandomRecipe();
             call.enqueue(new Callback<MealList>() {
                 @Override
@@ -114,9 +108,9 @@ public class HomeFragment extends Fragment {
                         return;
                     }
                     List<Meal> tmp2MealList = response.body().getMeals();
-                    Meal m=tmp2MealList.get(0);
+                    Meal m = tmp2MealList.get(0);
                     m.fillArrays();
-                    Log.d("dev","Rezept geholt: "+tmp2MealList.get(0).getStrMeal()+" insgesamt: "+mealList.size());
+                    Log.d("dev", "Rezept geholt: " + tmp2MealList.get(0).getStrMeal() + " insgesamt: " + mealList.size());
 
                     mealPreviewAdapter.update(m);
 
