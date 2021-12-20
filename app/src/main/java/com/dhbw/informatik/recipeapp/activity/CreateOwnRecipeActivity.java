@@ -1,6 +1,7 @@
 package com.dhbw.informatik.recipeapp.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
@@ -62,9 +63,9 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
     private ORIEadapter adapter;
     private ActivityResultLauncher<String> getThumb;
     private Bitmap selectedBmp;
-    private FileHandler fileHandler;
+    private final FileHandler fileHandler;
 
-    private CreateOwnRecipeActivity self = this;
+    private final CreateOwnRecipeActivity self = this;
 
     public CreateOwnRecipeActivity() {
         fileHandler = FileHandler.getInstance();
@@ -258,7 +259,7 @@ public class CreateOwnRecipeActivity extends AppCompatActivity {
     public boolean onTouchEvent(MotionEvent event) {
         Log.d("tag", "touch");
         View view = self.getCurrentFocus();
-        InputMethodManager manager = (InputMethodManager) self.getSystemService(this.INPUT_METHOD_SERVICE);
+        InputMethodManager manager = (InputMethodManager) self.getSystemService(INPUT_METHOD_SERVICE);
         assert manager != null && view != null;
         manager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 

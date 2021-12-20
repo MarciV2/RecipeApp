@@ -33,7 +33,7 @@ Erstellt von Marcel Vidmar
 home-seite mit einer definierten Anzahl an zufälligen Rezepten
  */
 public class HomeFragment extends Fragment {
-    private MainActivity mainActivity;
+    private final MainActivity mainActivity;
     private List<Meal> mealList;
     private MealPreviewAdapter mealPreviewAdapter;
     private RecyclerView mealPreviewRecyclerView;

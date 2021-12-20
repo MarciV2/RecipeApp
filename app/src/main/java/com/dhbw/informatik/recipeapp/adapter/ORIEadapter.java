@@ -26,8 +26,8 @@ import java.util.List;
  */
 public class ORIEadapter extends RecyclerView.Adapter<ORIEadapter.ORIEViewHolder> {
 
-    private List<OwnRecipeIngredientElement> orieList;
-    private CreateOwnRecipeActivity createOwnRecipeActivity;
+    private final List<OwnRecipeIngredientElement> orieList;
+    private final CreateOwnRecipeActivity createOwnRecipeActivity;
     private String[] availableIngredients;
     private ArrayAdapter<String> arrayAdapter;
 
@@ -92,8 +92,8 @@ public class ORIEadapter extends RecyclerView.Adapter<ORIEadapter.ORIEViewHolder
             holder.etMeasurement.setText(orie.getMeasurement());
 
             //hint anhand von locale setzen mit fortlaufender nummerierung
-            holder.actvIngredient.setHint(createOwnRecipeActivity.getString(R.string.ingredient) + String.valueOf(position + 1));
-            holder.etMeasurement.setHint(createOwnRecipeActivity.getString(R.string.measurement) + String.valueOf(position + 1));
+            holder.actvIngredient.setHint(createOwnRecipeActivity.getString(R.string.ingredient) + (position + 1));
+            holder.etMeasurement.setHint(createOwnRecipeActivity.getString(R.string.measurement) + (position + 1));
 
 
             //Funktionalität für auto-complete
